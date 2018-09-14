@@ -1,0 +1,156 @@
+<!--<div style="height:400px;max-height:400px;overflow-y:auto; overflow-x:hidden;">-->
+<div style="overflow-y:auto; overflow-x:auto;">
+  <div style="margin-bottom:10px;">
+
+<div>
+<div style="float:left; width:100%;">
+		<h3 class="tab-title">Inventory Returns</h3>
+</div>
+
+<br><br>
+
+  <div style="width:100%;">
+      <div style="min-width:10%; display:inline-block;">
+          <label>Filters :</label>
+      </div>
+      <div style="min-width:15%; display:inline-block; margin-right:25px;">
+          <select (change)="onFilterCategoryChange($event)" [value]="filterStatus" class="form-control full-width">
+              <option value="" selected hidden disabled>-- Status --</option>
+              <option value="Received">Received</option>
+              <option value="Not Received">Not Received</option>
+          </select>
+      </div>
+
+      <div style="min-width:15%; display:inline-block;">
+          <input type="date" (input)="onFilterDateChange($event)" [value]="filterDate" class="form-control full-width">
+      </div>
+
+      <div style="min-width:20%; display:flex; float:right;">
+          <div class="input-group full-width less-mt" id="manageitsearch">
+              <input (input)="onFilterSearchChange($event)" (keydown)="onKeyDown($event)" [value]="searchQuery" class="form-control" placeholder="Search" type="text">
+              <div class="input-group-append">
+                  <button class="btn btn-secondary" type="button" (click)="onSearch()"><i class="fa fa-search"></i></button>
+              </div>
+          </div>
+      </div>
+  </div>
+
+</div>
+
+
+<!--
+{{inventoryList}}
+<li *ngFor="let hero of inventoryList; let idx = index">
+      {{hero | json}}
+</li>
+-->
+<!--
+<app-inventory-item-create #onNewItemComponent></app-inventory-item-create>
+-->
+<app-inventory-modal-receive #onNewItemComponent></app-inventory-modal-receive>
+
+
+<table class="table table-bordered inventory-table">
+	<thead>
+		<tr class="tbl-header">
+      <th class="thSort" [class.active]="order === 'productname'"
+        (click)="setRetailerOrder('productname', 'productname')">Store Name
+        <span [hidden]="productname">
+          <span [hidden]="reverse">▼</span>
+          <span [hidden]="!reverse">▲</span>
+        </span>
+      </th>
+      <th class="thSort" [class.active]="order === 'qty'"
+        (click)="setRetailerOrder('qty', 'qty')">Quantity
+        <span [hidden]="qty">
+          <span [hidden]="reverse">▼</span>
+          <span [hidden]="!reverse">▲</span>
+        </span>
+      </th>
+      <th class="thSort" [class.active]="order === 'retailer'"
+        (click)="setRetailerOrder('retailer', 'retailer')">Retailer
+        <span [hidden]="retailer">
+          <span [hidden]="reverse">▼</span>
+          <span [hidden]="!reverse">▲</span>
+        </span>
+      </th>
+      <th class="thSort" [class.active]="order === 'return_type'"
+        (click)="setRetailerOrder('return_type', 'return_type')">Return type
+        <span [hidden]="return_type">
+          <span [hidden]="reverse">▼</span>
+          <span [hidden]="!reverse">▲</span>
+        </span>
+      </th>
+      <th class="thSort" [class.active]="order === 'agent'"
+        (click)="setRetailerOrder('agent', 'agent')">Agent (SRP)
+        <span [hidden]="agent">
+          <span [hidden]="reverse">▼</span>
+          <span [hidden]="!reverse">▲</span>
+        </span>
+      </th>
+      <th class="thSort" [class.active]="order === 'status'"
+        (click)="setRetailerOrder('status', 'status')">Status
+        <span [hidden]="status">
+          <span [hidden]="reverse">▼</span>
+          <span [hidden]="!reverse">▲</span>
+        </span>
+      </th>
+      <th class="thSort" [class.active]="order === 'date_returned'"
+        (click)="setRetailerOrder('date_returned', 'date_returned')">Date
+        <span [hidden]="date_returned">
+          <span [hidden]="reverse">▼</span>
+          <span [hidden]="!reverse">▲</span>
+        </span>
+      </th>
+      <th scope="col">Action</th>
+      <!--
+			<th scope="col">Product Name</th>
+			<th scope="col">Quantity</th>
+			<th scope="col">Retailer</th>
+			<th scope="col">Return type</th>
+			<th scope="col">Agent (SRP)</th>
+			<th scope="col">Status</th>
+      <th scope="col">Date</th>
+			<th scope="col">Action</th>
+    -->
+		</tr>
+	</thead>
+
+
+	<tbody>
+		<tr *ngFor="let product of inventoryList | orderBy: order: reverse | filterReturned: filterStatus:filterDate | searchReturn: filterSearchQuery | paginate: { itemsPerPage: itemsPerPage, currentPage: p }">
+			<td>{{ product.productname }}</td>
+			<td>{{ product.qty }}</td>
+			<td>{{ product.retailer }}</td>
+			<td>{{ product.return_type }}</td>
+			<td>{{ product.agent }}</td>
+			<td>{{ product.status }}</td>
+      <td>{{ product.date_returned }}</td>
+			<td align='center'>
+				<button *ngIf="(product.status == 'Not Received'); else elseContent"  (click)="onReceive(product.productname)" class="btn btn-secondary" type="button">Receive</button>
+				<ng-template #elseContent> - </ng-template>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+</div>
+</div>
+
+<div class="row">
+	<div class="col-md-6 form-inline">
+		<label>Show :</label>&nbsp;&nbsp;
+		<select (change)="onShowCountChange($event)" class="form-control sel-show full-width">
+            <option selected value="5">5</option>
+            <option value="10">10</option>
+			<option value="25">25</option>
+			<option value="50">50</option>
+        </select>
+    </div>
+	<div class="col-md-6">
+		<div class="form-group pg-form-group text-right">
+			<pagination-controls class="pagination" (pageChange)="p = $event"></pagination-controls>
+		</div>
+	</div>
+</div>

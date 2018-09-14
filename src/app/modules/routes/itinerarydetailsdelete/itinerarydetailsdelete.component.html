@@ -1,0 +1,33 @@
+<app-modal #itemDeleteItineraryModal>
+	<ng-template #modalHeader>Delete Itinerary</ng-template>
+
+	<ng-template #modalBody>
+		<div class="content">
+			<form class="row-form">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="form-group">
+							<div class="row alert alert-info">
+								<div class="col-md-12 form-inline">
+									<label for="">Are you sure you want to delete this itinerary?</label>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</ng-template>
+
+	<ng-template #modalFooter>
+		<div class="row">
+			<div class="col-md-6 text-right pd-bt">
+				<button class="btn btn-item-create btn-success">Delete</button>
+			</div>
+
+			<div class="col-md-6 text-left">
+				<button class="btn btn-item-create btn-default" (click)="closeModal()">Cancel</button>
+			</div>
+		</div>
+	</ng-template>
+</app-modal>

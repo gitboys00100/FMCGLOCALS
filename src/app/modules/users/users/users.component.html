@@ -1,0 +1,20 @@
+<div class="routestab">
+    <div class="container">
+
+        <!-- <h3 class="page-title">Reports</h3> -->
+        <h3 class="page-title">Users</h3>
+        <!-- Nav Tabs -->
+        <ul class="nav nav-tabs" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" routerLink="./userlist">Manage Users</a>
+            </li>
+        </ul>
+
+        <!-- Tab panes -->
+        <div class="tab-content">
+            <div class="tab-pane active">
+              <app-userlist></app-userlist>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,39 @@
+<app-modal #itemUpdateItineraryModal>
+	<ng-template #modalHeader>Update Itinerary</ng-template>
+
+	<ng-template #modalBody>
+		<div class="content">
+
+
+			<div class="row"><h4>Details</h4></div>
+
+			<form class="row-form">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="form-group">
+							<label for="route_name">Itinerary Labels</label>
+							<input type="text" class="form-control" id="itinerary_labels">
+						</div>
+					</div>
+					<div class="col-md-12">
+						<div class="form-group">
+							<label for="category">No. of Retailers</label>
+							<input type="number" class="form-control" id="no_of_retailers">
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</ng-template>
+
+	<ng-template #modalFooter>
+		<div class="row">
+			<div class="col-md-6 text-right pd-bt">
+				<button class="btn btn-item-create btn-success">Save</button>
+			</div>
+			<div class="col-md-6 text-left">
+				<button class="btn btn-item-create2 btn-default" (click)="closeModal()">Cancel</button>
+			</div>
+		</div>
+	</ng-template>
+</app-modal>

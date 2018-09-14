@@ -1,0 +1,174 @@
+<div [ngClass]="{scrollable_container: itemsPerPage > 5}">
+  <div style="margin-bottom:10px;">
+    <div class="row row-filter">
+      <div class="col-md-1 col-form form-inline">
+          <label>Filters :</label>
+      </div>
+      <div class="col-md-3 col-form form-inline" >
+        <input class="form-control full-width" type="date" id="date" value="{{ today | date: 'yyyy-MM-dd' }}" (change)="onChangeDate($event.target.value)">
+      </div>
+      <div class="col-md-3 col-form form-inline">
+          <select class="form-control full-width">
+              <option selected (click)="setAgent('All')">All Agents</option>
+              <option *ngFor="let r of receivables | daySorter : selectedDate: pipeStatus" (click)="setAgent(r.agent)">{{ r.agent }}</option>
+          </select>
+      </div>
+      <div class="col-md-5 col-form form-inline">
+          <div class="input-group full-width less-mt" id="manageitsearch">
+              <input (input)="onFilterSearchChange($event)" (keydown)="onKeyDown($event)" [value]="searchQuery" class="form-control" placeholder="Search" type="text">
+              <div class="input-group-append">
+                  <button class="btn btn-secondary" type="button" (click)="onSearch()"><i class="fa fa-search"></i></button>
+              </div>
+          </div>
+      </div>
+    </div>
+    <!--
+    <div class='row'>
+      <div class="col-md-12 form-inline">
+        <div class="form-group">
+          <label for="date">Date:&nbsp; </label>
+      		<input class="form-control" type="date" id="date" value="{{ today | date: 'yyyy-MM-dd' }}"
+          (change)="onChangeDate($event.target.value)">&nbsp;&nbsp;&nbsp;
+          <button class="btn btn-default" (click)="setDateToday()" type="button">Today
+          </button>
+        </div>&nbsp;&nbsp;&nbsp;
+        <div class="form-group">
+          <label>Agent</label>&nbsp;&nbsp;
+          <div class="dropdown">
+            <button class="btn btn-default" type="button" id="selectAgent" data-toggle="dropdown"
+          >{{ agents }} <i class="fa fa-caret-down"></i></button>
+            <div class="dropdown-menu">
+              <a class="dropdown-item" (click)="setAgent('All')">All</a>
+              <span *ngFor="let r of receivables | daySorter : selectedDate: pipeStatus">
+                <a class="dropdown-item" (click)="setAgent(r.agent)">{{ r.agent }}</a>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-5 form-inline">
+      </div>
+    </div>
+  -->
+</div>
+<div class="table-responsive">
+  <table class="table table-bordered">
+    <thead class="stickDiv">
+      <tr class="tbl-header">
+        <th [class.active]="order === 'agent'"
+          (click)="setRemittanceOrder('agent', 'agent')">Agent
+          <span [hidden]="agent">
+            <span [hidden]="reverseAgent">▼</span>
+            <span [hidden]="!reverseAgent">▲</span>
+          </span>
+        </th>
+        <th [class.active]="order === 'retailer'"
+          (click)="setRemittanceOrder('retailer', 'retailer')">Retailer
+          <span [hidden]="retailer">
+            <span [hidden]="reverseRetailer">▼</span>
+            <span [hidden]="!reverseRetailer">▲</span>
+          </span>
+        </th>
+        <th [class.active]="order === 'total'"
+          (click)="setRemittanceOrder('total', 'total')">Total
+          <span [hidden]="total">
+            <span [hidden]="reverseTotal">▼</span>
+            <span [hidden]="!reverseTotal">▲</span>
+          </span>
+        </th>
+        <th [class.active]="order === 'amount_paid'"
+          (click)="setRemittanceOrder('amount_paid', 'amount_paid')">Amount Paid
+          <span [hidden]="amount_paid">
+            <span [hidden]="reverseAmountPaid">▼</span>
+            <span [hidden]="!reverseAmountPaid">▲</span>
+          </span>
+        </th>
+        <th [class.active]="order === 'balance'"
+          (click)="setRemittanceOrder('balance', 'balance')">Balance
+          <span [hidden]="balance">
+            <span [hidden]="reverseBalance">▼</span>
+            <span [hidden]="!reverseBalance">▲</span>
+          </span>
+        </th>
+        <th [class.active]="order === 'date'"
+          (click)="setRemittanceOrder('date', 'date')">Date
+          <span [hidden]="date">
+            <span [hidden]="reverseDate">▼</span>
+            <span [hidden]="!reverseDate">▲</span>
+          </span>
+        </th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let r of receivables | daySorter : selectedDate: pipeStatus | search: filterSearchQuery | orderBy: order: reverse | selectSpecific : agents | paginate: { itemsPerPage: itemsPerPage, currentPage: p }; let num=index ">
+        <td>{{ r.agent }}</td>
+        <td>{{ r.retailer }}</td>
+        <td>{{ r.total }}</td>
+        <td>{{ r.amount_paid }}</td>
+        <td>{{ r.balance }}</td>
+        <td>{{ r.receiveddate | date: 'MMMM dd, yyyy' }}</td>
+        <td>
+          <div class="form-check">
+            <label class="form-check-label">
+              <input class="form-check-input" disabled checked type="checkbox" *ngIf="r.status=='received'">
+              <input class="form-check-input" type="checkbox" id="{{ r.rid+'_checkbox' }}" (change)="openConfirmationModal(r.rid)" *ngIf="r.status=='not-received'">
+              <p>&nbsp;Received </p>
+            </label>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td *ngIf="datacount <= 0" colspan="7" style="text-align:center;">No receivables found.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+</div>
+<div class="container-fluid">
+  <div class="row" *ngIf="datacount > 0">
+  	<div class="col-md-6 col-sm-6 col-xs-6 col-lg-6 form-inline">
+  		<label>Show :</label>&nbsp;&nbsp;
+  		<select (change)="onShowCountChange($event)" class="form-control sel-show full-width">
+              <option selected value="5">5</option>
+              <option value="10">10</option>
+  			<option value="25">25</option>
+  			<option value="50">50</option>
+          </select>
+      </div>
+  	<div class="col-md-6 col-sm-6 col-xs-6 col-lg-6">
+  		<div class="form-group pg-form-group text-right">
+  			<pagination-controls class="pagination" (pageChange)="p = $event"></pagination-controls>
+  		</div>
+  	</div>
+  </div>
+</div>
+
+
+<app-modal #confirmationDialog>
+  <ng-template #modalHeader>Receive</ng-template>
+  <ng-template #modalBody>
+    <div class="content">
+			<div class="row alert alert-info">
+				<div class="col-md-10 form-inline text-align:center;">
+          <h5>Are you sure?</h5>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+  <ng-template #modalFooter>
+		<div class="row">
+      <div class="col-md-2 col-sm-0 col-0">
+      </div>
+			<div class="col-md-4 col-sm-12 col-12">
+				<button class="btn btn-item-create btn-success btn-block text-center" (click)="receivedRemittance(clickedRemittance)" style="margin:3px;">Yes</button>
+			</div>
+			<div class="col-md-4 col-sm-12 col-12">
+				<button class="btn btn-item-create btn-default btn-block text-center" (click)="closeConfirmationModal(clickedRemittance)" style="margin:3px;">Cancel</button>
+			</div>
+      <div class="col-md-2 col-sm-0 col-0">
+      </div>
+		</div>
+  </ng-template>
+</app-modal>

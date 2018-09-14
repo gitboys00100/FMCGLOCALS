@@ -1,0 +1,41 @@
+<app-modal #ConfirmApprovalModal>
+	<ng-template #modalHeader>Confirm Approval</ng-template>
+
+	<ng-template #modalBody>
+		<div class="content">
+			<form class="row-form">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="form-group">
+                <label>Quantity to be Approved:</label>
+								<input type="number" class="form-control" name="for_approval" #ipt />
+
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</ng-template>
+
+	<ng-template #modalFooter>
+		<div class="row">
+
+			<div class="col-lg-2 text-center">
+
+			</div>
+
+			<div class="col-lg-4 text-center">
+					<button class="btn btn-item-create2 btn-secondary" (click)="onApproveStock()">Approve</button>
+			</div>
+
+			<div class="col-lg-4 text-center">
+					<button class="btn btn-item-create btn-secondary" (click)="closeModal()">Cancel</button>
+			</div>
+
+			<div class="col-lg-2 text-center">
+
+			</div>
+
+		</div>
+	</ng-template>
+</app-modal>
