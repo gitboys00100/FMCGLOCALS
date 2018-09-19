@@ -1,0 +1,69 @@
+<div id="manageitsearch" class="input-group">
+    <input type="text" class="form-control" id="serchid" (input)="onFilterSearchChange($event)" (keydown)="onKeyDown($event)" [value]="searchQuery" placeholder="Search">
+    <div class="input-group-append">
+        <button class="btn btn-secondary" (click)="onSearch()" type="button">
+          <i class="fa fa-search"></i>
+        </button>
+    </div>
+</div><br>
+
+<table class="table table-bordered" id="ittable">
+        <thead class="route-table">
+                <tr>
+                    <th [class.active]="order === '#'"
+                      (click)="setItineraryOrder('#')">#
+                      <span [hidden]="reverse">▼</span>
+                      <span [hidden]="!reverse">▲</span>
+                    </th>
+                    <th [class.active]="order === 'it_label'"
+                      (click)="setItineraryOrder('it_label')">Itinerary Labels
+                      <span [hidden]="reverse">▼</span>
+                      <span [hidden]="!reverse">▲</span>
+                    </th>
+                    <th [class.active]="order === 'no_of_retailers'"
+                      (click)="setItineraryOrder('no_of_retailers')">No. of Retailers
+                      <span [hidden]="reverse">▼</span>
+                      <span [hidden]="!reverse">▲</span>
+                    </th>
+                    <th scope="col">Actions</th>
+                </tr>
+        </thead>
+
+        <tbody>
+      		<tr *ngFor="let item of itineraryDetails | orderBy: order: type | filter : filterSearchQuery |  paginate: { itemsPerPage: itemsPerPage, currentPage: p } ; let i = index;">
+      			<td>{{ i + 1 }}</td>
+      			<td> {{ item.it_label }} </td>
+      			<td>{{ item.no_of_retailers}}</td>
+              		<td>
+                      		<button class="btn btn-secondary" type="button" (click)="onUpdateItinerary()">
+                      	       		 Edit
+                      		</button>
+                      		<div class="divider"></div>
+                      		<button class="btn btn-secondary" type="button" (click)="onDeleteItinerary()">
+                              		Delete
+                      		</button>
+              		</td>
+
+      		</tr>
+        </tbody>
+</table>
+
+<div class="row">
+  <div class="col-md-6 form-inline" >
+    <label>Show :</label>&nbsp;&nbsp;
+    <select (change)="onShowCountChange($event)" class="form-control sel-show full-width">
+            <option selected value="5">5</option>
+            <option value="10">10</option>
+      <option value="25">25</option>
+      <option value="50">50</option>
+        </select>
+    </div>
+  <div class="col-md-6" >
+    <div class="form-group pg-form-group text-right">
+      <pagination-controls class="pagination" (pageChange)="p = $event"></pagination-controls>
+    </div>
+  </div>
+</div>
+
+<app-itinerarydetailsupdate #onUpdateComponent></app-itinerarydetailsupdate>
+<app-itinerarydetailsdelete #onDeleteComponent></app-itinerarydetailsdelete>

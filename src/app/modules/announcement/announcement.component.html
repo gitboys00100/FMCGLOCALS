@@ -1,0 +1,91 @@
+<div class="routestab">
+    <div class="container">
+      <div class="row">
+     	  <div class="col-md-6">
+          <h3>Announcements</h3>
+        </div>
+        <div class="col-md-6">
+        		<button class="pull-right btn-new-retailer btn btn-gray" (click)="openNewAnnouncement()"><i class="fa fa-plus"></i>&nbsp;New Announcement</button>
+        </div>
+      </div>
+        <!-- Promos, NewProduct, announcement -->
+        <!-- Nav Tabs -->
+        <ul class="nav nav-tabs" role="tablist">
+          <!--
+            <li class="nav-item">
+                <a class="nav-link" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" routerLink="./promos">Promos</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" routerLink="./new-product">New Product</a>
+            </li>-->
+            <li class="nav-item">
+                <a class="nav-link" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" routerLink="./announcement-table">Announcement</a>
+            </li>
+        </ul>
+
+        <app-modal #newAnnouncement>
+          <ng-template #modalHeader>New Announcement</ng-template>
+        	<ng-template #modalBody>
+            <div class="content scrollable_container_modal">
+							<h4 style="margin-bottom:10px;font-weight:normal;">Announcement Details</h4>
+              <form class="form" method="post">
+                  <div class="form-group">
+                    <label for="title">Title</label>
+                    <input type="text" name="title" class="form-control" placeholder="Ex. New Coffee..">
+                  </div>
+                  <div class="form-group">
+                    <label for="type">Type</label>
+                    <select class="form-control">
+                      <option selected disabled>Choose Type</option>
+                      <option value="promos">Promos</option>
+                      <option value="new_product">New Product</option>
+                      <option value="announcement">Announcement</option>
+                    </select>
+                  </div>
+                  <div class="container-fluid">
+                    <div class="row">
+                      <div class="form-group">
+                        <label for="start_date">From</label>
+                        <input type="date" class="form-control">
+                      </div>
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      <div class="form-group">
+                        <label for="end_date">End</label>
+                        <input type="date" class="form-control">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="description">Description</label>
+                    <textarea class="form-control" rows="4"></textarea>
+                  </div>
+                  <div class="form-group">
+                    <label for="image">Image</label>
+                    <input class="form-control" type="file" name="image">
+                  </div>
+              </form>
+            </div>
+          </ng-template>
+        	<ng-template #modalFooter>
+        		<div class="row">
+              <div class="col-md-1 col-sm-0 col-0">
+              </div>
+        			<div class="col-md-5 col-sm-12 col-12">
+        				<button class="btn btn-item-create btn-success btn-block text-center" style="margin:3px;">Save</button>
+        			</div>
+        			<div class="col-md-5 col-sm-12 col-12">
+        				<button class="btn btn-item-create btn-default btn-block text-center" (click)="closeNewAnnouncement()" style="margin:3px;">Cancel</button>
+        			</div>
+              <div class="col-md-1 col-sm-0 col-0">
+              </div>
+        		</div>
+          </ng-template>
+        </app-modal>
+
+
+        <!-- Tab panes -->
+        <div class="tab-content">
+            <router-outlet></router-outlet>
+        </div>
+    </div>
+</div>

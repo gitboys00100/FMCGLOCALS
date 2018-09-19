@@ -1,0 +1,63 @@
+.divider{
+    width:5px;
+    height:auto;
+    display:inline-block;
+}
+.route-table{
+  background: #6c757d;
+  padding: 0;
+  color: #fff;
+}
+.fmcg-table {
+    width: 100%;
+    margin: 20px auto;
+}
+
+.fmcg-table-row {
+    width: 100%;
+    margin: 0;
+}
+
+.fmcg-table-row.header {
+    background: #6c757d;
+    padding: 0;
+}
+
+.fmcg-table-cell {
+    border: 1px solid #ddd;
+    padding: 10px;
+}
+
+.fmcg-table-row.header .fmcg-table-cell {
+    border: none;
+    color: white;
+    font-weight: bold;
+}
+
+.inventory-table {
+    margin-top: 2vh;
+}
+
+.tbl-header {
+    background: #6c757d;
+}
+
+.tbl-header th {
+    color: white;
+}
+
+.sel-show {
+    width: 100px;
+}
+
+.pg-form-group, pagination-controls {
+    width: 100%;
+}
+
+.pg-form-group {
+    padding-top: 1.2vh;
+}
+
+pagination-controls {
+    display: block;
+}
