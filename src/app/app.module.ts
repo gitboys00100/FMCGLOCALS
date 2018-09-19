@@ -29,10 +29,8 @@ import { FormsModule } from '@angular/forms';
 import { PurchaseOrderModule } from './modules/purchaseorders/purchaseorders.module';
 import { UsersModule } from './modules/users/users.module';
 import { StockTransferOrdersService } from './shared/stock-transfer-orders.service';
-import { GetRetailersService } from './shared/get-retailers.service';
 import { HttpClientModule } from '@angular/common/http';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { TokenInterceptorService } from './shared/token-interceptor.service';
+import { ApiService } from './shared/api.service';
 //import { ModalComponent } from './components/modal/modal.component';
 //import { CoreModalModule } from './modules/core-modal/core-modal.module';
 
@@ -73,13 +71,7 @@ import { TokenInterceptorService } from './shared/token-interceptor.service';
     DatePickerService,
     DataCountsService,
     StockTransferOrdersService,
-    GetRetailersService,
-/*
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: TokenInterceptorService,
-      multi: true
-    }*/
+    ApiService
   ],
   bootstrap: [AppComponent]
 })

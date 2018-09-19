@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ModalComponent } from '../../core-modal/modal/modal.component';
-import { GetRetailersService } from '../../../shared/get-retailers.service';
+import { ApiService } from '../../../shared/api.service';
 
 @Component({
   selector: 'app-newitinerary',
@@ -14,24 +14,25 @@ export class NewitineraryComponent implements OnInit {
   selectedRetailers: any[];
   selectedRet: string;
   noRetailer: boolean = false;
-  constructor(private retailersService: GetRetailersService) {
+  constructor(private apiService: ApiService) {
   }
 
   ngOnInit() {
     //this.retailers = this.retailersService.getRetailerList();
     //this.retailers = this.retailersService.getAllRetailers();
     this.getRetailers();
+
     //alert('hello'+JSON.stringify(this.retailersService.getAllRetailers()));
     this.selectedRetailers = [];
   }
   getRetailers() {
-    this.retailersService.getAllRetailers().subscribe(
-      //data => console.log(data),
-      data => { console.log(JSON.stringify(data)) },
-      err => console.error(err),
-      () => console.log('Done Loading Retailers')
-    );
-    console.log(this.retailers);
+    this.apiService.get('retailers/')
+		.subscribe((terms) => {
+			console.log(terms);
+		},
+		(err) => {
+			console.log(err);
+		})
   }
   addRetailer(retailer_id: string){
     //alert(this.retailers[0].data[0].name+'sad');
