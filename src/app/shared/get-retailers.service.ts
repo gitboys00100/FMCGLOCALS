@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { Http, Response } from '@angular/http';
+import { Http, Response, RequestOptions} from '@angular/http';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
@@ -142,6 +142,9 @@ export class GetRetailersService {
      let header = {
          headers: new HttpHeaders({
              'Authorization': authType+' '+authToken
+         }),
+         options: new RequestOptions({
+           'withCredentials': true
          })
      }
      header.headers.append('Access-Control-Allow-Origin', '*');
