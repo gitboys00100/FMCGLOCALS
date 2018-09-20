@@ -1,0 +1,51 @@
+<li class="list-group-item">
+	<div class="row row-header" (click)="toggleBody()">
+		<div class="col-md-4">
+			<label>Agent : </label>{{ itinerary.agent }}
+		</div>
+		<div class="col-md-4">
+			<label>Itinerary : </label>{{ itinerary.itinerary }}
+		</div>
+		<div class="col-md-4">
+			<i class="pull-right list-caret fa" [ngClass]="isOpen ? 'fa-angle-up' : 'fa-angle-down'"></i>
+		</div>
+	</div>
+	<div class="row row-body">
+		<div class="">
+			<table class="table table-bordered">
+				<thead>
+					<tr>
+						<th>ORDER</th>
+						<th>RETAILER</th>
+						<th>NO. OF ITEMS</th>
+						<th>BALANCE</th>
+						<th>DATE</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr *ngFor="let item of itinerary.itinerary_list">
+						<td>{{ item.order }}</td>
+						<td>{{ item.retailer }}</td>
+						<td>{{ item.no_of_items }}</td>
+						<td>{{ item.balance }}</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td colspan="3">Total</td>
+						<td>{{ getTotalBalance(itinerary) }}</td>
+						<td>{{ itinerary.date | date: 'MMMM d, y' }}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+		<div class="row" style="padding: 8px 0">
+			<div class="col-md-6">
+				<button class="pull-right btn btn-gray">Edit</button>&nbsp;&nbsp;
+			</div>
+			<div class="col-md-6">
+				<button class="pull-left btn btn-gray">Delete</button>
+			</div>
+		</div>
+	</div>
+</li>

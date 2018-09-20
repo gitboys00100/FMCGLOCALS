@@ -1,0 +1,104 @@
+<!--
+<div  style="height:400px;max-height:400px;overflow-y:auto; overflow-x:hidden;">
+  <div style="margin-bottom:10px;">
+-->
+
+<div style="overflow-y:auto; overflow-x:auto;">
+  <div style="margin-bottom:10px;">
+
+
+<!--<div class="row">-->
+<!--<div class="col-md-6"><h3>Manage Users</h3> </div>-->
+    <div class="col-md-12">
+      <button class="pull-right btn btn-new-itinerary" (click)="onAdd()">
+        <i class="fa fa-plus"></i>&nbsp;&nbsp;Add User
+      </button>
+    </div>
+    <br><br>
+<!--</div>-->
+
+<div style="width:100%; margin-top:10px;">
+    <div style="min-width:10%; display:inline-block;">
+        <label>Filters :</label>
+    </div>
+
+    <div style="min-width:15%; display:inline-block; margin-right:25px;">
+        <select (change)="onFilterRole($event)" [value]="filterRole" class="form-control full-width">
+            <option value="" >-- Role --</option>
+            <option value="Manager">Manager</option>
+            <option value="Supervisor">Supervisor</option>
+            <option value="Sales Representative">Sales Representative</option>
+        </select>
+    </div>
+
+    <div style="min-width:20%; display:flex; float:right;">
+        <div class="input-group full-width less-mt" id="manageitsearch">
+            <input (input)="onFilterSearchChange($event)" (keydown)="onKeyDown($event)" [value]="searchQuery" class="form-control" placeholder="Search" type="text">
+            <div class="input-group-append">
+                <button class="btn btn-secondary" type="button" (click)="onSearch()"><i class="fa fa-search"></i></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<app-adduser-modal #onAddComponent></app-adduser-modal>
+<app-deleteuser-modal #onDeleteComponent></app-deleteuser-modal>
+<app-edituser-modal #onEditComponent></app-edituser-modal>
+
+<table class="table table-bordered inventory-table">
+	<thead>
+		<tr class="tbl-header">
+			<th scope="col">Name</th>
+			<th scope="col">E-mail</th>
+			<th scope="col">Role</th>
+			<th scope="col">Action</th>
+		</tr>
+	</thead>
+
+
+	<tbody>
+		<tr *ngFor="let item of retailerList | filter: filterRole | search: filterSearchQuery | paginate: { itemsPerPage: itemsPerPage, currentPage: p }">
+			<td>{{ item.name }}</td>
+			<td>{{ item.email}}</td>
+			<td>{{ item.role}}</td>
+			<td class="text-center">
+        <button class="btn btn-secondary" (click)="onEdit()" type="button">
+                 Edit
+        </button>
+        <div class="divider"></div>
+        <button class="btn btn-secondary" (click)="onDelete()" type="button">
+                Delete
+        </button>
+      </td>
+		</tr>
+	</tbody>
+</table>
+
+</div>
+</div>
+<!--
+<div class="row">
+	<div class="col-md-12">
+		<div class="form-group pg-form-group text-center">
+			<pagination-controls class="pagination" (pageChange)="p = $event"></pagination-controls>
+		</div>
+	</div>
+</div>
+-->
+
+<div class="row">
+	<div class="col-md-6 form-inline">
+		<label>Show :</label>&nbsp;&nbsp;
+		<select (change)="onShowCountChange($event)" class="form-control sel-show full-width">
+      <option selected value="5">5</option>
+      <option value="10">10</option>
+			<option value="25">25</option>
+			<option value="50">50</option>
+        </select>
+    </div>
+	<div class="col-md-6">
+		<div class="form-group pg-form-group text-right">
+			<pagination-controls class="pagination" (pageChange)="p = $event"></pagination-controls>
+		</div>
+	</div>
+</div>

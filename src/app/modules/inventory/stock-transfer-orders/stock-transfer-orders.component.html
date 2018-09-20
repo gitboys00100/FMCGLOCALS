@@ -1,0 +1,87 @@
+<div class="row">
+	<div class="col-md-12 col-sm-12 col-xs-12">
+		<!--<h3 class="tab-title">Stock Transfer Orders</h3>-->
+	</div>
+</div>
+
+<div class="row row-filter">
+
+	<div class="col-md-1 col-form form-inline">
+			<label>Filters :</label>
+	</div>
+	<div class="col-md-2 col-form form-inline">
+			<select (change)="onFilterTransferChange($event)" [value]="filterTransfer" class="form-control full-width">
+					<option value="" selected>-- Transfer Order --</option>
+					<option value="IT-0001">IT-0001</option>
+					<option value="IT-0002">IT-0002</option>
+			</select>
+	</div>
+	<div class="col-md-2 col-form form-inline">
+			<select (change)="onFilterAgentChange($event)" [value]="filterAgent" class="form-control full-width">
+					<option value="" selected>-- Agent Name --</option>
+					<option value="agent1">Agent1</option>
+					<option value="agent2">Agent2</option>
+			</select>
+	</div>
+
+	<div class="col-md-2 col-form form-inline">
+			<input type="date" (input)="onFilterDateChange($event)" [value]="filterDate" class="form-control full-width">
+	</div>
+
+	<div class="col-md-5 col-form form-inline">
+    <div class="input-group full-width less-mt" id="manageitsearch">
+      <input (input)="onFilterSearchChange($event)" (keydown)="onKeyDown($event)" [value]="searchQuery" class="form-control" placeholder="Search" type="text">
+      <div class="input-group-append">
+        <button class="btn btn-secondary" type="button" (click)="onSearch()"><i class="fa fa-search"></i></button>
+      </div>
+    </div>
+  </div>
+
+</div>
+<br>
+<div class="row row-filter" *ngFor="let item of stocktransferoderlist">
+
+		<!-- table -->
+		<div class="input-group col-md-12 col-lg-12">
+			<table class="table table-bordered">
+				<thead>
+					<tr class="tbl-header">
+						<th scope="col">Transfer Order Number</th>
+						<th scope="col">Agent Name</th>
+						<th scope="col">Date of Request</th>
+					</tr>
+				</thead>
+
+
+				<tbody>
+					<tr *ngFor="let datas of item.data  | filter_stock: filterTransfer:filterAgent:filterDate | search_stock: filterSearchQuery |  paginate: { itemsPerPage: itemsPerPage, currentPage: p }">
+						<td><a class="links" (click)="onStockApproved(datas.items)">{{ datas.stock_issue_id}}</a></td>
+						<td>{{ datas.username }}</td>
+						<td>{{ datas.delivery_date }}</td>
+					</tr>
+				</tbody>
+			</table>
+
+		</div>
+
+		<div class="col-md-12 col-lg-12">
+			<div class="row">
+				<div class="col-md-6 form-inline">
+					<label>Show :</label>&nbsp;&nbsp;
+					<select (change)="onShowCountChange($event)" class="form-control sel-show small-width">
+									<option selected value="5">5</option>
+									<option value="10">10</option>
+						<option value="25">25</option>
+						<option value="50">50</option>
+							</select>
+					</div>
+				<div class="col-md-6" >
+					<div class="form-group pg-form-group text-right">
+						<pagination-controls class="pagination" (pageChange)="p = $event"></pagination-controls>
+					</div>
+				</div>
+			</div>
+
+		</div>
+</div>
+<app-stocktransferapproval #onStockApprovedComponent></app-stocktransferapproval>

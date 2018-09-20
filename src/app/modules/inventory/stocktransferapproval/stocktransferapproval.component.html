@@ -1,0 +1,45 @@
+<app-modal #itemStockApprovalModal>
+	<ng-template #modalHeader>Stock Approval</ng-template>
+
+	<ng-template #modalBody>
+		<div class="content">
+			<div class="table-responsive">
+				<table class="table table-bordered">
+						<thead>
+							<tr class="tbl-header">
+								<th scope="col">Requested Product</th>
+								<th scope="col">UOM</th>
+								<th scope="col">Requested Quantity</th>
+								<th scope="col">Approved Quantity</th>
+								<th scope="col">Estimated Sales (QTY)</th>
+								<th scope="col">Update Request</th>
+							</tr>
+					</thead>
+
+					<tbody>
+						<tr *ngFor="let datas of data_content">
+							<td>{{ datas.requested_product}}</td>
+							<td>{{ datas.UOM }}</td>
+							<td>{{ datas.quantity_requested }}</td>
+							<td>{{ datas.quantity_received }}</td>
+							<td>{{ datas.estimated_sales }}</td>
+							<td>
+								<a *ngIf="datas.quantity_requested > datas.quantity_received" class="links btn btn-success" (click)="onConfirmApproval(datas.stock_issue_item_id)">Confirm</a>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</ng-template>
+
+	<ng-template #modalFooter>
+		<div class="row">
+			<div class="col-md-12 text-right mv-btn">
+				<button class="btn btn-item-create btn-default" (click)="closeModal()">Cancel</button>
+			</div>
+		</div>
+	</ng-template>
+</app-modal>
+
+<app-confirmapproval #onConfirmApprovalComponent></app-confirmapproval>

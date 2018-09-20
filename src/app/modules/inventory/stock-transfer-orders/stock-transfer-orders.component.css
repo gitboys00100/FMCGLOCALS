@@ -1,0 +1,108 @@
+.fmcg-table {
+    width: 100%;
+    margin: 20px auto;
+}
+
+.fmcg-table-row {
+    width: 100%;
+    margin: 0;
+}
+
+.fmcg-table-row.header {
+    background: #6c757d;
+    padding: 0;
+}
+
+.fmcg-table-cell {
+    border: 1px solid #ddd;
+    padding: 10px;
+}
+
+.fmcg-table-row.header .fmcg-table-cell {
+    border: none;
+    color: white;
+    font-weight: bold;
+}
+
+.inventory-table {
+    margin-top: 2vh;
+}
+
+.tbl-header {
+    background: #6c757d;
+}
+
+.tbl-header th {
+    color: white;
+}
+
+.sel-show {
+    width: 100px;
+}
+
+.pg-form-group, pagination-controls {
+    width: 100%;
+}
+
+.pg-form-group {
+    padding-top: 1.2vh;
+}
+
+pagination-controls {
+    display: block;
+}
+
+.links{
+  cursor: pointer !important;
+  text-decoration: underline !important;
+  color: #0000ff !important;
+}
+
+@media (min-width: 200px) {
+    .btn-text {
+        display: none;
+    }
+
+    .col-form {
+        margin-bottom: 1vh;
+    }
+}
+
+@media (min-width: 576px) {
+
+}
+
+
+@media (min-width: 768px) {
+    .btn-text {
+        display: inline;
+    }
+}
+
+
+@media (min-width: 992px) {
+
+}
+
+@media (min-width: 1200px) {
+
+}
+
+
+.no-margin {
+    margin: 0 !important;
+}
+
+.btn-gray {
+    background-color: #6c757d;
+    border: 1px solid #6c757d;
+    color: #FFFFFF;
+}
+
+.tab-title {
+    width: 100%;
+}
+
+.full-width {
+    width: 100%;
+}

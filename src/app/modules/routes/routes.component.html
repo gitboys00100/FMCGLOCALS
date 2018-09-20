@@ -1,0 +1,52 @@
+<div class="routestab">
+   <div class="container">
+      <div class="row">
+     	<div class="col-md-6"><h3>Routes</h3> </div>
+        	<div class="col-md-6">
+
+        	</div>
+      </div>
+
+      <!-- Nav Tabs -->
+      <ul class="nav nav-tabs" role="tablist">
+           <li class="nav-item">
+              <a class="nav-link" data-toggle="tab" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" [routerLink]="['./schedulesroute']">Schedules</a>
+           </li>
+           <li class="nav-item">
+  	    <!-- <li class="mdl-menu__item" [routerLink]="['/announcement']">Announcement</li>
+              <a class="nav-link" data-toggle="tab" href="#manage">Manage Itinerary</a>
+               -->
+              <a class="nav-link" data-toggle="tab" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" [routerLink]="['./itinerarymanage']">Manage Itinerary</a>
+           </li>
+           <li class="nav-item ml-auto">
+             <button class="pull-right btn btn-new-itinerary" (click)="newItinerary()"><i class="fa fa-plus"></i>&nbsp;&nbsp;New Itinerary</button>
+             <app-newitinerary #onNewItinerary></app-newitinerary>
+           </li>
+      </ul>
+
+      <!-- Tab panes -->
+      <div class="tab-content">
+         <!--<div class="container tab-pane active">--><br>
+            <div>
+      		      <router-outlet></router-outlet>
+      	    </div>
+         <!--</div>-->
+      </div>
+   </div>
+</div>
+
+
+<!--
+<div class="tab-content">
+   <div id="schedules" class="container tab-pane active"><br>
+      <div>
+          <app-routeschedules></app-routeschedules>
+      </div>
+   </div>
+   <div id="manage" class="container tab-pane fade"><br>
+       <div>
+           <app-manageitinerary></app-manageitinerary>
+       </div>
+   </div>
+</div>
+-->

@@ -1,0 +1,75 @@
+<app-modal #itineraryCreateModal>
+	<ng-template #modalHeader>New Itinerary</ng-template>
+
+	<ng-template #modalBody>
+		<div class="content">
+			<form [formGroup]="newItineraryForm" id="newItineraryForm">
+				<div class="container-fluid">
+				<h4 style="margin-bottom:10px;">Itinerary Details</h4>
+					<div class="row">
+						<div class="col-md-12" >
+							<div class="row">
+								<div class="col-md-12">
+									<div class="form-group">
+										<label for="itinerary_name">Itinerary Label</label>
+										<input type="text" class="form-control" id="itinerary_name" [ngClass]="{ 'is-invalid': submitted && f.itinerary_name.errors }" formControlName="itinerary_name">
+										<div *ngIf="submitted && f.itinerary_name.errors" class="invalid-feedback">
+                        <div *ngIf="f.itinerary_name.errors.required">Itinerary Name is required</div>
+                    </div>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="form-group col-md-11">
+									<label for="retailer">Add Retailer</label>
+									<select (change)="onRetailerSelect($event.target.value)" class="form-control" *ngFor="let r of retailers">
+										<option selected disabled>Choose Retailer</option>
+										<option *ngFor="let ret of r.data " [value]="ret.id">{{ ret.name }}</option>
+									</select>
+								</div>
+								<div class="col-md-1">
+									<button class="btn btn-primary float-right" (click)="addRetailer(selectedRet)" type="button" id="plusBtn">
+										<i class="fa fa-plus" aria-hidden="true"></i>
+									</button>
+								</div>
+							</div>
+							Retailers
+							<input type="hidden" class="form-control" formControlName="retailers" >
+							<div *ngIf="submitted && f.retailers.errors" class="invalid-feedback">
+									<div *ngIf="f.retailers.errors.required">Retailers are required</div>
+							</div>
+							<div class="container-fluid" id="retailerBox" [ngClass]="{ 'invalid_box': submitted && f.retailers.errors }">
+									<div class="container-fluid eachRetailer">
+										<p [hidden]="noRetailer" class="noRetailer" [ngClass]="{ 'invalid_text': submitted && f.retailers.errors }">No retailer selected.</p>
+									</div>
+									<div class="container-fluid eachRetailer" [sortablejs]="selectedRetailers" [sortablejsOptions]="{ animation: 150 }">
+										<ul class="list-group" *ngFor="let selected of selectedRetailers; let count = index;">
+											<li class="list-group-item">
+													<b>{{ count + 1}}</b>
+													&nbsp;<i class="fa fa-bars" aria-hidden="true"></i>&nbsp;
+													{{ selected.name }}
+													<button class="btn btn-sm btn-primary float-right" (click)="onRetaileRemove(selected.id)" type="button" id="minusBtn">
+														<i class="fa fa-minus" aria-hidden="true"></i>
+													</button>
+											</li>
+										</ul>
+									</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</ng-template>
+
+	<ng-template #modalFooter>
+		<div class="row" id="modalButtons">
+			<div class="col-md-6 col-sm-6 col-12 col-lg-6 text-right" style="padding:5px;">
+				<button class="btn btn-item-create btn-success buttonBlock" (click)="submitItineraryForm()">Save</button>
+			</div>
+			<div class="col-md-6 col-sm-6 col-12 col-lg-6" style="padding:5px;">
+				<button class="btn btn-item-create btn-default buttonBlock" (click)="closeModal()">Cancel</button>
+			</div>
+		</div>
+	</ng-template>
+</app-modal>
