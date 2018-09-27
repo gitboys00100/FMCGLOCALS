@@ -1,0 +1,122 @@
+<app-modal #itemCreateModal>
+	<ng-template #modalHeader>Add User</ng-template>
+
+	<ng-template #modalBody>
+		<div class="content">
+			<!--
+			<div class="row alert alert-info">
+				<div class="col-md-10 form-inline">
+					<h5>Confirm return?</h5>
+				</div>
+			</div>
+		-->
+
+
+<!--
+			<form class="row-form">
+
+				<div class="container-fluid">
+				<div class="row align-self-center">
+					<div class="col-md-6 col-sm-12 col-12 text-left">First Name:</div>
+					<div class="col-md-6 col-sm-12 col-12"><input #firstName [value]="firstName" class="form-control" placeholder="" type="text"></div>
+
+					<div class="col-md-6 col-sm-12 col-12 text-left">Last Name:</div>
+					<div class="col-md-6 col-sm-12 col-12"><input class="form-control" name="lastName" placeholder="" type="text"></div>
+
+					<div class="col-md-6 col-sm-12 col-12 text-left">Username:</div>
+					<div class="col-md-6 col-sm-12 col-12"><input class="form-control" name="username" placeholder="" type="text"></div>
+
+					<div class="col-md-6 col-sm-12 col-12 text-left">E-mail:</div>
+					<div class="col-md-6 col-sm-12 col-12"><input class="form-control" name="email" placeholder="" type="email"></div>
+
+					<div class="col-md-6 col-sm-12 col-12 text-left">Password:</div>
+					<div class="col-md-6 col-sm-12 col-12"><input class="form-control" name="password" placeholder="" type="password"></div>
+
+					<div class="col-md-6 col-sm-12 col-12 text-left">Role:</div>
+					<div class="col-md-6 col-sm-12 col-12">
+						<select (change)="onFilterRole($event)" [value]="filterRole" class="form-control full-width">
+							<option value="" >-- Role --</option>
+							<option value="Manager">Manager</option>
+							<option value="Supervisor">Supervisor</option>
+							<option value="Sales Representative">Sales Representative</option>
+						</select>
+					</div>
+				</div>
+			</div>
+
+			</form>
+-->
+
+
+<form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+
+
+		<div class="container-fluid">
+		<div class="row align-self-center">
+
+			<div class="col-md-6 col-sm-12 col-12 text-left">First Name:</div>
+			<div class="col-md-6 col-sm-12 col-12"><input class="form-control" formControlName="firstName" placeholder="" type="text" required></div>
+<br><br>
+			<div class="col-md-6 col-sm-12 col-12 text-left">Last Name:</div>
+			<div class="col-md-6 col-sm-12 col-12"><input class="form-control" formControlName="lastName" placeholder="" type="text" required></div>
+<br><br>
+			<div class="col-md-6 col-sm-12 col-12 text-left">Username:</div>
+			<div class="col-md-6 col-sm-12 col-12"><input class="form-control" formControlName="username" placeholder="" type="text" required></div>
+<br><br>
+			<div class="col-md-6 col-sm-12 col-12 text-left">E-mail:</div>
+			<div class="col-md-6 col-sm-12 col-12"><input class="form-control" formControlName="email" placeholder="" type="email" required></div>
+<br><br>
+			<div class="col-md-6 col-sm-12 col-12 text-left">Password:</div>
+			<div class="col-md-6 col-sm-12 col-12"><input class="form-control" formControlName="password" placeholder="" type="password" required></div>
+<br><br>
+			<div class="col-md-6 col-sm-12 col-12 text-left">Role:</div>
+			<div class="col-md-6 col-sm-12 col-12">
+				<select formControlName="role" class="form-control full-width" required>
+					<option value="" >-- Role --</option>
+					<option value="1">Manager</option>
+					<option value="2">Supervisor</option>
+					<option value="3">Sales Representative</option>
+				</select>
+			</div>
+
+		</div>
+	</div>
+
+<!--
+	<button type="submit" [disabled]="!profileForm.valid">Submit</button>
+-->
+
+</form>
+
+
+		</div>
+	</ng-template>
+
+
+
+	<ng-template #modalFooter>
+
+	<div class="container-fluid">
+		<div class="container-fluid">
+      <div class="row">
+      	<div class="col-md-2 col-sm-0 col-0">
+      	</div>
+      	<div class="col-md-4 col-sm-12 col-12">
+      		<button class="btn  btn-success btn-block text-center" [disabled]="!profileForm.valid" (click)="onSubmit()" style="margin:3px;">Confirm</button>
+      	</div>
+      	<div class="col-md-4 col-sm-12 col-12">
+      		<button class="btn  btn-default btn-block text-center" (click)="closeModal()" style="margin:3px;">Cancel</button>
+      	</div>
+      	<div class="col-md-2 col-sm-0 col-0">
+      	</div>
+      </div>
+    </div>
+	</div>
+
+	</ng-template>
+
+
+
+
+
+</app-modal>

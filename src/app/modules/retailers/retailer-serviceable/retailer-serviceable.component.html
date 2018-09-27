@@ -1,0 +1,250 @@
+<div style="overflow-y:auto; overflow-x:auto;" *ngFor="let r of arrRetailers2">
+  <div style="margin-bottom:10px;">
+
+
+  <!--
+    <div class="col-md-1 col-form form-inline">
+        <label>Filters :</label>
+    </div>
+    <div class="col-md-2 col-form form-inline">
+        <select (change)="onFilterCategoryChange($event)" [value]="filterCategory" class="form-control full-width">
+            <option value="" selected hidden disabled>-- Category --</option>
+            <option value="category 1">Category 1</option>
+            <option value="category 2">Category 2</option>
+            <option value="category 3">Category 3</option>
+        </select>
+    </div>
+    <div class="col-md-2 col-form form-inline">
+        <select (change)="onFilterSubCategoryChange($event)" [value]="filterSubCategory" class="form-control full-width">
+            <option value="" selected hidden disabled>-- Sub Category --</option>
+            <option value="sub category 1">Sub Category 1</option>
+            <option value="sub category 2">Sub Category 2</option>
+            <option value="sub category 3">Sub Category 3</option>
+        </select>
+    </div>
+    <div class="col-md-2 col-form form-inline">
+        <select (change)="onFilterSubCategoryChange($event)" [value]="filterSubCategory" class="form-control full-width">
+            <option value="" selected hidden disabled>-- Sub Category --</option>
+            <option value="sub category 1">Sub Category 1</option>
+            <option value="sub category 2">Sub Category 2</option>
+            <option value="sub category 3">Sub Category 3</option>
+        </select>
+    </div>
+  -->
+  <div class="col-form form-inline" style="float:right;">
+      <div class="input-group full-width less-mt" id="manageitsearch">
+          <input (input)="onFilterSearchChange($event)" (keydown)="onKeyDown($event)" [value]="searchQuery" class="form-control" placeholder="Search" type="text">
+          <div class="input-group-append">
+              <button class="btn btn-secondary" type="button" (click)="onSearch()"><i class="fa fa-search"></i></button>
+          </div>
+      </div>
+  </div>
+
+
+<br>
+
+
+<div>
+  <table class="table table-bordered inventory-table">
+  	<thead>
+  		<tr class="tbl-header">
+        <th [class.active]="order === 'name'"
+          (click)="setRetailerOrder('name', 'name')">Store Name
+          <span [hidden]="name">
+            <span [hidden]="reverse">▼</span>
+            <span [hidden]="!reverse">▲</span>
+          </span>
+        </th>
+        <th [class.active]="order === 'owner'"
+          (click)="setRetailerOrder('owner', 'owner')">Store Person/Owner
+          <span [hidden]="owner">
+            <span [hidden]="reverse">▼</span>
+            <span [hidden]="!reverse">▲</span>
+          </span>
+        </th>
+        <th [class.active]="order === 'agent'"
+          (click)="setRetailerOrder('agent', 'agent')">Agent
+          <span [hidden]="agent">
+            <span [hidden]="reverse">▼</span>
+            <span [hidden]="!reverse">▲</span>
+          </span>
+        </th>
+        <th [class.active]="order === 'street_name'"
+          (click)="setRetailerOrder('street_name', 'street_name')">Street
+          <span [hidden]="street_name">
+            <span [hidden]="reverse">▼</span>
+            <span [hidden]="!reverse">▲</span>
+          </span>
+        </th>
+        <th [class.active]="order === 'country'"
+          (click)="setRetailerOrder('country', 'country')">District
+          <span [hidden]="country">
+            <span [hidden]="reverse">▼</span>
+            <span [hidden]="!reverse">▲</span>
+          </span>
+        </th>
+        <th [class.active]="order === 'township'"
+          (click)="setRetailerOrder('township', 'township')">Township
+          <span [hidden]="township">
+            <span [hidden]="reverse">▼</span>
+            <span [hidden]="!reverse">▲</span>
+          </span>
+        </th>
+        <th>Actions</th>
+        <!--
+        <th>Store Name</th>
+        <th>Store Person/Owner</th>
+        <th>Agent</th>
+        <th>Street</th>
+        <th>District</th>
+        <th>Township</th>
+        <th>Actions</th>
+      -->
+      </tr>
+    </thead>
+    <tbody>
+      <!--<tr *ngFor="let item of retailerData">-->
+      <tr *ngFor="let item of r.data | orderBy: order: reverse | searchServiceable: filterSearchQuery |  paginate: { itemsPerPage: itemsPerPage, currentPage: p }">
+        <td>{{ item.name }}</td>
+        <td>{{ item.owner }}</td>
+        <td>{{ item.agent }}</td>
+        <td>{{ item.street_name }}</td>
+        <td>{{ item.township }}</td>
+        <td>{{ item.country }}</td>
+        <td style="text-align:center;">
+          <div class="row">
+            <div class="col-md-6 col-sm-12 col-12">
+              <button class="btn btn-secondary btn-block text-center" type="button" (click)="openEditModal(item)">Edit
+              </button>
+            </div>
+            <div class="col-md-6 col-sm-12 col-12">
+              <button class="btn btn-secondary btn-block text-center" type="button" (click)="openDeleteModal(item.id)">Delete
+              </button>
+            </div>
+          </div>
+
+          <!--
+          <button class="btn btn-secondary btn-block text-center" type="button" (click)="openEditModal()">
+            Edit
+          </button>
+        <div class="divider"></div>
+          <button class="btn btn-secondary btn-block text-center" type="button" (click)="openDeleteModal()">
+            Delete
+          </button>
+        -->
+
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+</div></div>
+
+
+<app-modal #editDialog>
+  <ng-template #modalHeader>Edit</ng-template>
+  <ng-template #modalBody>
+
+    <!--<h3 style="text-align:center;">Edit info</h3> -->
+
+    <div class="container-fluid">
+    <div class="row align-self-center">
+      <div class="col-md-6 col-sm-12 col-12 text-left">Store Name:</div>
+      <div class="col-md-6 col-sm-12 col-12"><input class="form-control" placeholder="" type="text"></div>
+      <br><br>
+      <div class="col-md-6 col-sm-12 col-12 text-left">Store Person/Owner:</div>
+      <div class="col-md-6 col-sm-12 col-12"><input class="form-control" placeholder="" type="text"></div>
+      <br><br>
+      <div class="col-md-6 col-sm-12 col-12 text-left">Street:</div>
+      <div class="col-md-6 col-sm-12 col-12"><input class="form-control" placeholder="" type="text"></div>
+      <br><br>
+      <div class="col-md-6 col-sm-12 col-12 text-left">District:</div>
+      <div class="col-md-6 col-sm-12 col-12">
+        <select class="form-control full-width">
+          <option value="" >-- Choose --</option>
+          <option value="District1">District1</option>
+          <option value="District2">District2</option>
+          <option value="Sales District3">District3</option>
+        </select>
+      </div>
+      <br><br>
+      <div class="col-md-6 col-sm-12 col-12 text-left">Township:</div>
+      <div class="col-md-6 col-sm-12 col-12">
+        <select class="form-control full-width">
+          <option value="" >-- Choose --</option>
+          <option value="Township1">Township1</option>
+          <option value="Township2">Township2</option>
+          <option value="Township3">Township3</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  </ng-template>
+  <ng-template #modalFooter>
+    <div class="container-fluid">
+      <div class="row">
+      	<div class="col-md-2 col-sm-0 col-0">
+      	</div>
+      	<div class="col-md-4 col-sm-12 col-12">
+      		<button class="btn btn-item-create btn-success btn-block text-center" style="margin:3px;">Save</button>
+      	</div>
+      	<div class="col-md-4 col-sm-12 col-12">
+      		<button class="btn btn-item-create btn-default btn-block text-center" (click)="closeEditModal()" style="margin:3px;">Cancel</button>
+      	</div>
+      	<div class="col-md-2 col-sm-0 col-0">
+      	</div>
+      </div>
+    </div>
+  </ng-template>
+</app-modal>
+
+<app-modal #deleteDialog>
+  <ng-template #modalHeader>Delete</ng-template>
+  <ng-template #modalBody>
+    <h3 style="text-align:center;">Are you sure?</h3>
+  </ng-template>
+  <ng-template #modalFooter>
+    <div class="container-fluid">
+      <div class="row">
+      	<div class="col-md-2 col-sm-0 col-0">
+      	</div>
+      	<div class="col-md-4 col-sm-12 col-12">
+      		<button class="btn btn-item-create btn-success btn-block text-center" (click)="onDeleteRetailer()" style="margin:3px;">Delete</button>
+      	</div>
+      	<div class="col-md-4 col-sm-12 col-12">
+      		<button class="btn btn-item-create btn-default btn-block text-center" (click)="closeDeleteModal()" style="margin:3px;">Cancel</button>
+      	</div>
+      	<div class="col-md-2 col-sm-0 col-0">
+      	</div>
+      </div>
+    </div>
+  </ng-template>
+</app-modal>
+<!--
+<button class="btn btn-secondary" type="button">
+         Edit
+</button>
+<div class="divider"></div>
+<button class="btn btn-secondary" type="button">
+        Delete
+</button>
+-->
+
+<div class="row">
+	<div class="col-md-6 form-inline">
+		<label>Show :</label>&nbsp;&nbsp;
+		<select (change)="onShowCountChange($event)" class="form-control sel-show full-width">
+      <option selected value="5">5</option>
+      <option value="10">10</option>
+			<option value="25">25</option>
+			<option value="50">50</option>
+        </select>
+    </div>
+	<div class="col-md-6">
+		<div class="form-group pg-form-group text-right">
+			<pagination-controls class="pagination" (pageChange)="p = $event"></pagination-controls>
+		</div>
+	</div>
+</div>

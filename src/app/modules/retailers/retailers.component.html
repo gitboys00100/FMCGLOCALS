@@ -1,0 +1,48 @@
+<div class="routestab">
+    <div class="container">
+      <div class="row">
+     	<div class="col-md-6"><h3>Retailers</h3> </div>
+        	<div class="col-md-6">
+        	</div>
+      </div>
+        <!-- Nav Tabs -->
+
+        <!--
+        <div class="row">
+          <div class="col-md-8">
+            <ul class="nav nav-tabs" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" routerLink="./list">Retailers</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" routerLink="./approval">For Approval</a>
+                </li>
+            </ul>
+          </div>
+        </div>
+      -->
+
+        <ul class="nav nav-tabs" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" routerLink="./list">Retailers</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" routerLink="./approval">For Approval</a>
+            </li>
+            <li class="nav-item ml-auto">
+              <button class="pull-right btn-new-retailer btn"(click)="onNewRet()"><i class="fa fa-plus"></i>&nbsp;&nbsp;Add Retailer</button>
+              <app-new-retailer #onNewRetailer></app-new-retailer>
+            </li>
+        </ul>
+
+
+
+        <!--<app-inventory-item-create #onNewItemComponent></app-inventory-item-create>-->
+        <!-- Tab panes -->
+        <div class="tab-content">
+            <!--<div class="container tab-pane active"><br>-->
+                <router-outlet></router-outlet>
+            <!--</div>-->
+        </div>
+    </div>
+</div>

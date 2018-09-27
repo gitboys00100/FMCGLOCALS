@@ -1,0 +1,59 @@
+:host ::ng-deep .fmcg-modal .fmcg-modal-content {
+    width: 50%;
+		margin-top:100px;
+}
+
+.divider{
+    width:5px;
+    height:auto;
+    display:inline-block;
+}
+
+
+
+.btn-new-itinerary {
+	width: 155px;
+	background-color: #6c757d;
+	color: white;
+}
+
+.inventory-table {
+    margin-top: 2vh;
+}
+
+.tbl-header {
+    background: #6c757d;
+}
+
+.tbl-header th {
+    color: white;
+}
+
+.sel-show {
+    width: 100px;
+}
+
+.pg-form-group, pagination-controls {
+    width: 100%;
+}
+
+.pg-form-group {
+    padding-top: 1.2vh;
+}
+
+pagination-controls {
+    display: block;
+}
+
+
+tbody {
+    display:block;
+    max-height:280px;
+    min-height:50px;
+    overflow:auto;
+}
+thead, tbody tr {
+    display:table;
+    width:100%;
+    table-layout:fixed;
+}

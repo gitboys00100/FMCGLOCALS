@@ -1,0 +1,111 @@
+:host ::ng-deep .fmcg-modal .fmcg-modal-content {
+    width: 60%;
+}
+:host ::ng-deep .fmcg-modal {
+  overflow: auto !important;
+  max-height: 200%;
+}
+
+:host ::ng-deep .fmcg-modal .fmcg-modal-background {
+  height: 700px;
+  min-height: 100%;
+  width: 100%;
+}
+@media all and (max-width:700px) {
+   .buttonBlock { width: 100%; display:block; }
+   #modalButtons { padding:30px; }
+
+   :host ::ng-deep .fmcg-modal .fmcg-modal-background {
+     height: 950px;
+     width: 100%;
+   }
+}
+
+@media all and (max-width:768px) {
+  #plusBtn {
+    width: 100%;
+    margin:0px !important;
+    border:1px solid red;
+  }
+  #addretbox {
+    margin-left: 0px;
+    padding:0px !important;
+  }
+}
+
+.content {
+    /**padding: 0 40px;**/
+}
+
+.fa-barcode {
+    font-size: 4em;
+    margin: 0 auto;
+}
+
+.row-form {
+    margin-top: 1vh;
+}
+
+.rpad-left {
+    padding-left: 0;
+}
+
+.rpad-right {
+    padding-right: 0;
+}
+
+.no-margin {
+    margin: 0;
+}
+
+.btn-item-create {
+    padding: 0.375rem 50px;
+}
+#plusBtn {
+    margin-top: 30px;
+    background-color: #6c757d;
+    border: 1px solid #6c757d;
+    color: white;
+}
+.card-body {
+  padding:5px;
+}
+.eachRetailer {
+  padding-left: 20px;
+  cursor: pointer;
+}
+.noRetailer {
+  padding:5px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+.list-group-item {
+  padding:5px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+#retailerBox {
+  padding:10px;
+  border: 1px solid lightgray;
+  overflow-y: auto;
+  overflow-x: hidden;
+  height: 110px;
+  max-height: 150px;
+  border-radius: 5px;
+}
+#minusBtn {
+  margin-top: 3px;
+  background-color: #6c757d;
+  border: 1px solid #6c757d;
+  text-align: left;
+  color: white;
+}
+.invalid_box {
+  border: 1px solid crimson !important;
+}
+.invalid_text {
+  color: crimson !important;
+}
+.required-text {
+  color: crimson;
+}
