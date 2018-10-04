@@ -1,0 +1,41 @@
+.inventory-table {
+    margin-top: 2vh;
+}
+
+.tbl-header {
+    background: #6c757d;
+}
+
+.tbl-header th {
+    color: white;
+}
+
+.sel-show {
+    width: 100px;
+}
+
+.pg-form-group, pagination-controls {
+    width: 100%;
+}
+
+.pg-form-group {
+    padding-top: 1.2vh;
+}
+
+pagination-controls {
+    display: block;
+}
+
+
+
+tbody {
+    display:block;
+    max-height:215px;
+    min-height:50px;
+    overflow:auto;
+}
+thead, tbody tr {
+    display:table;
+    width:100%;
+    table-layout:fixed;
+}

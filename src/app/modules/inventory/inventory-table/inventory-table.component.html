@@ -1,0 +1,81 @@
+<table cellpadding="0" cellspacing="0" border="0" class="borderedtable">
+	<thead class="tbl-header">
+		<tr>
+			<th scope="col" [class.active]="order === 'item_code'"
+				(click)="setOrder('item_code')">Item Code
+				<span [hidden]="reverse">▼</span>
+				<span [hidden]="!reverse">▲</span>
+			</th>
+			<th scope="col" [class.active]="order === 'product_name'"
+				(click)="setOrder('product_name')">Product Name
+				<span [hidden]="reverse">▼</span>
+				<span [hidden]="!reverse">▲</span>
+			</th>
+			<th scope="col" [class.active]="order === 'sku'"
+				(click)="setOrder('sku')">SKU
+				<span [hidden]="reverse">▼</span>
+				<span [hidden]="!reverse">▲</span>
+			</th>
+			<th scope="col" [class.active]="order === 'category'"
+				(click)="setOrder('category')">Category
+				<span [hidden]="reverse">▼</span>
+				<span [hidden]="!reverse">▲</span>
+			</th>
+			<th scope="col" [class.active]="order === 'sub_category'"
+				(click)="setOrder('sub_category')">Sub Category
+				<span [hidden]="reverse">▼</span>
+				<span [hidden]="!reverse">▲</span>
+			</th>
+			<th scope="col" [class.active]="order === 'price'"
+				(click)="setOrder('price')">Price (SRP)
+				<span [hidden]="reverse">▼</span>
+				<span [hidden]="!reverse">▲</span>
+			</th>
+			<th scope="col" title="Unit of Measurement" [class.active]="order === 'uom'"
+				(click)="setOrder('uom')">UOM
+				<span [hidden]="reverse">▼</span>
+				<span [hidden]="!reverse">▲</span>
+			</th>
+			<th scope="col" [class.active]="order === 'quantity'"
+				(click)="setOrder('quantity')">Quantity
+				<span [hidden]="reverse">▼</span>
+				<span [hidden]="!reverse">▲</span>
+			</th>
+			<th scope="col" [class.active]="order === 'date'"
+				(click)="setOrder('date')">Date
+				<span [hidden]="reverse">▼</span>
+				<span [hidden]="!reverse">▲</span>
+			</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr *ngFor="let product of inventoryList | filter: filterCategory:filterSubCategory:filterDate | search: filterSearchQuery | orderBy: order: type |  paginate: { itemsPerPage: itemsPerPage, currentPage: p }">
+			<td>{{ product.code }}</td>
+			<td>{{ product.name }}</td>
+			<td>{{ product.sku }}</td>
+			<td>{{ product.category_name }}</td>
+			<td>{{ product.sub_category }}</td>
+			<td class="text-right">K {{ product.srp | number: '1.2-2' }}</td>
+			<td>{{ product.uom }}</td>
+			<td class="text-right">{{ product.size }}</td>
+			<td class="text-right">{{ product.timestamp | date:"MM/dd/yyyy"}}</td>
+		</tr>
+	</tbody>
+</table>
+
+<div class="row">
+	<div class="col-md-6 form-inline">
+		<label>Show :</label>&nbsp;&nbsp;
+		<select (change)="onShowCountChange($event)" class="form-control sel-show full-width">
+						<option selected value="5">5</option>
+						<option value="10">10</option>
+			<option value="25">25</option>
+			<option value="50">50</option>
+				</select>
+		</div>
+	<div class="col-md-6">
+		<div class="form-group pg-form-group text-right">
+			<pagination-controls class="pagination" (pageChange)="p = $event"></pagination-controls>
+		</div>
+	</div>
+</div>

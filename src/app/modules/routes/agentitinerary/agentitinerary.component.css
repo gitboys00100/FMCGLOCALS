@@ -1,0 +1,27 @@
+    .row-body {
+           display: none;
+	   padding: 0 10px;
+        }
+    .row-body.open {
+            display: block;
+       }
+
+       .btn-gray {
+       		background-color: #6c757d;
+		color: white;
+       }
+
+    .list-group-item {
+    	padding: .10rem 1.25rem;
+    }
+
+    .list-caret {
+    	margin-top: 10px;
+
+    }
+
+    .scrollable_container {
+      max-height:160px;
+      overflow-y:auto;
+      overflow-x:hidden;
+    }

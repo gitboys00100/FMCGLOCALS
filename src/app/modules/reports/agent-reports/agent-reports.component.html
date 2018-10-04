@@ -1,0 +1,296 @@
+<!--<div [ngClass]="{scrollable_container: itemsPerPage > 5}">-->
+<div>
+  <div style="margin-bottom:10px;">
+      <div class="row row-filter">
+        <div class="col-md-1 col-form form-inline">
+            <label>Filters :</label>
+        </div>
+        <div class="col-md-3 col-form form-inline" >
+          <input class="form-control full-width" type="date" id="date" value="{{ today | date: 'yyyy-MM-dd' }}" (change)="onChangeDate($event.target.value)">
+        </div>
+        <div class="col-md-3 col-form form-inline">
+            <select class="form-control full-width">
+                <option selected (click)="setAgent('All')">All Agents</option>
+                <option *ngFor="let r of reports | daySorter : selectedDate: pipeStatus: 'reports'" (click)="setAgent(r.agent)">{{ r.agent }}</option>
+            </select>
+        </div>
+        <div class="col-md-5 col-form form-inline">
+            <div class="input-group full-width less-mt" id="manageitsearch">
+                <input (input)="onFilterSearchChange($event)" (keydown)="onKeyDown($event)" [value]="searchQuery" class="form-control" placeholder="Search" type="text">
+                <div class="input-group-append">
+                    <button class="btn btn-secondary" type="button" (click)="onSearch()"><i class="fa fa-search"></i></button>
+                </div>
+            </div>
+        </div>
+      </div>
+  </div>
+  <div class="table-responsive">
+    <table class="table table-bordered inventory-table" id="pdfContent">
+     <thead>
+       <tr class="tbl-header">
+         <th [class.active]="order === 'agent'"
+           (click)="setReportsOrder('agent', 'agent')">Agent
+           <span [hidden]="agent">
+             <span [hidden]="reverseAgent">▼</span>
+             <span [hidden]="!reverseAgent">▲</span>
+           </span>
+         </th>
+         <th [class.active]="order === 'transferordernumber'"
+           (click)="setReportsOrder('transferordernumber', 'transferordernumber')">Order Number
+           <span [hidden]="transferordernumber">
+             <span [hidden]="reverseTransferOrderNumber">▼</span>
+             <span [hidden]="!reverseTransferOrderNumber">▲</span>
+           </span>
+         </th>
+         <th [class.active]="order === 'date'"
+           (click)="setReportsOrder('date', 'date')">Date
+           <span [hidden]="date">
+             <span [hidden]="reverseDate">▼</span>
+             <span [hidden]="!reverseDate">▲</span>
+           </span>
+         </th>
+         <th [class.active]="order === 'productname'" class="products_col"
+           (click)="setReportsOrder('productname', 'productname')">Product
+           <span [hidden]="productname">
+             <span [hidden]="reverseProductName">▼</span>
+             <span [hidden]="!reverseProductName">▲</span>
+           </span>
+         </th>
+         <th [class.active]="order === 'uom'"
+           (click)="setReportsOrder('uom', 'uom')">UOM
+           <span [hidden]="uom">
+             <span [hidden]="reverseUOM">▼</span>
+             <span [hidden]="!reverseUOM">▲</span>
+           </span>
+         </th>
+         <th [class.active]="order === 'requestedquantity'"
+           (click)="setReportsOrder('requestedquantity', 'requestedquantity')">Requested Quantity
+           <span [hidden]="requestedquantity">
+             <span [hidden]="reverseRequestedQuantity">▼</span>
+             <span [hidden]="!reverseRequestedQuantity">▲</span>
+           </span>
+         </th>
+         <th [class.active]="order === 'loadinquantity'"
+           (click)="setReportsOrder('loadinquantity', 'loadinquantity')">Load In Quantity
+           <span [hidden]="loadinquantity">
+             <span [hidden]="reverseLoadinQuantity">▼</span>
+             <span [hidden]="!reverseLoadinQuantity">▲</span>
+           </span>
+         </th>
+         <th [class.active]="order === 'loadoutquantity'"
+           (click)="setReportsOrder('loadoutquantity', 'loadoutquantity')">Load Out Quantity
+           <span [hidden]="loadoutquantity">
+             <span [hidden]="reverseLoadoutQuantity">▼</span>
+             <span [hidden]="!reverseLoadoutQuantity">▲</span>
+           </span>
+         </th>
+         <th [class.active]="order === 'estimatedsales'"
+           (click)="setReportsOrder('estimatedsales', 'estimatedsales')">Estimated Sales
+           <span [hidden]="estimatedsales">
+             <span [hidden]="reverseEstimatedSales">▼</span>
+             <span [hidden]="!reverseEstimatedSales">▲</span>
+           </span>
+         </th>
+       </tr>
+     </thead>
+     <tbody>
+       <tr *ngFor="let r of reports | daySorter : selectedDate: pipeStatus: 'reports' | search: filterSearchQuery | orderBy: order: reverse | selectSpecific : agents |  paginate: { itemsPerPage: itemsPerPage, currentPage: p }; let i=index;">
+         <td>{{ r.agent }}</td>
+         <td (click)="viewDetails(r.id)" class="link-text">{{ r.transferordernumber }}</td>
+         <td>{{ r.date | date: 'MMM d, y' }}</td>
+         <td class="products_col">
+           <div *ngFor="let p of r.products;let i=index;">
+             <span *ngIf="i <= 1;else other">
+               <span *ngIf="i == 0">
+                 {{ p.productname }}
+               </span>
+               <span *ngIf="r.products.length > 2; else nomore">
+                 <span *ngIf="i == 1">
+                   {{ p.productname+'...' }}
+                   <a class="link-text" (click)="showMore(r.id)" id="{{ 'more_'+r.id }}">more</a>
+                 </span>
+               </span>
+               <ng-template #nomore>
+                 <span *ngIf="i == 1">
+                   {{ p.productname }}
+                 </span>
+               </ng-template>
+             </span>
+             <ng-template #other>
+               <span style="display:none" id="{{ 'collapse_productname_'+r.id }}">
+                 {{ p.productname }}
+               </span>
+             </ng-template>
+           </div>
+         </td>
+         <td>
+           <div *ngFor="let p of r.products;let i=index;">
+             <span *ngIf="i <= 1;else other">
+               {{ p.uom }}
+             </span>
+             <ng-template #other>
+               <span style="display:none" id="{{ 'collapse_uom_'+r.id }}">
+                 {{ p.uom }}
+               </span>
+             </ng-template>
+           </div>
+         </td>
+         <td>
+           <div *ngFor="let p of r.products;let i=index;">
+             <span *ngIf="i <= 1;else other">
+               {{ p.requestedquantity }}
+             </span>
+             <ng-template #other>
+               <span style="display:none" id="{{ 'collapse_requestedquantity_'+r.id }}">
+                 {{ p.requestedquantity }}
+               </span>
+             </ng-template>
+           </div>
+         </td>
+         <td>
+           <div *ngFor="let p of r.products;let i=index;">
+             <span *ngIf="i <= 1;else other">
+               {{ p.loadinquantity }}
+             </span>
+             <ng-template #other>
+               <span style="display:none" id="{{ 'collapse_loadinquantity_'+r.id }}">
+                 {{ p.loadinquantity }}
+               </span>
+             </ng-template>
+           </div>
+         </td>
+         <td>
+           <div *ngFor="let p of r.products;let i=index;">
+             <span *ngIf="i <= 1;else other">
+               {{ p.loadoutquantity }}
+             </span>
+             <ng-template #other>
+               <span style="display:none" id="{{ 'collapse_loadoutquantity_'+r.id }}">
+                 {{ p.loadoutquantity }}
+               </span>
+             </ng-template>
+           </div>
+         </td>
+         <td>
+           <div *ngFor="let p of r.products;let i=index;">
+             <span *ngIf="i <= 1;else other">
+               {{ p.estimatedsales }}
+             </span>
+             <ng-template #other>
+               <span style="display:none" id="{{ 'collapse_estimatedsales_'+r.id }}">
+                 {{ p.estimatedsales }}
+               </span>
+             </ng-template>
+           </div>
+         </td>
+       </tr>
+       <tr>
+         <td *ngIf="datacount <= 0" colspan="9" style="text-align:center;">No reports found.</td>
+       </tr>
+     </tbody>
+    </table>
+  </div>
+
+</div>
+
+<app-modal #viewReportsDetail>
+	<ng-template #modalHeader>Product Details</ng-template>
+	<ng-template #modalBody>
+		<div class="container-fluid" style="margin-bottom:20px;" *ngFor="let r of reports">
+      <div class="table-responsive" *ngIf="r.id == selectedIndex">
+        <table class="table table-bordered" id="modalPdfContent">
+          <thead class="tbl-header">
+            <tr>
+              <th>Product</th>
+              <th>UOM</th>
+              <th>Requested Quantity</th>
+              <th>Load In Quantity</th>
+              <th>Load Out Quantity</th>
+              <th>Estimted Sales</th>
+            </tr>
+          </thead>
+          <tbody>
+              <tr *ngFor="let p of r.products">
+                <td>{{ p.productname }}</td>
+                <td>{{ p.uom }}</td>
+                <td>{{ p.requestedquantity }}</td>
+                <td>{{ p.loadinquantity }}</td>
+                <td>{{ p.loadoutquantity }}</td>
+                <td>{{ p.estimatedsales }}</td>
+              </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="dropdown" *ngIf="r.id == selectedIndex">
+        <button class="btn btn-success btn-report dropdown-toggle pull-right" type="button"
+        data-toggle="dropdown" style="text-align:center;">Export</button>
+        <div class="dropdown-menu">
+          <a class="dropdown-item" (click)="exportToFile('excel', 'modalPdfContent')">Excel</a>
+          <a class="dropdown-item" (click)="exportToFile('csv', 'modalPdfContent')">CSV</a>
+          <a class="dropdown-item" (click)="exportToFile('pdf', 'modalPdfContent')">PDF</a>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+  <ng-template #modalFooter>
+    <div class="container-fluid" id="signaturebox" *ngIf="datacount > 0">
+     <div class="row" *ngFor="let s of signatures">
+       <div class="col-md-6 col-sm-12 col-xs-12">
+         <h4 class="signature_label">LOAD IN</h4>
+         <div class="row">
+           <div class="col-md-6 col-sm-6 col-xs-6" *ngFor="let loadin of s.loadin">
+             <p class="signature_name">
+               <span *ngIf="loadin.id == 1">Issued By: </span>
+               <span *ngIf="loadin.id == 2">Received By: </span>
+                {{ loadin.label }}</p>
+                <div class="container-fluid" style="text-align:center;">
+                 <img src="{{ loadin.blob }}" class="signature_img">
+               </div>
+           </div>
+         </div>
+       </div>
+       <div class="col-md-6 col-sm-12 col-xs-12">
+         <h4 class="signature_label">LOAD OUT</h4>
+         <div class="row">
+           <div class="col-md-6 col-sm-6 col-xs-6" *ngFor="let loadout of s.loadout">
+             <p class="signature_name">
+               <span *ngIf="loadout.id == 3">Issued By: </span>
+               <span *ngIf="loadout.id == 4">Received By: </span>
+                {{ loadout.label }}</p>
+             <div class="container-fluid" style="text-align:center;">
+               <img src="{{ loadout.blob }}" class="img-responsive signature_img">
+             </div>
+           </div>
+         </div>
+       </div>
+     </div>
+    </div>
+  </ng-template>
+</app-modal>
+<div class="row" *ngIf="datacount > 0">
+  <div class="col-md-12 col-sm-12 col-xs-12 col-12 col-lg-12" style="padding-bottom:10px;">
+    <div class="dropdown" style="margin-bottom:10px;">
+      <button class="btn btn-success btn-report dropdown-toggle pull-right" type="button"
+      data-toggle="dropdown" style="text-align:center;">Export</button>
+      <div class="dropdown-menu">
+        <a class="dropdown-item" (click)="exportToFile('excel', 'pdfContent')">Excel</a>
+        <a class="dropdown-item" (click)="exportToFile('csv', 'pdfContent')">CSV</a>
+        <a class="dropdown-item" (click)="exportToFile('pdf','pdfContent')">PDF</a>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6 col-sm-6 col-xs-6 col-lg-6 form-inline">
+    <label>Show :</label>&nbsp;&nbsp;
+    <select (change)="onShowCountChange($event)" class="form-control sel-show">
+            <option selected value="5">5</option>
+            <option value="10">10</option>
+      <option value="25">25</option>
+      <option value="50">50</option>
+        </select>
+  </div>
+  <div class="col-md-6 col-sm-6 col-xs-6 col-lg-6">
+    <div class="form-group pg-form-group text-right">
+      <pagination-controls class="pagination" (pageChange)="p = $event"></pagination-controls>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,81 @@
+<div  style="height:400px;max-height:400px;overflow-y:auto; overflow-x:hidden;" *ngFor="let r of arrRetailers">
+  <div style="margin-bottom:10px;">
+
+		<div style="width:100%;">
+	      <div style="min-width:10%; display:inline-block;">
+	          <label>Filters :</label>
+	      </div>
+
+	      <div style="min-width:15%; display:inline-block;">
+	          <input type="date" (input)="onFilterDateChange($event)" [value]="filterDate" class="form-control full-width">
+	      </div>
+
+	      <div style="min-width:20%; display:flex; float:right;">
+	          <div class="input-group full-width less-mt" id="manageitsearch">
+	              <input (input)="onFilterSearchChange($event)" (keydown)="onKeyDown($event)" [value]="searchQuery" class="form-control" placeholder="Search" type="text">
+	              <div class="input-group-append">
+	                  <button class="btn btn-secondary" type="button" (click)="onSearch()"><i class="fa fa-search"></i></button>
+	              </div>
+	          </div>
+	      </div>
+	  </div>
+
+
+
+<table class="table table-bordered inventory-table">
+	<thead>
+		<tr class="tbl-header">
+			<th scope="col">Retailer</th>
+			<th scope="col">Date</th>
+			<th scope="col">Number of Items</th>
+			<th scope="col">Status</th>
+			<th scope="col">Agent</th>
+		</tr>
+	</thead>
+
+
+	<tbody>
+		<tr *ngFor="let item of r.data | filter: filterDate | search: filterSearchQuery | paginate: { itemsPerPage: itemsPerPage, currentPage: p }; let i = index">
+			<td><a href=""><!--{{i + 1}}--> {{ item.retailer_name }}</a></td>
+			<td>{{ item.timestamp.substring(0,10) }}</td>
+			<td>
+        <ng-container *ngIf="item.items != null; else elseTemplatei">
+          {{ getTotalPtoRequests(item.items) }}
+        </ng-container>
+        <ng-template #elseTemplatei>
+          -
+        </ng-template>
+        <!--{{ item.qty }}--></td>
+			<td>
+        <ng-container *ngIf="item.statuses != null; else elseTemplate">
+          {{item.statuses[0].status}}
+        </ng-container>
+        <ng-template #elseTemplate>
+          -
+        </ng-template>
+        <!--{{ item.statuses[0].status }}--></td>
+			<td>{{ item.agent_name }}</td>
+		</tr>
+	</tbody>
+</table>
+
+<div class="row">
+	<div class="col-md-6 form-inline">
+		<label>Show :</label>&nbsp;&nbsp;
+		<select (change)="onShowCountChange($event)" class="form-control sel-show full-width">
+      <option selected value="5">5</option>
+      <option value="10">10</option>
+			<option value="25">25</option>
+			<option value="50">50</option>
+        </select>
+    </div>
+	<div class="col-md-6">
+		<div class="form-group pg-form-group text-right">
+			<pagination-controls class="pagination" (pageChange)="p = $event"></pagination-controls>
+		</div>
+	</div>
+</div>
+
+
+</div>
+</div>

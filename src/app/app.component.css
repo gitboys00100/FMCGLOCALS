@@ -1,0 +1,28 @@
+header {
+	background: #6a6d72;
+	width: 100%;
+}
+
+.link-active {
+	border-bottom: 3px solid white;
+}
+
+.nav-link{
+	padding: 20px 24px !important;
+}
+
+.fixed-top{
+	z-index: 3;
+}
+
+.navbar-brand, #demo-menu-lower-left{
+	color: #fff !important;
+	font-size: 20px;
+  line-height: 1;
+  letter-spacing: .02em;
+  font-weight: 400;
+}
+.bg-dark{
+	background: #6a6d72 !important;
+	padding: 0px 40px 0px 80px;
+}
