@@ -1,0 +1,112 @@
+:host ::ng-deep .fmcg-modal .fmcg-modal-content {
+    width: 50%;
+		margin-top:100px;
+}
+
+.content {
+    padding: 0 40px;
+}
+:host ::ng-deep .fmcg-modal {
+  overflow: auto !important;
+  max-height: 200%;
+}
+
+:host ::ng-deep .fmcg-modal .fmcg-modal-background {
+  height: 740px;
+}
+
+.row-form {
+    margin-top: 1vh;
+}
+
+.rpad-left {
+    padding-left: 0;
+}
+
+.rpad-right {
+    padding-right: 0;
+}
+
+.no-margin {
+    margin: 0;
+}
+
+
+.tbl-header {
+    background: #6c757d;
+}
+.tbl-header th {
+    color: white;
+}
+thead th {
+  cursor: pointer;
+  margin-right: 15px;
+  margin-left: 15px;
+  white-space: nowrap;
+
+  span {
+    visibility: hidden;
+  }
+
+  &.active {
+    color: #000;
+
+    span {
+      visibility: visible;
+    }
+  }
+}
+
+
+pagination-controls {
+    display: block;
+}
+
+.no-margin {
+    margin: 0 !important;
+}
+
+.btn-gray {
+    background-color: #6c757d;
+    border: 1px solid #6c757d;
+    color: #FFFFFF;
+}
+
+.tab-title {
+    width: 100%;
+}
+
+.row-filter {
+    margin-top: 2vh;
+}
+
+.full-width {
+    width: 100%;
+}
+.scrollable_container {
+  height:400px;
+  max-height:400px;
+  overflow-y:auto;
+  overflow-x:hidden !important;
+}
+
+.btn-item-create {
+    padding: 0.375rem 50px;
+}
+.btn {
+  /*
+	background-color: #6c757d;
+	border: 1px solid #6c757d;
+	text-align: left;
+	color: white;*/
+}
+.description {
+  display: block;
+  white-space: nowrap;
+  width: 340px !important;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.confirmationBtn {
+  margin-bottom: 10px !important;
+}

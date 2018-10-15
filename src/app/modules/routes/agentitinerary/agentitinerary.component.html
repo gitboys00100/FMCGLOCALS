@@ -1,0 +1,183 @@
+<li class="list-group-item">
+	<div class="row row-header" (click)="toggleBody()">
+		<div class="col-md-4">
+			<label>Agent : </label>{{ '' }}
+		</div>
+		<div class="col-md-4">
+			<label>Itinerary : </label>{{ itinerary.name }}
+		</div>
+		<div class="col-md-4">
+			<i class="pull-right list-caret fa" [ngClass]="isOpen ? 'fa-angle-up' : 'fa-angle-down'"></i>
+		</div>
+	</div>
+	<div class="row row-body">
+		<div class="">
+			<table class="table table-bordered">
+				<thead>
+					<tr>
+						<th>ORDER</th>
+						<th>RETAILER</th>
+						<th>NO. OF ITEMS</th>
+						<th>BALANCE</th>
+						<th>DATE</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr *ngFor="let item of itinerary.retailers;let i=index;">
+						<td>{{ i+1 }}</td>
+						<td>{{ item.name }}</td>
+						<td>{{ item.accounts_receivable.length }}</td>
+						<td>{{ '' }}</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td colspan="3">Total</td>
+						<td>{{ '' }}</td>
+						<td>{{ itinerary.timestamp | date: 'MMMM d, y' }}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+		<div class="row" style="padding: 8px 0">
+			<div class="col-md-6">
+				<button class="pull-right btn btn-primary" (click)="openEditModal(itinerary.id)" style="width:100px;">Edit</button>
+			</div>
+			<div class="col-md-6">
+				<button class="pull-left btn btn-danger" (click)="openDeleteConfirmationModal(itinerary.id)" style="width:100px;">Delete</button>
+			</div>
+		</div>
+	</div>
+</li>
+<app-modal #deleteConfirmation>
+  <ng-template #modalHeader>Delete Routes</ng-template>
+  <ng-template #modalBody>
+    <div class="content">
+			<div class="row alert alert-info">
+				<div class="col-md-12" style="text-align:center;">
+          <h5>Are you sure you want to delete this route?</h5>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+  <ng-template #modalFooter>
+		<div class="row">
+      <div class="col-md-2 col-sm-0 col-0">
+      </div>
+			<div class="col-md-4 col-sm-12 col-12">
+				<button class="btn btn-item-create btn-danger btn-block text-center" (click)="deleteItinerary()" style="margin:3px;">Delete</button>
+			</div>
+			<div class="col-md-4 col-sm-12 col-12">
+				<button class="btn btn-item-create btn-default-color btn-block text-center" (click)="closeDeleteConfirmationModal()" style="margin:3px;">Cancel</button>
+			</div>
+      <div class="col-md-2 col-sm-0 col-0">
+      </div>
+		</div>
+  </ng-template>
+</app-modal>
+
+
+<app-modal #editModal>
+  <ng-template #modalHeader>Edit Routes</ng-template>
+  <ng-template #modalBody>
+    <div style="max-height:250px;overflow:auto;">
+			<form>
+					<h4 style="margin-bottom:10px;">Set Order</h4>
+					<table class="table table-bordered">
+						<thead>
+							<tr>
+								<th>ORDER</th>
+								<th>RETAILER</th>
+								<th>NO. OF ITEMS</th>
+								<th>BALANCE</th>
+								<th></th>
+							</tr>
+						</thead>
+						<tbody [sortablejs]="itinerary.retailers" [sortablejsOptions]="{ animation: 150 }">
+							<tr *ngFor="let item of itinerary.retailers;let i=index;" style="cursor:grab;">
+								<td>{{ i+1 }}
+								</td>
+								<td>{{ item.name }}</td>
+								<td>{{ item.accounts_receivable.length }}</td>
+								<td>{{ '' }}</td>
+								<td>
+									<button class="btn btn-sm btn-primary" type="button" (click)="openEditDetailsModal(item.id)" style="font-weight:bold;">
+										<i class="fa fa-pencil-square-o fa-lg" aria-hidden="true"></i>
+									</button>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+			</form>
+    </div>
+  </ng-template>
+  <ng-template #modalFooter>
+		<div class="row">
+      <div class="col-md-2 col-sm-0 col-0">
+      </div>
+			<div class="col-md-4 col-sm-12 col-12">
+				<button class="btn btn-item-create btn-success btn-block text-center" (click)="updateItineraryOrder()" style="margin:3px;">Save</button>
+			</div>
+			<div class="col-md-4 col-sm-12 col-12">
+				<button class="btn btn-item-create btn-default-color btn-block text-center" (click)="closeEditModal()" style="margin:3px;">Cancel</button>
+			</div>
+      <div class="col-md-2 col-sm-0 col-0">
+      </div>
+		</div>
+  </ng-template>
+</app-modal>
+
+<app-modal #editDetailsModal>
+  <ng-template #modalHeader>Edit Details</ng-template>
+  <ng-template #modalBody>
+    <div>
+			<form [formGroup]="editRetailerDetails" id="editRetailerDetails">
+				<div class="container-fluid">
+					<h4 style="margin-bottom:10px;">Itinerary Details</h4>
+					<div class="row">
+						<div class="col-md-12">
+							<div class="form-group">
+								<label for="retailer">Retailer</label>
+								<select class="form-control" *ngFor="let r of unassignRetailers" formControlName="retailer">>
+									<option selected disabled>Choose Retailer</option>
+									<option *ngFor="let ret of r.data " [value]="ret.id">{{ ret.name }}</option>
+								</select>
+							</div>
+						</div>
+
+						<div class="col-md-6">
+							<div class="form-group">
+								<label for="number_of_items">No. Of Items</label>
+								<input type="number" class="form-control" id="number_of_items"
+								[ngClass]="{ 'is-invalid': submitted && f.number_of_items.errors }" formControlName="number_of_items">
+							</div>
+						</div>
+
+						<div class="col-md-6">
+							<div class="form-group">
+								<label for="balance">Balance</label>
+								<input type="number" class="form-control" id="balance"
+								[ngClass]="{ 'is-invalid': submitted && f.balance.errors }" formControlName="balance">
+							</div>
+						</div>
+					</div>
+				</div>
+			</form>
+    </div>
+  </ng-template>
+  <ng-template #modalFooter>
+		<div class="row">
+      <div class="col-md-2 col-sm-0 col-0">
+      </div>
+			<div class="col-md-4 col-sm-12 col-12">
+				<button class="btn btn-item-create btn-success btn-block text-center" style="margin:3px;">Save</button>
+			</div>
+			<div class="col-md-4 col-sm-12 col-12">
+				<button class="btn btn-item-create btn-default-color btn-block text-center" (click)="closeEditDetailsModal()" style="margin:3px;">Cancel</button>
+			</div>
+      <div class="col-md-2 col-sm-0 col-0">
+      </div>
+		</div>
+  </ng-template>
+</app-modal>

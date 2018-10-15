@@ -1,0 +1,98 @@
+.routestab{
+	width: 100%;
+	//background-color: #cccccc;
+}
+
+.dropdown-menu{
+	width: 150px;
+}
+
+.dropdown.show .btn-schedule {
+	background-color: #d7dde5;
+	border: 1px solid #6c757d;
+	box-shadow: 0 0 0 0.2rem rgba(149, 151, 152, 0.5);
+	color: #566573;
+}
+
+.dropdown li{
+	width: 100%;
+	padding: .375rem .75rem;
+}
+
+
+.btn-schedule {
+	background-color: #6c757d;
+	border: 1px solid #6c757d;
+	width: 150px;
+	text-align: left;
+	color: white;
+}
+
+.fake-anchor {
+	cursor: pointer;
+	display: block;
+}
+
+.dropdown-toggle::after {
+	float: right;
+	margin-top: 8px;
+}
+
+.btn-new-itinerary {
+	width: 155px;
+	background-color: #6c757d;
+	color: white;
+}
+:host ::ng-deep .fmcg-modal {
+	padding-top: 100px !important;
+}
+
+
+
+
+
+@media (min-width: 200px) {
+    .container {
+        max-width: none;
+    }
+}
+
+@media (min-width: 576px) {
+    .container {
+        max-width: none;
+    }
+}
+
+
+@media (min-width: 768px) {
+    .container {
+        max-width: none;
+    }
+}
+
+
+@media (min-width: 992px) {
+    .container {
+        max-width: none;
+    }
+}
+
+@media (min-width: 1200px) {
+    .container {
+        max-width: none;
+        width: 95%;
+        margin: 0 auto;
+    }
+}
+
+.page-title {
+    margin-bottom: 1.2rem;
+}
+
+.tab-content {
+    border-left: 1px solid transparent;
+    border-right: 1px solid transparent;
+    border-bottom: 1px solid transparent;
+    border-color: #dee2e6 #dee2e6 #dee2e6;
+    padding: 20px;
+}
