@@ -1,0 +1,31 @@
+
+<h3>Monthly</h3>
+<div class="container" id="dateHeader">
+  <h4>{{ datepicked  | date: 'MMMM yyyy'}}</h4>
+</div>
+<div class="container-fluid" style="margin-bottom:10px;max-height:300px; overflow: auto;">
+  <div *ngFor="let a of agents2">
+    <ul class="list-group" *ngFor="let d of a.data" >
+      <li class="list-group-item" [hidden]="checkedMonth(d.date, datepicked)">
+        <b (click)="checkedMonth(d.date, datepicked)">Dates:</b> {{ datepicked  | date: 'MMMM'}}
+        <span *ngFor="let date of d.date">
+          {{ date | date: 'd'}},
+        </span>
+        {{ datepicked  | date: 'yyyy'}} <br>
+        <b>RouteName:</b> {{ d.name }} <br>
+        <b>Agent:</b> {{ d.agent }} <br>
+        <b>Retailers: </b>
+        <div class="container-fluid" style="max-height:180px; overflow: auto;">
+          <table class="table table-bordered">
+            <tbody>
+              <tr *ngFor="let r of d.retailers; let number=index">
+                <td width="10px">{{ number+1 }}</td>
+                <td>{{ r.retailer_name }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>
