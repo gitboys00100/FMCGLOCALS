@@ -1,0 +1,65 @@
+<app-modal #itemDeleteModal>
+	<ng-template #modalHeader>Delete User</ng-template>
+
+	<ng-template #modalBody>
+		<div class="content">
+			<div class="row alert alert-info">
+				<div class="col-md-10 form-inline">
+					<h5>Are you sure?</h5>
+				</div>
+			</div>
+
+			<form class="row-form">
+
+			</form>
+		</div>
+	</ng-template>
+
+	<ng-template #modalFooter>
+
+		<!--
+		<div class="row">
+			<div class="col-md-6 text-right">
+				<button class="btn btn-item-create btn-success">Delete</button>
+			</div>
+			<div class="col-md-6 text-left">
+				<button class="btn btn-item-create btn-default" (click)="closeModal()">Cancel</button>
+			</div>
+		</div>
+	-->
+
+
+<!--
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-lg-2 col-md-0 col-sm-0 col-0" style="background-color:green;"></div>
+			<div class="col-lg-4 col-md-6 col-sm-12 col-12 text-center" style="background-color:red;">
+				<button class="btn btn-item-create btn-success btn-secondary">Delete</button>
+			</div>
+			<div class="col-lg-4 col-md-6 col-sm-12 col-12 text-center" style="background-color:yellow;">
+				<button class="btn btn-item-create btn-default btn-secondary" (click)="closeModal()">Cancel</button>
+			</div>
+			<div class="col-lg-2 col-md-0 col-sm-0 col-0" style="background-color:blue;"></div>
+		</div>
+	</div>
+-->
+
+<div class="container-fluid">
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-md-2 col-sm-0 col-0">
+			</div>
+			<div class="col-md-4 col-sm-12 col-12">
+				<button class="btn btn-item-create btn-success btn-block text-center" style="margin:3px;">Delete</button>
+			</div>
+			<div class="col-md-4 col-sm-12 col-12">
+				<button class="btn btn-item-create btn-default btn-block text-center" (click)="closeModal()" style="margin:3px;">Cancel</button>
+			</div>
+			<div class="col-md-2 col-sm-0 col-0">
+			</div>
+		</div>
+	</div>
+</div>
+
+	</ng-template>
+</app-modal>

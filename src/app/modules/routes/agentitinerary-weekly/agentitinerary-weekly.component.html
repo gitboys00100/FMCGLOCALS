@@ -1,0 +1,36 @@
+<div class="container-fluid">
+  <h4 style="text-align:center;">October 7-13 2018</h4>
+  <div class="table-responsive">
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>Sunday</th>
+          <th>Monday</th>
+          <th>Tuesday</th>
+          <th>Wednesday</th>
+          <th>Thursday</th>
+          <th>Friday</th>
+          <th>Saturday</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td *ngFor="let i of itineraryList; let in=index;">
+            <span *ngIf="in < 7">
+              <p style="text-align:right;font-weight:bold;">{{ in+1 }}</p>
+              <h5><b>{{ i.itinerary }}</b></h5>
+              <p style="margin-bottom:0px;"><b>Agent:</b> {{ i.agent }}<br>
+              <b>Retailers:</b></p>
+              <div style="overflow:auto;max-height:100px;">
+                <span *ngFor="let r of i.itinerary_list">
+                  <p style="margin:0px;">-{{ r.retailer }}</p>
+                </span>
+              </div>
+            </span>
+            <hr>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

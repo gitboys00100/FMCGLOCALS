@@ -1,0 +1,106 @@
+<div id='calendar'></div>
+
+<!-- The Modal -->
+<app-modal #onSchedulerDetails>
+	<ng-template #modalHeader>{{calheader}}</ng-template>
+
+	<ng-template #modalBody>
+		<div class="content">
+			<form class="row-form">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="form-group">
+                <div *ngFor="let item of caldata">
+                      <div class="col-12">
+                          <div class="card">
+                              <div class="card-body">
+                                  <div class="row">
+                                      <div class="col-12">
+                                          <div class="tab-content ml-1" id="myTabContent">
+                                              <div class="tab-pane fade show active" id="basicInfo" role="tabpanel" aria-labelledby="basicInfo-tab">
+
+
+                                                  <div class="row">
+                                                      <div class="col-sm-4 col-md-4 col-6">
+                                                          <label style="font-weight:bold;">RETAILER:</label>
+                                                      </div>
+                                                      <div class="col-md-8 col-6">
+                                                          {{item.name}}
+                                                      </div>
+                                                  </div>
+                                                  <hr />
+
+                                                  <div class="row">
+                                                      <div class="col-sm-4 col-md-4 col-6">
+                                                          <label style="font-weight:bold;">NO. OF ITEMS:</label>
+                                                      </div>
+                                                      <div class="col-md-8 col-6">
+                                                          {{item.accounts_receivable.length}}
+                                                      </div>
+                                                  </div>
+                                                  <hr />
+
+
+                                                  <div class="row">
+                                                      <div class="col-sm-4 col-md-4 col-6">
+                                                          <label style="font-weight:bold;">BALANCE:</label>
+                                                      </div>
+                                                      <div class="col-md-8 col-6">
+                                                          {{000992092 | number:'3.1-5'}}
+                                                      </div>
+                                                  </div>
+                                                  <hr />
+                                                  <div class="row">
+                                                      <div class="col-sm-4 col-md-4 col-6">
+                                                          <label style="font-weight:bold;">TOTAL:</label>
+                                                      </div>
+                                                      <div class="col-md-8 col-6">
+                                                            {{1233.99 | number:'3.1-5'}}
+                                                      </div>
+                                                  </div>
+                                                  <hr />
+                                                  <div class="row">
+                                                      <div class="col-sm-4 col-md-4 col-6">
+                                                          <label style="font-weight:bold;">DATE:</label>
+                                                      </div>
+                                                      <div class="col-md-8 col-6">
+                                                          {{timestamp | date: 'MMMM d, y'}}
+                                                      </div>
+                                                  </div>
+                                                  <hr />
+                                                  <div class="row">
+                                                      <div class="col-md-6 text-right pd-bt">
+                                                        <button class="btn btn-item-create btn-primary" (click)="deleteItinerary()">Edit</button>
+                                                      </div>
+                                                      <div class="col-md-6 text-left">
+                                                        <button class="btn btn-item-create btn-danger" (click)="deleteItinerary()">Delete</button>
+                                                      </div>
+                                                  </div>
+
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </div>
+
+
+                              </div>
+
+                          </div>
+                      </div><!-- col-md-12 -->
+                      <br />
+                </div>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</ng-template>
+
+	<ng-template #modalFooter>
+		<div class="row">
+			<div class="col-md-12 text-left">
+				<button class="btn btn-item-create btn-default" (click)="onDeleteItineraryClose()">Cancel</button>
+			</div>
+		</div>
+	</ng-template>
+</app-modal>
