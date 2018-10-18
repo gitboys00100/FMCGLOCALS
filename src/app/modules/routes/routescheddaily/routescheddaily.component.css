@@ -1,0 +1,43 @@
+
+
+.full-width {
+    width: 100%;
+}
+.tbl-header {
+    background: #6c757d;
+}
+
+.tbl-header th {
+    color: white;
+}
+
+.sel-show {
+    width: 100px;
+}
+
+.pg-form-group, pagination-controls {
+    width: 100%;
+}
+
+.pg-form-group {
+    padding-top: 1.2vh;
+}
+
+pagination-controls {
+    display: block;
+}
+
+.scrollable_container {
+  max-height:260px;
+  overflow-y:auto;
+  overflow-x:hidden;
+}
+.loader {
+  text-align: center;
+}
+.loader img {
+  padding:10px;
+  width:85px !important;
+  height:85px !important;
+  margin:25px;
+}

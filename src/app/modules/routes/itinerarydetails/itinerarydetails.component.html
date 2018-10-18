@@ -1,0 +1,176 @@
+
+  <div style="min-width:20%; display:flex; float:right;">
+      <div class="input-group full-width less-mt" id="manageitsearch">
+        <input type="text" class="form-control "  id="serchid" (input)="onFilterSearchChange($event)" (keydown)="onKeyDown($event)" [value]="searchQuery" placeholder="Search">
+        <div class="input-group-append">
+            <button class="btn btn-secondary " (click)="onSearch()" type="button">
+              <i class="fa fa-search"></i>
+            </button>
+        </div>
+      </div>
+  </div><br><br /><br />
+
+  <table class="borderedtable">
+          <thead>
+                  <tr class="tbl-header">
+                      <th>#
+                      </th>
+                      <th [class.active]="order === 'it_label'"
+                        (click)="setItineraryOrder('name')">Itinerary Labels
+                        <span [hidden]="reverse">▼</span>
+                        <span [hidden]="!reverse">▲</span>
+                      </th>
+                      <th [class.active]="order === 'no_of_retailers'"
+                        (click)="setItineraryOrder('retailers')">No. of Retailers
+                        <span [hidden]="reverse">▼</span>
+                        <span [hidden]="!reverse">▲</span>
+                      </th>
+                      <th scope="col" class="acts">Actions</th>
+                  </tr>
+          </thead>
+          <tbody>
+
+            <div class="loader" *ngIf="loading">
+              <img src="../../../../assets/img/loader.gif" class="img">
+            </div>
+        		<!--<tr *ngFor="let item of itineraryDetails | orderBy: order: type | filter : filterSearchQuery |  paginate: { itemsPerPage: itemsPerPage, currentPage: p } ; let i = index;">-->
+            <tr  *ngFor="let item of itineraryDetails | orderBy: order: reverse | search : filterSearchQuery | paginate: { itemsPerPage: itemsPerPage, currentPage: p };let i=index;">
+        			<td>{{ i + 1 }}</td>
+        			<td> {{ item.name }} </td>
+        			<td>{{ item.retailers.length }}</td>
+                		<td>
+                        		<button class="btn btn-primary" type="button" (click)="onUpdateItineraryOpen(item.id)">
+                        	       		 Edit
+                        		</button>
+                        		<div class="divider"></div>
+                        		<button class="btn btn-danger" type="button" (click)="onDeleteItineraryOpen(item.id)">
+                                		Delete
+                        		</button>
+                		</td>
+
+        		</tr>
+          </tbody>
+  </table>
+
+  <div class="row">
+    <div class="col-md-6 form-inline" >
+      <label>Show :</label>&nbsp;&nbsp;
+      <select (change)="onShowCountChange($event)" class="form-control sel-show full-width">
+              <option selected value="5">5</option>
+              <option value="10">10</option>
+        <option value="25">25</option>
+        <option value="50">50</option>
+          </select>
+      </div>
+    <div class="col-md-6" >
+      <div class="form-group pg-form-group text-right">
+        <pagination-controls class="pagination" (pageChange)="p = $event"></pagination-controls>
+      </div>
+    </div>
+  </div>
+
+<app-modal #onDeleteComponent>
+	<ng-template #modalHeader>Delete Itinerary</ng-template>
+
+	<ng-template #modalBody>
+		<div class="content">
+			<form class="row-form">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="form-group">
+							<div class="row alert alert-info">
+								<div class="col-md-12 form-inline">
+									<label for="">Are you sure you want to delete this itinerary?</label>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</ng-template>
+
+	<ng-template #modalFooter>
+		<div class="row">
+			<div class="col-md-6 text-right pd-bt">
+				<button class="btn btn-item-create btn-danger" (click)="deleteItinerary()">Delete</button>
+			</div>
+
+			<div class="col-md-6 text-left">
+				<button class="btn btn-item-create btn-default" (click)="onDeleteItineraryClose()">Cancel</button>
+			</div>
+		</div>
+	</ng-template>
+</app-modal>
+
+<app-modal #onUpdateComponent>
+	<ng-template #modalHeader>Update Itinerary</ng-template>
+
+	<ng-template #modalBody>
+		<div class="content">
+
+			<form [formGroup]="editItineraryForm" id="editItineraryForm" class="row-form">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="form-group">
+								<h4>Details</h4>
+						</div>
+						<div class="form-group">
+							<label for="route_name">Itinerary Label</label>
+							<input type="text" class="form-control" id="itinerary_name"
+              [ngClass]="{ 'is-invalid': submitted && f.itinerary_name.errors }" formControlName="itinerary_name">
+              <div *ngIf="submitted && f.itinerary_name.errors" class="invalid-feedback">
+                  <div *ngIf="f.itinerary_name.errors.required">Itinerary name is required</div>
+              </div>
+						</div>
+					</div>
+
+          <div class="col-md-12">
+            <div class="container-fluid" id="retailerBox">
+                <div class="container-fluid">
+                  <p [hidden]="noRetailer" class="noRetailer" *ngIf="selectedRetailers.length <= 0">No retailer Available.</p>
+                </div>
+                <div class="container-fluid" [sortablejs]="selectedRetailers" [sortablejsOptions]="{ animation: 150 }">
+                  <ul class="list-group" *ngFor="let i of selectedRetailers; let count = index;">
+                    <li class="list-group-item" style="cursor:pointer;">
+                        <b>{{ count + 1}}</b>
+                        &nbsp;<i class="fa fa-bars" aria-hidden="true"></i>&nbsp;
+                        {{ i.name }}
+                        <button class="btn btn-sm btn-danger float-right" (click)="onRetaileRemove(i.id)" type="button" id="minusBtn">
+                          <i class="fa fa-minus" aria-hidden="true"></i>
+                        </button>
+                    </li>
+                  </ul>
+                </div>
+            </div>
+
+          </div>
+          <div class="form-group col-md-11">
+            <label for="retailer">Add Retailer</label>
+            <select (change)="onRetailerSelect($event.target.value)" class="form-control" *ngFor="let r of retailers">
+              <option selected disabled>Choose Retailer</option>
+              <option *ngFor="let ret of r.data " [value]="ret.id">{{ ret.name }}</option>
+            </select>
+          </div>
+          <div class="col-md-1">
+            <button class="btn btn-primary btn-md float-right" (click)="addRetailer(selectedRet)" type="button" id="plusBtn">
+              <i class="fa fa-plus" aria-hidden="true"></i>
+            </button>
+          </div>
+
+				</div>
+			</form>
+		</div>
+	</ng-template>
+
+  <ng-template #modalFooter>
+    <div class="row" id="modalButtons">
+      <div class="col-md-6 col-sm-6 col-12 col-lg-6 text-right" style="padding:5px;">
+        <button class="btn btn-item-create btn-success buttonBlock" (click)="submitEditItineraryForm()">Save</button>
+      </div>
+      <div class="col-md-6 col-sm-6 col-12 col-lg-6" style="padding:5px;">
+        <button class="btn btn-item-create btn-default-color btn-default buttonBlock" (click)="onUpdateItineraryClose()">Cancel</button>
+      </div>
+    </div>
+  </ng-template>
+</app-modal>

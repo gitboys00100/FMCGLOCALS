@@ -1,0 +1,55 @@
+<app-modal #receiptDialogModal>
+  <ng-template #modalBody>
+    <div class="container-fluid print-section" id="print-section">
+      <h4 style="text-align:center;">Official Receipt
+			  <button class="fmcg-modal-delete pull-right noprint" (click)="closeModal()" style="margin-right :5px;"></button>
+      </h4>
+      <div class="row">
+        <div class="col-md-8 col-sm-8 col-8">
+        </div>
+        <div class="col-md-4 col-sm-4 col-4">
+          <p><b>Doc No:</b> XXXX <br>
+          <b>Date No:</b> XXXX</p>
+        </div>
+      </div>
+      <div class="container-fluid receipt-input-container">
+        <p class="receipt-label">Received with tanks from</p>
+        <div class="receipt-small-box">
+          <p>XXXX</p>
+        </div>
+        <p class="receipt-label">The amount in Kyats</p>
+        <div class="receipt-small-box">
+          <p>XXXX</p>
+        </div>
+        <p class="receipt-label">In Payment of</p>
+        <div class="receipt-small-box">
+          <p>XXXX</p>
+        </div>
+        <div class="ks-small-box">
+          <span class="ks">KS</span> <span>XXXXXXXX</span>
+        </div>
+
+        <div class="row">
+          <div class="col-md-8 col-sm-8 col-8 text-left">
+            <p><b>Paid By</b><br>XXXX</p>
+          </div>
+          <div class="col-md-4 col-sm-4 col-4 text-left">
+            <p><b>Received By</b><br>XXXXXXX</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </ng-template>
+
+	<ng-template #modalFooter>
+		<div class="row" id="modalButtons">
+			<div class="col-md-6 col-sm-6 col-12 col-lg-6 text-right" style="padding:5px;">
+				<button class="btn btn-item-create btn-success buttonBlock" (click)="print()">Print</button>
+			</div>
+			<div class="col-md-6 col-sm-6 col-12 col-lg-6" style="padding:5px;">
+				<button class="btn btn-item-create btn-default-color btn-default buttonBlock" (click)="closeModal()">Cancel</button>
+			</div>
+		</div>
+	</ng-template>
+</app-modal>
