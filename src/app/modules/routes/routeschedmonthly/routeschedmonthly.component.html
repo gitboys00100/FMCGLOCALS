@@ -1,0 +1,61 @@
+<div class="loader" *ngIf="loading">
+	<img src="../../../../assets/img/loader.gif" class="img">
+</div>
+
+<div id='calendar'></div>
+
+<!-- The Modal -->
+<app-modal #onSchedulerDetails>
+	<ng-template #modalHeader>{{calheader}}</ng-template>
+
+	<ng-template #modalBody>
+		<div class="content">
+        <div *ngFor="let item of caldata">
+						<div class="table-responsive">
+  							<table class="table borderedtable">
+									<thead>
+										<tr>
+											<th class="totalTD">AGENT</th>
+											<th style="color:#000;">NO AGENT YET ON API</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td class="totalTD">RETAILER</td>
+											<td>{{item.name}}</td>
+										</tr>
+
+										<tr>
+											<td class="totalTD">NO. OF ITEMS</td>
+											<td>{{item.accounts_receivable.length}}</td>
+										</tr>
+
+										<tr>
+											<td class="totalTD">BALANCE</td>
+											<td>{{000992092 | number:'3.1-5'}}</td>
+										</tr>
+
+										<tr>
+											<td class="totalTD">TOTAL</td>
+											<td>{{1233.99 | number:'3.1-5'}}</td>
+										</tr>
+
+										<tr>
+											<td class="totalTD">DATE</td>
+											<td>{{timestamp | date: 'MMMM d, y'}}</td>
+										</tr>
+									</tbody>
+							</table>
+						</div>
+        </div> <!-- end ng for -->
+		</div>
+	</ng-template>
+
+	<ng-template #modalFooter>
+		<div class="row">
+			<div class="col-md-12 text-left">
+				<button class="btn btn-item-create btn-default" (click)="onSchedulerDetailsClose()">Cancel</button>
+			</div>
+		</div>
+	</ng-template>
+</app-modal>

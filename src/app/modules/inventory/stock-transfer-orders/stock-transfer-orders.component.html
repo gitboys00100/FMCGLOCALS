@@ -1,0 +1,90 @@
+<div class="row">
+	<div class="col-md-12 col-sm-12 col-xs-12">
+		<!--<h3 class="tab-title">Stock Transfer Orders</h3>-->
+	</div>
+</div>
+
+<div class="row row-filter">
+
+	<div class="col-md-1 col-form form-inline">
+			<label>Filters :</label>
+	</div>
+	<div class="col-md-2 col-form form-inline">
+			<select (change)="onFilterTransferChange($event)" [value]="filterTransfer" class="form-control full-width">
+					<option value="" selected>-- Transfer Order --</option>
+					<option *ngFor="let datas of stocktransferoderlist" value="{{ datas.id}}">{{ datas.id}}</option>
+			</select>
+	</div>
+	<div class="col-md-2 col-form form-inline">
+			<select (change)="onFilterAgentChange($event)" [value]="filterAgent" class="form-control full-width">
+					<option value="" selected>-- Agent Name --</option>
+					<option *ngFor="let datas of stocktransferoderlist" value="{{ datas.username}}">{{ datas.username}}</option>
+			</select>
+	</div>
+
+	<div class="col-md-2 col-form form-inline">
+			<input type="date" (input)="onFilterDateChange($event)" [value]="filterDate" class="form-control full-width">
+	</div>
+
+	<div class="col-md-5 col-form form-inline">
+    <div class="input-group full-width less-mt" id="manageitsearch">
+      <input (input)="onFilterSearchChange($event)" (keydown)="onKeyDown($event)" [value]="searchQuery" class="form-control" placeholder="Search" type="text">
+      <div class="input-group-append">
+        <button class="btn btn-secondary" type="button" (click)="onSearch()"><i class="fa fa-search"></i></button>
+      </div>
+    </div>
+  </div>
+
+</div>
+<br>
+
+<!-- table -->
+	<table class="borderedtable">
+		  <thead>
+		    <tr class="tbl-header">
+		      <th scope="col" [class.active]="order === 'transfer_order'"
+		        (click)="setOrder('transfer_order')">Transfer Order Number
+		        <span [hidden]="reverse">▼</span>
+		        <span [hidden]="!reverse">▲</span>
+					</th>
+		      <th scope="col" [class.active]="order === 'agent_name'"
+		        (click)="setOrder('agent_name')">Agent Name
+		        <span [hidden]="reverse">▼</span>
+		        <span [hidden]="!reverse">▲</span>
+					</th>
+		      <th scope="col" [class.active]="order === 'date'"
+		        (click)="setOrder('date')">Date of Request
+		        <span [hidden]="reverse">▼</span>
+		        <span [hidden]="!reverse">▲</span>
+					</th>
+		    </tr>
+		  </thead>
+		  <tbody>
+		    <tr *ngFor="let datas of stocktransferoderlist  | filter_stock: filterTransfer:filterAgent:filterDate | search_stock: filterSearchQuery |  paginate: { itemsPerPage: itemsPerPage, currentPage: p }">
+		      <td><a class="links" (click)="onStockApproved(datas.items)">{{ datas.id}}</a></td>
+		      <td>{{ datas.username }}</td>
+		      <td class="datetoformat">{{ datas.delivery_date  | date:"MM-dd-yyyy"}}</td>
+		    </tr>
+		  </tbody>
+		</table>
+
+
+			<div class="row">
+				<div class="col-md-6 form-inline text-right">
+					<label>Show :</label>&nbsp;&nbsp;
+					<select (change)="onShowCountChange($event)" class="form-control sel-show small-width">
+									<option selected value="5">5</option>
+									<option value="10">10</option>
+						<option value="25">25</option>
+						<option value="50">50</option>
+							</select>
+					</div>
+				<div class="col-md-6 text-right" >
+					<div class="form-group pg-form-group ">
+						<pagination-controls class="pagination" (pageChange)="p = $event"></pagination-controls>
+					</div>
+				</div>
+			</div>
+
+
+<app-stocktransferapproval #onStockApprovedComponent></app-stocktransferapproval>

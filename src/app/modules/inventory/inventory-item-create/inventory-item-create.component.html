@@ -1,0 +1,139 @@
+<app-modal #itemCreateModal>
+	<ng-template #modalHeader>Add New Item</ng-template>
+
+	<ng-template #modalBody>
+		<div class="content">
+			<div class="row alert alert-info col-md-12">
+				<div class="col-md-2 form-inline">
+					<i class="fa fa-barcode"></i>
+				</div>
+				<div class="col-md-10 form-inline">
+					<h5>SCAN ITEM USING THE BARCODE SCANNER. DETAILS CAN BE VIEWED AND EDITED BELOW...</h5>
+				</div>
+			</div>
+
+			<div class="row">
+					<h4>Item Details</h4>
+			</div>
+
+			<div class="row">
+						<label class="required"> * required fields</label>
+			</div>
+
+			<!--<form class="row-form">-->
+			<form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+
+				<div class="row">
+					<div class="col-md-6">
+						<div class="form-group">
+							<label for="sku">Item Name</label><label class="required">*</label>
+							<input type="text" class="form-control" formControlName="name" id="name">
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="form-group">
+							<label for="category">Category</label><label class="required">*</label>
+							<select class="form-control" formControlName="category" id="category">
+								<option *ngFor="let product of inventoryList | filterUnique" value="{{product.category_name}}">{{product.category_name}}</option>
+								<option>Category 2</option>
+								<option>Category 3</option>
+							</select>
+						</div>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-md-6">
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group">
+									<label for="item_code">Item Code</label><label class="required">*</label>
+									<input type="text" class="form-control" formControlName="item_code" id="item_code">
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label for="barcode_number">Barcode Number</label><label class="required">*</label>
+									<input type="number" class="form-control" formControlName="barcode_number" id="barcode_number">
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="form-group">
+							<label for="sub_category">Sub Category</label><label class="required">*</label>
+							<select class="form-control" formControlName="sub_category" id="sub_category">
+								<option>Sub Category 1</option>
+								<option>Sub Category 2</option>
+								<option>Sub Category 3</option>
+							</select>
+						</div>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-md-6">
+						<div class="form-group">
+							<label for="item_description">Item Description</label><label class="required">*</label>
+							<input type="text" class="form-control" formControlName="item_description" id="item_description">
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="form-group">
+							<label for="weight">Weight</label><label class="required">*</label>
+							<input type="text" class="form-control" formControlName="weight" id="weight">
+						</div>
+					</div>
+				</div>
+
+				<div class="row">
+
+					<div class="col-md-6">
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group">
+									<label for="sku">SKU</label><label class="required">*</label>
+									<input type="text" class="form-control" formControlName="sku" id="sku">
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label for="price">Price</label><label class="required">*</label>
+									<input type="number" class="form-control" min="0" formControlName="price" id="price">
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<!--
+					<div class="col-md-6">
+						<div class="form-group">
+							<label for="price">Price</label><label class="required">*</label>
+							<input type="number" class="form-control" min="0" formControlName="price" id="price">
+						</div>
+					</div>
+				-->
+					<div class="col-md-6">
+						<div class="form-group">
+							<label for="uom">UOM</label><label class="required">*</label>
+							<input type="text" class="form-control" formControlName="uom" id="uom">
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</ng-template>
+
+	<ng-template #modalFooter>
+		<div class="row">
+			<div class="col-md-6 text-right pd-bt">
+				<button class="btn btn-item-create2 btn-success" (click)="onSubmit()">Save</button>
+			</div>
+
+			<div class="col-md-6 text-left">
+				<button class="btn btn-item-create btn-default" (click)="closeModal()">Cancel</button>
+			</div>
+		</div>
+		<!-- Modal footer -->
+	</ng-template>
+</app-modal>

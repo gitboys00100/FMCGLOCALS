@@ -1,0 +1,124 @@
+<div class="routestab">
+    <div class="container">
+      <div class="row">
+     	  <div class="col-md-6">
+          <h3>Announcements</h3>
+        </div>
+        <div class="col-md-6">
+        </div>
+      </div>
+        <!-- Promos, NewProduct, announcement -->
+        <!-- Nav Tabs -->
+        <ul class="nav nav-tabs" role="tablist">
+          <!--
+            <li class="nav-item">
+                <a class="nav-link" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" routerLink="./promos">Promos</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" routerLink="./new-product">New Product</a>
+            </li>-->
+            <li class="nav-item">
+                <a class="nav-link" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" routerLink="./announcement-table">Announcement</a>
+            </li>
+            <li class="nav-item ml-auto">
+            		<button class="pull-right btn btn-gray" (click)="openNewAnnouncement()"><i class="fa fa-plus"></i>&nbsp;New Announcement</button>
+            </li>
+        </ul>
+
+        <app-modal #newAnnouncement>
+          <ng-template #modalHeader>New Announcement</ng-template>
+        	<ng-template #modalBody>
+            <div class="content scrollable_container_modal">
+							<h4 style="margin-bottom:10px;font-weight:normal;">Announcement Details</h4>
+              <form [formGroup]="newAnnouncementForm" id="newAnnouncementForm">
+                  <div class="form-group">
+                    <label for="title">Title</label>
+                    <input type="text" name="title" class="form-control" placeholder="Ex. New Coffee.."
+										[ngClass]="{ 'is-invalid': submitted && f.title.errors }" formControlName="title">
+										<div *ngIf="submitted && f.title.errors" class="invalid-feedback">
+                        <div *ngIf="f.title.errors.required">Title is required</div>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="type">Type</label>
+                    <select class="form-control" [ngClass]="{ 'is-invalid': submitted && f.type.errors }" formControlName="type"
+                    (change)="selectType($event.target.value)">
+                      <option selected disabled>Choose Type</option>
+                      <option value="promos">Promos</option>
+                      <option value="new_product">New Product</option>
+                      <option value="announcement">Announcement</option>
+                    </select>
+										<div *ngIf="submitted && f.type.errors" class="invalid-feedback">
+                        <div *ngIf="f.type.errors.required">Type is required</div>
+                    </div>
+                  </div>
+                  <div class="form-group" *ngIf="selectedType == 'promos' || selectedType == 'new_product'">
+                    <label for="item">Item</label>
+                    <select class="form-control" [ngClass]="{ 'is-invalid': submitted && f.item.errors }" formControlName="item"
+                    *ngFor="let d of items">
+                      <option selected disabled>Choose Item</option>
+                      <option *ngFor="let i of d.data" value="{{ i.id }}">{{ i.name }}</option>
+                    </select>
+										<div *ngIf="submitted && f.item.errors" class="invalid-feedback">
+                        <div *ngIf="f.item.errors.required">Type is required</div>
+                    </div>
+                  </div>
+                  <div class="container-fluid">
+                    <div class="row">
+                      <div class="form-group">
+                        <label for="start_date">From</label>
+                        <input type="date" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.from.errors }" formControlName="from">
+    										<div *ngIf="submitted && f.from.errors" class="invalid-feedback">
+                            <div *ngIf="f.from.errors.required">Start date is required</div>
+                        </div>
+                      </div>
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      <div class="form-group">
+                        <label for="end_date">End</label>
+                        <input type="date" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.end.errors }" formControlName="end">
+    										<div *ngIf="submitted && f.end.errors" class="invalid-feedback">
+                            <div *ngIf="f.end.errors.required">Start date is required</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="description">Description</label>
+                    <textarea class="form-control" rows="4" [ngClass]="{ 'is-invalid': submitted && f.description.errors }" formControlName="description"></textarea>
+                    <div *ngIf="submitted && f.description.errors" class="invalid-feedback">
+                        <div *ngIf="f.description.errors.required">Description is required</div>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="image">Image</label>
+                    <input class="form-control" type="file" name="image_name" [ngClass]="{ 'is-invalid': submitted && f.image_name.errors }" formControlName="image_name">
+                    <div *ngIf="submitted && f.image_name.errors" class="invalid-feedback">
+                        <div *ngIf="f.image_name.errors.required">Image is required</div>
+                    </div>
+                  </div>
+              </form>
+            </div>
+          </ng-template>
+        	<ng-template #modalFooter>
+        		<div class="row">
+              <div class="col-md-1 col-sm-0 col-0">
+              </div>
+        			<div class="col-md-5 col-sm-12 col-12">
+        				<button class="btn btn-item-create btn-success btn-block text-center" (click)="submitAnnouncementForm()" style="margin:3px;">Save</button>
+        			</div>
+        			<div class="col-md-5 col-sm-12 col-12">
+        				<button class="btn btn-item-create btn-default-color btn-block text-center" (click)="closeNewAnnouncement()" style="margin:3px;">Cancel</button>
+        			</div>
+              <div class="col-md-1 col-sm-0 col-0">
+              </div>
+        		</div>
+          </ng-template>
+        </app-modal>
+
+
+        <!-- Tab panes -->
+        <div class="tab-content">
+            <router-outlet></router-outlet>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,33 @@
+<div class="row">
+	<div class="col-md-12">
+		<div class="loader" *ngIf="loading">
+			<img src="../../../../assets/img/loader.gif" class="img">
+		</div>
+	</div>
+	<div class="container-fluid" *ngFor="let d of itineraryList">
+		<h3 *ngIf="!loading">Daily</h3>
+		<ul class="list-group scrollable_container" style="width: 100%;">
+			<app-agentitinerary *ngFor="let itinerary of d.data | paginate: { itemsPerPage: itemsPerPage, currentPage: p }" [itinerary]="itinerary"></app-agentitinerary>
+		</ul>
+	</div>
+
+	<div class="container-fluid">
+	  <div class="row">
+	  	<div class="col-md-6 col-sm-6 col-6 col-lg-6 form-inline">
+	  		<label>Show :</label>&nbsp;&nbsp;
+	  		<select (change)="onShowCountChange($event)" class="form-control sel-show full-width">
+	              <option selected value="5">5</option>
+	              <option value="10">10</option>
+	  			<option value="25">25</option>
+	  			<option value="50">50</option>
+	          </select>
+	      </div>
+	  	<div class="col-md-6 col-sm-6 col-6 col-lg-6">
+	  		<div class="form-group pg-form-group text-right">
+	  			<pagination-controls class="pagination" (pageChange)="p = $event"></pagination-controls>
+	  		</div>
+	  	</div>
+	  </div>
+	</div>
+
+</div>
