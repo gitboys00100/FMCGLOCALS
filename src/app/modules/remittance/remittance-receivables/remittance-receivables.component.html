@@ -1,0 +1,202 @@
+<div>
+  <div style="margin-bottom:10px;">
+    <div class="row row-filter">
+      <div class="col-md-1 col-form form-inline">
+          <label>Filters :</label>
+      </div>
+      <div class="col-md-3 col-form form-inline" >
+        <input class="form-control full-width" type="date" id="date" value="{{ today | date: 'yyyy-MM-dd' }}" (change)="onChangeDate($event.target.value)">
+      </div>
+      <div class="col-md-3 col-form form-inline">
+          <select class="form-control full-width">
+              <option selected (click)="setAgent('All')">All Agents</option>
+              <option *ngFor="let r of receivables" (click)="setAgent(r.user_id)">{{ r.user_id }}</option>
+          </select>
+      </div>
+      <div class="col-md-5 col-form form-inline">
+          <div class="input-group full-width less-mt" id="manageitsearch">
+              <input (input)="onFilterSearchChange($event)" (keydown)="onKeyDown($event)" [value]="searchQuery" class="form-control" placeholder="Search" type="text">
+              <div class="input-group-append">
+                  <button class="btn btn-secondary" type="button" (click)="onSearch()"><i class="fa fa-search"></i></button>
+              </div>
+          </div>
+      </div>
+    </div>
+</div>
+<div id="table-scroll" class="table-scroll" *ngIf="!breakdown">
+  <table class="table table-bordered">
+    <thead>
+      <tr class="tbl-header">
+        <th>Agent</th>
+        <th>Amount</th>
+        <th>Date</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let r of remittance | paginate: { itemsPerPage: itemsPerPage, currentPage: p }">
+        <td style="cursor:pointer;" (click)="openBreakdown(r.id)">{{ r.agent.first_name+' '+r.agent.last_name }}</td>
+        <td>{{ r.total_amount }}</td>
+        <td>{{ r.timestamp | date: 'MMMM dd, yyyy' }}</td>
+        <td>
+          <!--
+          <button class="btn btn-success" disabled *ngIf="r.is_received">Received</button>
+          <button class="btn btn-success" id="{{ r.id+'_button' }}"  (click)="openConfirmationModal(r.id)" *ngIf="!r.is_received">Receive </button>-->
+          <button class="btn btn-success" id="{{ r.id+'_button' }}"  (click)="openConfirmationModal(r.id)">Receive </button>
+          <button class="btn btn-sm btn-default" style="margin:5px;padding:3px;background-color:white;border:1.3px solid lightgray;" type="button" (click)="openReceiptDialogModal(r.id)">
+            <i class="fa fa-print fa-lg print-icon float-right" title="Print a Receipt" aria-hidden="true"
+            style="color:black;"></i>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<button class="btn btn-primary pull-right" (click)="closeBreakdown()" *ngIf="breakdown">Back</button>
+<div id="table-scroll" class="table-scroll" *ngIf="breakdown">
+  <table class="table table-bordered">
+    <thead class="stickDiv">
+      <tr class="tbl-header">
+        <th [class.active]="order === 'agent'"
+          (click)="setRemittanceOrder('agent', 'agent')">Agent
+          <span [hidden]="agent">
+            <span [hidden]="reverseAgent">▼</span>
+            <span [hidden]="!reverseAgent">▲</span>
+          </span>
+        </th>
+        <th [class.active]="order === 'retailer'"
+          (click)="setRemittanceOrder('retailer', 'retailer')">Retailer
+          <span [hidden]="retailer">
+            <span [hidden]="reverseRetailer">▼</span>
+            <span [hidden]="!reverseRetailer">▲</span>
+          </span>
+        </th>
+        <th [class.active]="order === 'total'"
+          (click)="setRemittanceOrder('total', 'total')">Total
+          <span [hidden]="total">
+            <span [hidden]="reverseTotal">▼</span>
+            <span [hidden]="!reverseTotal">▲</span>
+          </span>
+        </th>
+        <th [class.active]="order === 'amount_paid'"
+          (click)="setRemittanceOrder('amount_paid', 'amount_paid')">Amount Paid
+          <span [hidden]="amount_paid">
+            <span [hidden]="reverseAmountPaid">▼</span>
+            <span [hidden]="!reverseAmountPaid">▲</span>
+          </span>
+        </th>
+        <th [class.active]="order === 'balance'"
+          (click)="setRemittanceOrder('balance', 'balance')">Balance
+          <span [hidden]="balance">
+            <span [hidden]="reverseBalance">▼</span>
+            <span [hidden]="!reverseBalance">▲</span>
+          </span>
+        </th>
+        <th [class.active]="order === 'date'"
+          (click)="setRemittanceOrder('date', 'date')">Date
+          <span [hidden]="date">
+            <span [hidden]="reverseDate">▼</span>
+            <span [hidden]="!reverseDate">▲</span>
+          </span>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngIf="loading">
+        <td colspan="9">
+          <div class="loader">
+            <img src="../../../../assets/img/loader.gif" class="img">
+          </div>
+        </td>
+      </tr>
+      <!--<tr *ngFor="let r of receivables | daySorter : selectedDate: pipeStatus | search: filterSearchQuery | orderBy: order: reverse | selectSpecific : agents | paginate: { itemsPerPage: itemsPerPage, currentPage: p }; let num=index ">-->
+      <tr *ngFor="let r of receivables | paginate: { itemsPerPage: itemsPerPage, currentPage: p }; let num=index ">
+        <td>{{ r.purchase_order.user.id+' '+r.purchase_order.user.first_name+' '+r.purchase_order.user.last_name }}</td>
+        <td>
+          {{ r.purchase_order.retailer.name }}
+        </td>
+        <td>
+          <!--
+          <span *ngFor="let ac of r.purchase_order.accounts_receivable">
+            {{ ac.amount+r.amount }}
+          </span>-->
+        {{ r.amount }}
+        </td>
+        <td>{{ r.amount }}</td>
+        <td>
+          <span *ngFor="let ac of r.purchase_order.accounts_receivable">
+            {{ ac.amount }}
+          </span>
+        </td>
+        <td>{{ r.timestamp | date: 'MMMM dd, yyyy' }}</td>
+      </tr>
+      <tr>
+        <td *ngIf="receivables.length <= 0 && !loading" colspan="7" style="text-align:center;">No receivables found.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+</div>
+<div class="row" *ngIf="remittance.length > 0 && !breakdown">
+	<div class="col-md-6 col-sm-6 col-xs-6 col-lg-6 form-inline">
+		<label>Show :</label>&nbsp;&nbsp;
+		<select (change)="onShowCountChange($event)" class="form-control sel-show full-width">
+            <option selected value="5">5</option>
+            <option value="10">10</option>
+			<option value="25">25</option>
+			<option value="50">50</option>
+        </select>
+    </div>
+	<div class="col-md-6 col-sm-6 col-xs-6 col-lg-6">
+		<div class="form-group pg-form-group text-right">
+			<pagination-controls class="pagination" (pageChange)="p = $event"></pagination-controls>
+		</div>
+	</div>
+</div>
+
+<div class="row" *ngIf="receivables.length > 0 && breakdown">
+	<div class="col-md-6 col-sm-6 col-xs-6 col-lg-6 form-inline">
+		<label>Show :</label>&nbsp;&nbsp;
+		<select (change)="onShowCountChange($event)" class="form-control sel-show full-width">
+            <option selected value="5">5</option>
+            <option value="10">10</option>
+			<option value="25">25</option>
+			<option value="50">50</option>
+        </select>
+    </div>
+	<div class="col-md-6 col-sm-6 col-xs-6 col-lg-6">
+		<div class="form-group pg-form-group text-right">
+			<pagination-controls class="pagination" (pageChange)="p = $event"></pagination-controls>
+		</div>
+	</div>
+</div>
+
+<app-remitreceipt [id]=selectedId [agentId]=selectedAgentId [timestamp]=selectedTimestamp [receipt]=receipt #onReceiptDialogModal></app-remitreceipt>
+<app-modal #confirmationDialog>
+  <ng-template #modalHeader>Receive Remittance</ng-template>
+  <ng-template #modalBody>
+    <div class="content">
+			<div class="row alert alert-info">
+				<div class="col-md-12 form-inline text-align:center;">
+          <h5>Are you sure you want to receive this remittance?</h5>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+  <ng-template #modalFooter>
+		<div class="row">
+      <div class="col-md-2 col-sm-0 col-0">
+      </div>
+			<div class="col-md-4 col-sm-12 col-12">
+				<button class="btn btn-success btn-block text-center" (click)="receivedRemittance(clickedRemittance)" style="margin:3px;">Yes</button>
+			</div>
+			<div class="col-md-4 col-sm-12 col-12">
+				<button class="btn btn-item-create btn-default btn-block text-center" (click)="closeConfirmationModal(clickedRemittance)" style="margin:3px;">Cancel</button>
+			</div>
+      <div class="col-md-2 col-sm-0 col-0">
+      </div>
+		</div>
+  </ng-template>
+</app-modal>

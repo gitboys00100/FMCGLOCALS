@@ -1,0 +1,66 @@
+<div class="routestab">
+        <!-- dropdown -->
+	<div style="margin-bottom:10px;">
+			<div class="row row-filter">
+				<div class="col-md-1 col-form form-inline">
+						<label>Filters :</label>
+				</div>
+				<div class="col-md-2 col-form form-inline" >
+					<select (change)="onChangeSchedule($event.target.value)" class="form-control full-width filterStyle">
+							<option value="Daily" class="fake-anchor">Monthly</option>
+							<option value="Weekly" class="fake-anchor">Weekly</option>
+							<!-- <option value="Monthly" class="fake-anchor">Monthly</option> -->
+					</select>
+				</div>
+				<div class="col-md-3 col-form form-inline">
+					<!-- <input  class="form-control full-width filterStyle" #date (input)="onChangeDate(date.value)" type="date"> -->
+				</div>
+				<div class="col-md-3 col-form form-inline">
+					<div  class="input-group full-width filterStyle" id="manageitsearch">
+						<input class="form-control" placeholder="Search" type="text">
+						<div class="input-group-append">
+							<button class="btn btn-secondary" type="button"><i class="fa fa-search"></i></button>
+						</div>
+					</div>
+				</div>
+
+				<div class="col-md-3 form-inline">
+					<button id="assignBtn" class="pull-right btn-assign-itenerary btn btn-gray filterStyle ml-auto" (click)="assignItinerary()"><i class="fa fa-user-plus"></i>&nbsp;Assign Itinerary</button>
+				</div>
+
+			</div>
+	</div>
+	<!--
+	<div class="row">
+		<div class="col-md-3">
+			<select class="form-control full-width">
+					<option (click)="onChangeSchedule('Daily')" class="fake-anchor">Daily</option>
+					<option (click)="onChangeSchedule('Weekly')" class="fake-anchor">Weekly</option>
+					<option (click)="onChangeSchedule('Monthly')" class="fake-anchor">Monthly</option>
+			</select>
+		</div>
+		<div class="col-md-3">
+			<input class="form-control" #date (input)="onChangeDate(date.value)" type="date">
+		</div>
+		<div class="col-md-3 form-inline">
+			<div class="input-group less-mt" id="manageitsearch">
+				<input class="form-control" placeholder="Search" type="text">
+				<div class="input-group-append">
+					<button class="btn btn-secondary" type="button"><i class="fa fa-search"></i></button>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-3">
+			<button class="pull-right btn-assign-itenerary btn btn-gray" (click)="assignItinerary()"><i class="fa fa-user-plus"></i>&nbsp;Assign Itinerary</button>
+		</div>
+	</div>
+-->
+
+	<div [ngSwitch]="selectedSchedule">
+		<app-routescheddaily *ngSwitchCase="'Daily'"></app-routescheddaily>
+		<app-routeschedweekly *ngSwitchCase="'Weekly'"></app-routeschedweekly>
+		<app-routeschedmonthly *ngSwitchCase="'Monthly'"></app-routeschedmonthly>
+	</div>
+</div>
+
+<app-assignitinerary #onAssignItinerary></app-assignitinerary>
