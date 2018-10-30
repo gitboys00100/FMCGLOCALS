@@ -1,0 +1,158 @@
+
+
+<div class="loader" *ngIf="loading">
+  <img src="../../../../assets/img/loader.gif" class="img">
+</div>
+
+
+<div *ngFor="let r of arrRetailers">
+  <div style="margin-bottom:10px;">
+
+    <div class="row" style="padding-bottom:10px;">
+        <div class="col-md-1 col-sm-0 col-0">
+            <label>Filters: </label>
+        </div>
+
+        <div class="col-md-2 col-sm-0 col-0">
+	          <input type="date" (input)="onFilterDateChange($event)" [value]="filterDate" class="form-control full-width">
+	      </div>
+
+        <div class="col-md-6 col-sm-0 col-0"></div>
+
+	      <div class="col-md-3 col-sm-0 col-0">
+	          <div class="input-group full-width less-mt" id="manageitsearch">
+	              <input (input)="onFilterSearchChange($event)" (keydown)="onKeyDown($event)" [value]="searchQuery" class="form-control" placeholder="Search" type="text">
+	              <div class="input-group-append">
+	                  <button class="btn btn-secondary" type="button" (click)="onSearch()"><i class="fa fa-search"></i></button>
+	              </div>
+	          </div>
+	      </div>
+	  </div>
+
+    <div id="table-scroll" class="table-scroll">
+      <table id="main-table" class="main-table">
+        <thead>
+          <tr class="tbl-header">
+            <th [class.active]="order === 'th_name'"
+              (click)="setHeaderOrder('name', 'th_name')">Retailer
+              <span [hidden]="th_name">
+                <span [hidden]="reverse">▼</span>
+                <span [hidden]="!reverse">▲</span>
+              </span>
+            </th>
+            <th [class.active]="order === 'th_date'"
+              (click)="setHeaderOrder('timestamp', 'th_date')">Date
+              <span [hidden]="th_date">
+                <span [hidden]="reverse">▼</span>
+                <span [hidden]="!reverse">▲</span>
+              </span>
+            </th>
+            <th [class.active]="order === 'th_role'"
+              (click)="setHeaderOrder('th_role', 'th_role')">Number of Items
+              <span [hidden]="th_role">
+                <span [hidden]="reverse">▼</span>
+                <span [hidden]="!reverse">▲</span>
+              </span>
+            </th>
+            <th [class.active]="order === 'th_email'"
+              (click)="setHeaderOrder('email', 'th_email')">Status
+              <span [hidden]="th_email">
+                <span [hidden]="reverse">▼</span>
+                <span [hidden]="!reverse">▲</span>
+              </span>
+            </th>
+            <th [class.active]="order === 'th_agent'"
+              (click)="setHeaderOrder('agent_name', 'th_agent')">Agent
+              <span [hidden]="th_agent">
+                <span [hidden]="reverse">▼</span>
+                <span [hidden]="!reverse">▲</span>
+              </span>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of r.data | filter: filterDate | search: filterSearchQuery | paginate: { itemsPerPage: itemsPerPage, currentPage: p }">
+            <td>{{ item.retailer_name }}</td>
+      			<td>{{ item.timestamp.substring(0,10) }}</td>
+            <td>
+              <ng-container *ngIf="item.items != null; else elseTemplatei">
+                <div class='divlink' (click)="openPODetails(item)">{{ getTotalPtoRequests(item.items) }}</div>
+              </ng-container>
+              <ng-template #elseTemplatei>
+                -
+              </ng-template>
+            </td>
+            <td>
+              <ng-container *ngIf="item.status != null; else elseTemplate">
+                {{item.status}}
+              </ng-container>
+              <ng-template #elseTemplate>
+                -
+              </ng-template>
+            </td>
+            <td>{{ item.agent_name }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+<div class="row">
+	<div class="col-md-6 form-inline">
+		<label>Show: </label>&nbsp;&nbsp;
+		<select (change)="onShowCountChange($event)" class="form-control sel-show full-width">
+      <option selected value="5">5</option>
+      <option value="10">10</option>
+			<option value="25">25</option>
+			<option value="50">50</option>
+        </select>
+    </div>
+	<div class="col-md-6">
+		<div class="form-group pg-form-group text-right">
+			<pagination-controls class="pagination" (pageChange)="p = $event"></pagination-controls>
+		</div>
+	</div>
+</div>
+
+
+</div>
+</div>
+
+
+
+
+
+
+
+<app-modal #poDetails>
+  <ng-template #modalHeader>Purchase Order Details</ng-template>
+  <ng-template #modalBody>
+
+
+
+
+  </ng-template>
+
+
+  <ng-template #modalFooter>
+    <div class="container-fluid">
+      <div class="row">
+
+
+        <!--
+      	<div class="col-md-2 col-sm-0 col-0">
+      	</div>
+      	<div class="col-md-4 col-sm-12 col-12">
+      		<button class="btn btn-item-create btn-success btn-block text-center" (click)="onEditSubmit()" style="margin:3px;">Save</button>
+      	</div>
+      	<div class="col-md-4 col-sm-12 col-12">
+      		<button class="btn btn-item-create btn-default btn-block text-center" (click)="closeEditAnnouncement()" style="margin:3px;">Cancel</button>
+      	</div>
+      	<div class="col-md-2 col-sm-0 col-0">
+      	</div>
+        -->
+      </div>
+    </div>
+  </ng-template>
+
+
+</app-modal>
