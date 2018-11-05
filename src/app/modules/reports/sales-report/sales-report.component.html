@@ -1,0 +1,207 @@
+<div style="margin-top:25px;" *ngIf="!submitted">
+  <div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
+			<form>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="itinerary_name">Region: </label>
+              <select class="form-control">
+                <option selected disabled>Choose Region</option>
+                <option>Region 1</option>
+                <option>Region 2</option>
+                <option>Region 3</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="itinerary_name">Cluster: </label>
+              <select class="form-control">
+                <option selected disabled>Choose Cluster</option>
+                <option>Cluster 1</option>
+                <option>Cluster 2</option>
+                <option>Cluster 3</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="form-group">
+              <label for="itinerary_name">Township: </label>
+              <select class="form-control">
+                <option selected disabled>Choose Township</option>
+                <option>Township 1</option>
+                <option>Township 2</option>
+                <option>Township 3</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="itinerary_name">Distributor: </label>
+              <select class="form-control">
+                <option selected disabled>Choose Distributor</option>
+                <option>Distributor 1</option>
+                <option>Distributor 2</option>
+                <option>Distributor 3</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="itinerary_name">Retailer: </label>
+              <select class="form-control">
+                <option selected disabled>Choose Retailer</option>
+                <option>Retailer 1</option>
+                <option>Retailer 2</option>
+                <option>Retailer 3</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-md-12 report-label">Report Date
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="itinerary_name">From: </label>
+              <input type="date" class="form-control">
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="itinerary_name">To: </label>
+              <input type="date" class="form-control">
+            </div>
+          </div>
+
+          <div class="col-md-12 radio-buttons-group text-center">
+            <div class="container-fluid">
+
+              <div class="form-check-inline">
+                <label class="form-check-label">
+                  <input type="radio" class="form-check-input" name="schedule" value="daily" checked>Daily
+                </label>
+              </div>
+              <div class="form-check-inline">
+                <label class="form-check-label">
+                  <input type="radio" class="form-check-input" name="schedule" value="weekly">Weekly
+                </label>
+              </div>
+              <div class="form-check-inline">
+                <label class="form-check-label">
+                  <input type="radio" class="form-check-input" name="schedule" value="weekly">Monthly
+                </label>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+        <div class="row" id="modalButtons">
+          <div class="col-md-6 col-sm-6 col-12 col-lg-6 text-right" style="padding:5px;">
+            <button class="btn btn-item-create btn-success buttonBlock" (click)="showSalesTable()" type="button">Submit</button>
+          </div>
+          <div class="col-md-6 col-sm-6 col-12 col-lg-6" style="padding:5px;">
+            <div class="dropdown">
+              <button class="btn btn-item-create btn-primary buttonBlock dropdown-toggle" type="button"
+              data-toggle="dropdown">Download</button>
+              <div class="dropdown-menu">
+                <a class="dropdown-item" (click)="exportToFile('excel')">Excel</a>
+                <a class="dropdown-item" (click)="exportToFile('csv')">CSV</a>
+                <a class="dropdown-item" (click)="exportToFile('pdf')">PDF</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </form>
+    </div>
+    <div class="col-md-2"></div>
+  </div>
+</div>
+
+<div class="container-fluid" *ngIf="submitted">
+  <div class="row">
+    <div class="col-md-12 pull-left" style="margin-bottom:5px;">
+      <button class="btn btn-back" type="button" (click)="hideSalesTable()">
+        <i class="fa fa-arrow-left" aria-hidden="true"></i> Back
+      </button>
+    </div>
+    <div class="col-md-12">
+      <div class="table-responsive">
+        <table class="table table-bordered inventory-table" id="pdfContent" style="width:100%;">
+          <thead>
+            <tr class="tbl-header">
+              <th>Region/State</th>
+              <th>Cluster</th>
+              <th>Township</th>
+              <th>Distributor</th>
+              <th>Retailer</th>
+              <th>SKU</th>
+              <th>21</th>
+            </tr>
+          </thead>
+          <!-- <tbody *ngFor="let r of reports"> -->
+          <tbody>
+            <tr>
+              <td rowspan="11">Region1</td>
+            </tr>
+            <tr>
+              <td rowspan="9">Cluster1</td>
+            </tr>
+            <tr>
+              <td rowspan="7">Township1</td>
+            </tr>
+            <tr>
+              <td rowspan="5">Distributor1</td>
+            </tr>
+            <tr>
+              <td rowspan="3">Retailer1</td>
+            </tr>
+            <tr>
+              <td rowspan="1">SKU1</td>
+              <td rowspan="1">0</td>
+            </tr>
+            <tr>
+              <td rowspan="1">SKU2</td>
+              <td rowspan="1">100</td>
+            </tr>
+            <tr>
+              <td rowspan="1">Retailer1</td>
+            </tr>
+            <tr>
+              <td rowspan="1">Distributor2</td>
+            </tr>
+            <tr>
+              <td rowspan="1">Township2</td>
+            </tr>
+            <tr>
+              <td rowspan="1">Cluster2</td>
+            </tr>
+            <!-- <tr >
+              <td [attr.rowspan]="getObjectSize(r.region.cluster) +1">{{ r.region.region_name }}</td>
+            </tr>
+            <tr *ngFor="let c of r.region.cluster">
+              <td [attr.rowspan]="getObjectSize(r.region.cluster.township) +1">{{  }}</td>
+            </tr> -->
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+    <div class="col-md-12" style="margin-top:20px;">
+      <div class="dropdown pull-right">
+        <button class="btn btn-item-create btn-primary buttonBlock dropdown-toggle" type="button"
+        data-toggle="dropdown">Download</button>
+        <div class="dropdown-menu">
+          <a class="dropdown-item" (click)="exportToFile('excel')">Excel</a>
+          <a class="dropdown-item" (click)="exportToFile('csv')">CSV</a>
+          <a class="dropdown-item" (click)="exportToFile('pdf')">PDF</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+</div>
