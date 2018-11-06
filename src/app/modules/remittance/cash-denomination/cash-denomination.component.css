@@ -1,0 +1,65 @@
+:host ::ng-deep .fmcg-modal .fmcg-modal-content {
+    width: 50%;
+		margin-top:100px;
+}
+
+:host ::ng-deep .fmcg-modal {
+  overflow: auto !important;
+  max-height: 200%;
+}
+
+:host ::ng-deep .fmcg-modal .fmcg-modal-background {
+  height: 900px;
+  min-height: 100%;
+  width: 100%;
+}
+@media all and (max-width:700px) {
+   .buttonBlock { width: 100%; display:block; }
+   #modalButtons { padding:30px; }
+}
+
+.content {
+    padding: 0 40px;
+}
+
+.fa-barcode {
+    font-size: 4em;
+    margin: 0 auto;
+}
+
+.row-form {
+    margin-top: 1vh;
+}
+
+.rpad-left {
+    padding-left: 0;
+}
+
+.rpad-right {
+    padding-right: 0;
+}
+
+.no-margin {
+    margin: 0;
+}
+
+.tbl-header {
+    background: #6c757d;
+}
+
+.tbl-header th {
+    color: white;
+    text-align: center;
+}
+.total-cell {
+    font-weight: bold;
+    text-align: center;
+}
+
+.btn-default-color {
+  background-color: #DCDCDC !important;
+  font-weight: 400 !important;
+}
+.tbl-body {
+  text-align: center;
+}
