@@ -1,0 +1,245 @@
+<div class="loader" *ngIf="loading">
+  <img src="../../../../assets/img/loader.gif" class="img">
+</div>
+
+<div *ngFor="let a of announcements" >
+  <div style="margin-bottom:10px;">
+      <div class="row row-filter">
+        <div class="col-md-1 col-form form-inline">
+            <label>Filter: </label>
+        </div>
+        <div class="col-md-6 col-form form-inline" >
+        </div>
+        <div class="col-md-2 col-form form-inline" >
+            <!--<input class="form-control full-width text-right" type="date" id="date" [value]="filterDate" value="{{ today | date: 'yyyy-MM-dd' }}" (change)="onChangeDate($event.target.value)">-->
+            <input class="form-control full-width text-right" type="date" id="date" [value]="filterDate" (change)="onChangeDate($event.target.value)">
+        </div>
+        <!--
+        <div class="col-md-1 col-form form-inline">
+          <button type="button" class="btn btn-default" (click)="setDateToday()">Today</button>
+        </div>-->
+        <div class="col-md-3 col-form form-inline">
+            <div class="input-group full-width less-mt" id="manageitsearch">
+                <input (input)="onFilterSearchChange($event)" (keydown)="onKeyDown($event)" [value]="searchQuery" class="form-control" placeholder="Search" type="text">
+                <div class="input-group-append">
+                    <button class="btn btn-secondary" type="button" (click)="onSearch()"><i class="fa fa-search"></i></button>
+                </div>
+            </div>
+        </div>
+
+      </div>
+  </div>
+
+
+  <div id="table-scroll" class="table-scroll">
+    <table id="main-table" class="main-table">
+      <thead>
+        <tr class="tbl-header">
+          <th>#</th>
+          <th [class.active]="order === 'announcement_type'"
+            (click)="setAnnouncementsOrder('announcement_type', 'announcement_type')">Type
+            <span [hidden]="announcement_type">
+              <span [hidden]="reverseType">▼</span>
+              <span [hidden]="!reverseType">▲</span>
+            </span>
+          </th>
+          <th [class.active]="order === 'datecreated'"
+            (click)="setAnnouncementsOrder('datecreated', 'datecreated')">Date Created
+            <span [hidden]="datecreated">
+              <span [hidden]="reverseDateCreated">▼</span>
+              <span [hidden]="!reverseDateCreated">▲</span>
+            </span>
+          </th>
+          <th [class.active]="order === 'duration'"
+            (click)="setAnnouncementsOrder('start_date', 'duration')">Duration
+            <span [hidden]="duration">
+              <span [hidden]="reverseDuration">▼</span>
+              <span [hidden]="!reverseDuration">▲</span>
+            </span>
+          </th>
+          <th [class.active]="order === 'title'"
+            (click)="setAnnouncementsOrder('title', 'title')">Title
+            <span [hidden]="title">
+              <span [hidden]="reverseTitle">▼</span>
+              <span [hidden]="!reverseTitle">▲</span>
+            </span>
+          </th>
+          <th [class.active]="order === 'description'"
+            (click)="setAnnouncementsOrder('description', 'description')" >Description
+            <span [hidden]="description">
+              <span [hidden]="reverseDescription">▼</span>
+              <span [hidden]="!reverseDescription">▲</span>
+            </span>
+          </th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let d of a.data | filter: filterDate | search: filterSearchQuery | orderBy: order: reverse | paginate: { itemsPerPage: itemsPerPage, currentPage: p }; let i=index;">
+          <td>{{ i+1 }}</td>
+          <td>{{ (d.announcement_type == 0) ? 'Promos' : (d.announcement_type == 1) ? 'New Product' : (d.announcement_type == 2) ? 'Announcements': 'Unknown' }}</td>
+          <td>{{ d.timestamp | date: 'MMMM dd, yyyy'}}</td>
+          <td>{{ d.start_date+' to '+d.end_date }}</td>
+          <td>{{ d.title }}</td>
+          <td>
+            <div class="row">
+              <div class="col-md-10">
+                <span class="description">{{ d.description }}</span>
+              </div>
+              <div class="col-md-2">
+                <button class="btn btn-primary btn-sm float-right btn-gray" (click)="openAnnouncementDetails(d.title, d.description, d.image, d.start_date, d.end_date)">more</button>
+              </div>
+            </div>
+          </td>
+          <td style="text-align:center; width:100%;">
+            <div class="row" style="margin-right: 0px; margin-left: 0px;">
+              <div class="col-md-6 col-sm-12 col-12">
+                <button class="btn btn-info btn-block text-center" style="margin:3px;" type="button" (click)="openEditAnnouncement(d)">Edit
+                </button>
+              </div>
+              <div class="col-md-6 col-sm-12 col-12">
+                <button class="btn btn-danger btn-block text-center" style="margin:3px;" type="button" (click)="openDeleteConfirmation(d.id)">Delete
+                </button>
+              </div>
+            </div>
+          </td>
+          <!--
+          <td>
+            <button class="btn btn-primary btn-sm float-right btn-gray" (click)="openDeleteConfirmation(d.id)"><i class="fa fa-trash" aria-hidden="true"></i></button>
+          </td>
+        -->
+        </tr>
+        <tr>
+          <td *ngIf="datacount <= 0" colspan="9" style="text-align:center;">No reports found.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+
+  <div class="row" *ngIf="true">
+    <div class="col-md-6 col-sm-6 col-xs-6 col-lg-6 form-inline">
+      <label>Show :</label>&nbsp;&nbsp;
+      <select (change)="onShowCountChange($event)" class="form-control sel-show">
+              <option selected value="5">5</option>
+              <option value="10">10</option>
+        <option value="25">25</option>
+        <option value="50">50</option>
+      </select>
+      </div>
+    <div class="col-md-6 col-sm-6 col-xs-6 col-lg-6">
+      <div class="form-group pg-form-group text-right">
+        <pagination-controls class="pagination" (pageChange)="p = $event"></pagination-controls>
+      </div>
+    </div>
+  </div>
+
+
+
+</div>
+
+
+<app-modal #announcementDetails>
+  <span *ngFor="let va of viewedAnnouncement">
+  <ng-template #modalHeader>{{ va.title }}</ng-template>
+  <ng-template #modalBody>
+    <div class="content">
+      <span class="mx-auto text-center">
+        <img class="img-fluid mx-auto d-block" src="assets/img/announcement1.jpg" width="300px" height="300px" alt="poster">
+      </span>
+      <p style="padding:20px;margin-bottom:0px;padding-bottom:5px; text-align:justify;">{{ va.description }}</p>
+    </div>
+  </ng-template>
+  <ng-template #modalFooter>
+    <div class="container-fluid">
+      <h5 class="text-center">
+        {{ convertDate(va.start_date) | date:'MMMM d, y'}}-{{ convertDate(va.end_date) | date:'MMMM d, y'}}
+      </h5>
+    </div>
+  </ng-template>
+</span>
+</app-modal>
+
+<app-modal #deleteConfirmation>
+  <ng-template #modalHeader>Remove Announcement</ng-template>
+  <ng-template #modalBody>
+    <div class="content">
+			<div class="row alert alert-info">
+				<div class="col-md-12 form-inline text-align:center;">
+          <h5 style="text-align:center;">Are you sure you want to remove this announcement?</h5>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+  <ng-template #modalFooter>
+		<div class="row">
+      <div class="col-md-2 col-sm-0 col-0">
+      </div>
+			<div class="col-md-4 col-sm-12 col-12">
+				<button class="btn btn-danger btn-block text-center" (click)="removeAnnouncement()" style="margin:3px;">Remove</button>
+			</div>
+			<div class="col-md-4 col-sm-12 col-12">
+				<button class="btn btn-default-color btn-block text-center" (click)="closeDeleteConfirmation()" style="margin:3px;">Cancel</button>
+			</div>
+      <div class="col-md-2 col-sm-0 col-0">
+      </div>
+		</div>
+  </ng-template>
+</app-modal>
+
+
+
+
+
+
+<app-modal #editAnnouncement>
+  <ng-template #modalHeader>Edit Announcement</ng-template>
+  <ng-template #modalBody>
+
+    <form [formGroup]="profileForm" (ngSubmit)="onEditSubmit()">
+
+        <div class="container-fluid">
+        <div class="row align-self-center">
+          <div class="container-fluid">
+            <div class="row align-self-center">
+              <div class="col-md-12 col-sm-12 col-12 text-left">
+                <h4 style="margin-bottom:10px;font-weight:normal;">Announcement Details</h4></div>
+
+              <div class="col-md-12 col-sm-12 col-12 text-left">Title:</div>
+              <div class="col-md-12 col-sm-12 col-12"><input class="form-control" formControlName="title" placeholder="{{firstName}}" type="text"></div>
+              <br><br>
+              <div class="col-md-12 col-sm-12 col-12 text-left">Start:</div>
+              <div class="col-md-12 col-sm-12 col-12"><input class="form-control" formControlName="start" type="date" (change)="clickFrom($event.target.value)"></div>
+              <br><br>
+              <div class="col-md-12 col-sm-12 col-12 text-left">End:</div>
+              <div class="col-md-12 col-sm-12 col-12"><input class="form-control" formControlName="end" type="date" (change)="checkDates($event.target.value)"></div>
+              <br><br>
+              <div class="col-md-12 col-sm-12 col-12 text-left">Description</div>
+              <div class="col-md-12 col-sm-12 col-12"><textarea class="form-control" rows="4" formControlName="description"></textarea></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      </form>
+
+
+  </ng-template>
+  <ng-template #modalFooter>
+    <div class="container-fluid">
+      <div class="row">
+      	<div class="col-md-2 col-sm-0 col-0">
+      	</div>
+      	<div class="col-md-4 col-sm-12 col-12">
+      		<button class="btn btn-item-create btn-success btn-block text-center" (click)="onEditSubmit()" style="margin:3px;">Save</button>
+      	</div>
+      	<div class="col-md-4 col-sm-12 col-12">
+      		<button class="btn btn-item-create btn-default btn-block text-center" (click)="closeEditAnnouncement()" style="margin:3px;">Cancel</button>
+      	</div>
+      	<div class="col-md-2 col-sm-0 col-0">
+      	</div>
+      </div>
+    </div>
+  </ng-template>
+
+</app-modal>
