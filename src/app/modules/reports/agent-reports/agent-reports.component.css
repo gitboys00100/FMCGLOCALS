@@ -1,0 +1,231 @@
+
+:host ::ng-deep .fmcg-modal .fmcg-modal-content {
+    width: 80%;
+    margin-top: 110px;
+}
+
+:host ::ng-deep .fmcg-modal {
+  overflow: auto !important;
+  max-height: 200%;
+}
+
+:host ::ng-deep .fmcg-modal .fmcg-modal-background {
+  height: 700px;
+  min-height: 100%;
+  width: 100%;
+}
+.content {
+    padding: 0 40px;
+}
+
+.btn-item-create {
+    padding: 0.375rem 50px;
+}
+.btn {
+	background-color: #6c757d;
+	border: 1px solid #6c757d;
+	text-align: left;
+	color: white;
+}
+#selectAgent {
+	width: 150px;
+}
+.dropdown-item {
+  cursor: pointer;
+}
+.tbl-header {
+    background: #6c757d;
+}
+#signaturebox {
+  margin-bottom:20px;
+  /*border-top:2px solid lightgray;*/
+}
+.signature_img {
+  width: 140px;
+  height: 50px;
+  text-align:center;
+}
+.signature_label {
+  text-align: center;
+  width:100%;
+  padding:10px;
+}
+.signature_name {
+  text-align: center;
+}
+.tbl-header th {
+    color: white;
+}
+thead th {
+  cursor: pointer;
+  margin-right: 15px;
+  margin-left: 15px;
+  /*white-space: nowrap;*/
+
+  span {
+    visibility: hidden;
+  }
+
+  &.active {
+    color: #000;
+
+    span {
+      visibility: visible;
+    }
+  }
+}
+/*
+table {
+  table-layout: fixed;
+}*/
+
+
+.tbl-header {
+    background: #6c757d;
+}
+
+.tbl-header th {
+    color: white;
+}
+
+.sel-show {
+    width: 100px;
+}
+
+.pg-form-group, pagination-controls {
+    width: 100%;
+}
+
+.pg-form-group {
+  /*  padding-top: 1.2vh;*/
+}
+
+pagination-controls {
+    display: block;
+}
+
+.no-margin {
+    margin: 0 !important;
+}
+
+.btn-gray {
+    background-color: #6c757d;
+    border: 1px solid #6c757d;
+    color: #FFFFFF;
+}
+
+.tab-title {
+    width: 100%;
+}
+
+.row-filter {
+    margin-top: 2vh;
+}
+
+.full-width {
+    width: 100%;
+}
+.stickDiv {
+  position: -webkit-sticky;
+  position: -moz-sticky;
+  position: -ms-sticky;
+  position: -o-sticky;
+  position: sticky;
+  top: 0;
+}
+
+.link-text {
+  text-decoration: underline;
+  color: #0000EE !important;
+  cursor:pointer;
+}
+.hidden {
+  display:none;
+}
+html {
+  box-sizing: border-box;
+}
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+.intro {
+  max-width: 1280px;
+  margin: 1em auto;
+}
+.table-scroll {
+  position: relative;
+  width:100%;
+  z-index: 1;
+  margin: auto;
+  overflow: auto;
+  height: 280px;
+}
+.table-scroll table {
+  width: 100%;
+  min-width: 1280px;
+  margin: auto;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+.table-wrap {
+  position: relative;
+}
+.table-scroll th,
+.table-scroll td {
+  padding: 5px 10px;
+  border: 1px solid #dee2e6;
+  background: #fff;
+  vertical-align: top;
+}
+.table-scroll thead th {
+  background: #6c757d;
+  color: #fff;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  z-index:4;
+}
+/* safari and ios need the tfoot itself to be position:sticky also */
+.table-scroll tfoot,
+.table-scroll tfoot th,
+.table-scroll tfoot td {
+  position: -webkit-sticky;
+  position: sticky;
+  bottom: 0;
+  background: #666;
+  color: #fff;
+  z-index:4;
+}
+
+a:focus {
+  background: red;
+} /* testing links*/
+
+/*
+th:first-child {
+  position: -webkit-sticky;
+  position: sticky;
+  left: 0;
+  z-index: 2;
+  background: #ccc;
+}
+*/
+thead th:first-child,
+tfoot th:first-child {
+  z-index: 5;
+}
+.products_col {
+  /*width:15%;*/
+}
+
+.loader img {
+  padding:10px;
+  width:85px !important;
+  height:85px !important;
+  margin:25px;
+}
+.loader {
+  text-align: center;
+}

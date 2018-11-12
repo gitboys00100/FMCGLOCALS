@@ -1,0 +1,284 @@
+<div style="margin-top:25px;" *ngIf="!submitted">
+  <div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
+			<form [formGroup]="salesReportForm" id="salesReportForm">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="itinerary_name">Region: </label>
+              <select class="form-control" (change)="pickRegion($event.target.value)" [ngClass]="{ 'is-invalid': submittedForm && f.region.errors }" formControlName="region">
+                <option selected disabled value="">Choose Region</option>
+                <option *ngFor="let p of places" [value]="p.region">{{ p.region }}</option>
+              </select>
+              <div *ngIf="submittedForm && f.region.errors" class="invalid-feedback">
+                  <div *ngIf="f.region.errors.required">Region is required</div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="itinerary_name">Cluster: </label>
+              <select class="form-control" (change)="pickCluster($event.target.value)" disabled [ngClass]="{ 'is-invalid': submittedForm && f.cluster.errors }" formControlName="cluster">
+                <option selected disabled value="">Choose Cluster</option>
+                <option *ngFor="let c of clusterList" [value]="c.district">{{ c.district }}</option>
+              </select>
+              <div *ngIf="submittedForm && f.cluster.errors" class="invalid-feedback">
+                  <div *ngIf="f.cluster.errors.required">Cluster is required</div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="form-group">
+              <label for="itinerary_name">Township: </label>
+              <select class="form-control" (change)="pickTownship($event.target.value)" disabled [ngClass]="{ 'is-invalid': submittedForm && f.township.errors }" formControlName="township">
+                <option selected disabled value="">Choose Township</option>
+                <option *ngFor="let t of townshipList" [value]="t.township">{{ t.township }}</option>
+              </select>
+              <div *ngIf="submittedForm && f.township.errors" class="invalid-feedback">
+                  <div *ngIf="f.township.errors.required">Township is required</div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="itinerary_name">Agent: </label>
+              <select class="form-control" (change)="pickAgent($event.target.value)" [ngClass]="{ 'is-invalid': submittedForm && f.agent.errors }" formControlName="agent">
+                <option selected disabled value="">Choose Agent</option>
+                <option *ngFor="let a of agents" [value]="a.id">{{ a.first_name+' '+a.last_name }}</option>
+              </select>
+              <div *ngIf="submittedForm && f.agent.errors" class="invalid-feedback">
+                  <div *ngIf="f.agent.errors.required">Agent is required</div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="itinerary_name">Retailer: </label>
+              <select class="form-control" disabled [ngClass]="{ 'is-invalid': submittedForm && f.retailer.errors }" formControlName="retailer">
+                <option selected disabled value="">Choose Retailer</option>
+                <option *ngFor="let r of retailers" [value]="r.id">{{ r.name }}</option>
+              </select>
+              <div *ngIf="submittedForm && f.retailer.errors" class="invalid-feedback">
+                  <div *ngIf="f.retailer.errors.required">Retailer is required</div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-12 report-label">Report Date
+          </div>
+          <div class="col-md-6" *ngIf="sched != 'monthly'">
+            <div class="form-group">
+              <label for="itinerary_name">From: </label>
+              <input type="date" class="form-control" (change)="clickFrom($event.target.value)" [ngClass]="{ 'is-invalid': submittedForm && f.from_date.errors }" formControlName="from_date">
+              <div *ngIf="submittedForm && f.from_date.errors" class="invalid-feedback">
+                  <div *ngIf="f.from_date.errors.required">Date is required</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6" *ngIf="sched != 'monthly'">
+            <div class="form-group">
+              <label for="itinerary_name">To: </label>
+              <input type="date" class="form-control" (change)="checkDates($event.target.value)" [ngClass]="{ 'is-invalid': submittedForm && f.to_date.errors }" formControlName="to_date">
+              <div *ngIf="submittedForm && f.to_date.errors" class="invalid-feedback">
+                  <div *ngIf="f.to_date.errors.required">Date is required</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-3">
+          </div>
+          <div class="col-md-6 text-center" *ngIf="sched == 'monthly'">
+            <div class="form-group">
+              <label for="itinerary_name">Date: </label>
+              <input type="date" class="form-control" [ngClass]="{ 'is-invalid': submittedForm && f.specific_date.errors }" formControlName="specific_date">
+              <div *ngIf="submittedForm && f.specific_date.errors" class="invalid-feedback">
+                  <div *ngIf="f.specific_date.errors.required">Date is required</div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+          </div>
+
+          <div class="col-md-12 radio-buttons-group text-center">
+            <div class="container-fluid">
+
+              <div class="form-check-inline">
+                <label class="form-check-label">
+                  <input type="radio" class="form-check-input" name="sched" (change)="selectSched($event.target.value)" value="daily" checked [ngClass]="{ 'is-invalid': submittedForm && f.sched.errors }" formControlName="sched">Daily
+                </label>
+              </div>
+              <div class="form-check-inline">
+                <label class="form-check-label">
+                  <input type="radio" class="form-check-input" name="sched" (change)="selectSched($event.target.value)" value="weekly" [ngClass]="{ 'is-invalid': submittedForm && f.sched.errors }" formControlName="sched">Weekly
+                </label>
+              </div>
+              <div class="form-check-inline">
+                <label class="form-check-label">
+                  <input type="radio" class="form-check-input" name="sched" (change)="selectSched($event.target.value)" value="monthly" [ngClass]="{ 'is-invalid': submittedForm && f.sched.errors }" formControlName="sched">Monthly
+                </label>
+              </div>
+
+              <div *ngIf="submittedForm && f.sched.errors" class="invalid-sched">
+                  <div>Schedule is required</div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+        <div class="row" id="modalButtons">
+          <div class="col-md-6 col-sm-6 col-12 col-lg-6 text-right" style="padding:5px;">
+            <button class="btn btn-item-create btn-success buttonBlock" (click)="showSalesTable()" type="button">Submit</button>
+          </div>
+          <div class="col-md-6 col-sm-6 col-12 col-lg-6" style="padding:5px;">
+            <div class="dropdown">
+              <button class="btn btn-item-create btn-primary buttonBlock dropdown-toggle" type="button"
+              data-toggle="dropdown">Download</button>
+              <div class="dropdown-menu">
+                <a class="dropdown-item" (click)="exportToFile('excel')">Excel</a>
+                <a class="dropdown-item" (click)="exportToFile('csv')">CSV</a>
+                <a class="dropdown-item" (click)="exportToFile('pdf')">PDF</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </form>
+    </div>
+    <div class="col-md-2"></div>
+  </div>
+</div>
+
+<div class="container-fluid" *ngIf="submitted">
+  <div class="row">
+    <div class="col-md-12 pull-left" style="margin-bottom:5px;">
+      <button class="btn btn-back" type="button" (click)="hideSalesTable()">
+        <i class="fa fa-arrow-left" aria-hidden="true"></i> Back
+      </button>
+    </div>
+    <div class="col-md-12 text-center">
+      <h4 *ngIf="sched == 'daily'">Daily</h4>
+      <h4 *ngIf="sched == 'weekly'">Weekly</h4>
+      <h4 *ngIf="sched == 'monthly'">Monthly</h4>
+    </div>
+    <div class="col-md-12">
+      <div class="table-responsive">
+        <table class="table table-bordered inventory-table" id="pdfContent" style="width:100%;">
+          <thead>
+            <tr class="tbl-header" *ngIf="sched == 'daily'">
+              <th *ngFor="let h of headers_daily">{{ h }}</th>
+            </tr>
+
+            <tr *ngIf="sched == 'weekly'">
+              <th colspan="6"></th>
+              <th colspan="4" *ngFor="let m of monthsName" class="text-center">{{ m }}</th>
+            </tr>
+            <tr class="tbl-header" *ngIf="sched == 'weekly'">
+              <th *ngFor="let h of headers_weekly">{{ h }}</th>
+            </tr>
+
+            <tr class="tbl-header" *ngIf="sched == 'monthly'">
+              <th *ngFor="let h of headers_monthly">{{ h }}</th>
+            </tr>
+          </thead>
+          <!-- <tbody *ngFor="let r of reports"> -->
+          <tbody *ngIf="sched == 'daily'">
+            <!-- <tr>
+              <td rowspan="11">Region1</td>
+            </tr>
+            <tr>
+              <td rowspan="9">Cluster1</td>
+            </tr>
+            <tr>
+              <td rowspan="7">Township1</td>
+            </tr>
+            <tr>
+              <td rowspan="5">Distributor1</td>
+            </tr>
+            <tr>
+              <td rowspan="3">Retailer1</td>
+            </tr>
+            <tr>
+              <td rowspan="1">SKU1</td>
+              <td rowspan="1">0</td>
+            </tr>
+            <tr>
+              <td rowspan="1">SKU2</td>
+              <td rowspan="1">100</td>
+            </tr>
+            <tr>
+              <td rowspan="1">Retailer1</td>
+            </tr>
+            <tr>
+              <td rowspan="1">Distributor2</td>
+            </tr>
+            <tr>
+              <td rowspan="1">Township2</td>
+            </tr>
+            <tr>
+              <td rowspan="1">Cluster2</td>
+            </tr> -->
+            <tr *ngFor="let r of reports_daily">
+              <td>{{ r.region }}</td>
+              <td>{{ r.cluster }}</td>
+              <td>{{ r.township }}</td>
+              <td>{{ r.agent }}</td>
+              <td>{{ r.retailer }}</td>
+              <td>{{ r.item }}</td>
+              <td *ngFor="let sr of selected_date_range">
+                <span *ngIf="getDate(sr) == r.day">
+                  {{ r.sales }}
+                </span>
+                <span *ngIf="getDate(sr) != r.day">
+                  0
+                </span>
+              </td>
+            </tr>
+          </tbody>
+          <tbody *ngIf="sched == 'weekly'">
+            <tr *ngFor="let r of reports_weekly">
+              <td>{{ r.region }}</td>
+              <td>{{ r.cluster }}</td>
+              <td>{{ r.township }}</td>
+              <td>{{ r.agent }}</td>
+              <td>{{ r.retailer }}</td>
+              <td>{{ r.item }}</td>
+              <td *ngFor="let w of arrayGenerate(4 * monthsName.length);let i=index;">
+                {{ updateLoopCounter(r.week, r.sales, r.month) }}
+                {{ showWeekCounter() }}
+                <!-- {{ updateWeekCounter() }} -->
+                {{ addToLoopCounter() }}
+              </td>
+            </tr>
+          </tbody>
+          <tbody *ngIf="sched == 'monthly'">
+            <tr *ngFor="let r of reports_monthly">
+              <td>{{ r.region }}</td>
+              <td>{{ r.cluster }}</td>
+              <td>{{ r.township }}</td>
+              <td>{{ r.agent }}</td>
+              <td>{{ r.retailer }}</td>
+              <td>{{ r.item }}</td>
+              <td>{{ r.sales }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+    <div class="col-md-12" style="margin-top:20px;">
+      <div class="dropdown pull-right">
+        <button class="btn btn-item-create btn-primary buttonBlock dropdown-toggle" type="button"
+        data-toggle="dropdown">Download</button>
+        <div class="dropdown-menu">
+          <a class="dropdown-item" (click)="exportToFile('excel')">Excel</a>
+          <a class="dropdown-item" (click)="exportToFile('csv')">CSV</a>
+          <a class="dropdown-item" (click)="exportToFile('pdf')">PDF</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+</div>
