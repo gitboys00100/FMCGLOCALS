@@ -1,0 +1,162 @@
+.report-label {
+  font-weight: bold;
+  margin-top:15px;
+  margin-bottom:10px;
+}
+.btn-report {
+  width: 120px;
+  background-color: #6c757d;
+  border: 1px solid #6c757d;
+  color: white;
+}
+.btn-back {
+  background-color: #6c757d;
+  border: 1px solid #6c757d;
+  color: white;
+}
+@media all and (max-width:700px) {
+   .buttonBlock { width: 100%; display:block; }
+   #modalButtons { padding:30px; }
+}
+.radio-buttons-group {
+  margin: 20px;
+}
+
+.tbl-header {
+    background: #6c757d;
+}
+.tbl-header th {
+  cursor: pointer;
+  color: white;
+}
+.hide {
+  display: none !important;
+}
+.dropdown-item {
+  cursor: pointer;
+}
+.btn-item-create {
+    padding: 0.375rem 50px;
+}
+
+.loader img {
+  padding:10px;
+  width:85px !important;
+  height:85px !important;
+  margin:25px;
+}
+.loader {
+  text-align: center;
+}
+
+html {
+  box-sizing: border-box;
+}
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+.intro {
+  max-width: 1280px;
+  margin: 1em auto;
+}
+.table-scroll {
+  position: relative;
+  width:100%;
+  z-index: 1;
+  margin: auto;
+  overflow: auto;
+  height: 310px;
+}
+.table-scroll table {
+  width: 100%;
+  min-width: 1280px;
+  margin: auto;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+.table-wrap {
+  position: relative;
+}
+.table-scroll th,
+.table-scroll td {
+  padding: 5px 10px;
+  border: 1px solid #dee2e6;
+  background: #fff;
+  vertical-align: top;
+}
+.table-scroll thead th {
+  width:100px;
+  min-width:50px;
+  background: #6c757d;
+  color: #fff;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  z-index:4;
+}
+/* safari and ios need the tfoot itself to be position:sticky also */
+.table-scroll tfoot,
+.table-scroll tfoot th,
+.table-scroll tfoot td {
+  position: -webkit-sticky;
+  position: sticky;
+  bottom: 0;
+  background: #666;
+  color: #fff;
+  z-index:4;
+}
+
+a:focus {
+  background: red;
+} /* testing links*/
+
+/*
+th:first-child {
+  position: -webkit-sticky;
+  position: sticky;
+  left: 0;
+  z-index: 2;
+  background: #ccc;
+}
+*/
+thead th:first-child,
+tfoot th:first-child {
+  z-index: 5;
+}
+
+.tab-title {
+    width: 100%;
+}
+
+.row-filter {
+    margin-top: 2vh;
+}
+
+.full-width {
+    width: 100%;
+}
+.tbl-header {
+    background: #6c757d;
+}
+
+.tbl-header th {
+    color: white;
+}
+
+.sel-show {
+    width: 100px;
+}
+
+.pg-form-group, pagination-controls {
+    width: 100%;
+}
+
+.pg-form-group {
+    padding-top: 1.2vh;
+}
+
+pagination-controls {
+    display: block;
+}

@@ -1,0 +1,82 @@
+<app-modal #itemCreateModal>
+	<ng-template #modalHeader>{{ translate("adduser") }}</ng-template>
+
+	<ng-template #modalBody>
+		<div class="content">
+
+<form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+
+
+		<div class="container-fluid">
+		<div class="row align-self-center">
+			<div class="col-md-12 col-sm-12 col-12 text-left">
+			<h4 style="margin-bottom:10px;font-weight:normal;">User Details</h4>
+			<!--
+			<div style="margin-bottom:10px;font-weight:normal; color:red; font-size: 11px;">* required fields</div>
+			-->
+			</div>
+
+		<div class="col-md-12 col-sm-12 col-12 text-left">{{ translate("firstname") }}<label style="color:red;">*</label></div>
+		<div class="col-md-12 col-sm-12 col-12"><input class="form-control" formControlName="firstName" placeholder="" type="text" required></div>
+<br><br>
+		<div class="col-md-12 col-sm-12 col-12 text-left">{{ translate("lastname") }}<label style="color:red;">*</label></div>
+		<div class="col-md-12 col-sm-12 col-12"><input class="form-control" formControlName="lastName" placeholder="" type="text" required></div>
+<br><br>
+		<div class="col-md-12 col-sm-12 col-12 text-left">{{ translate("email") }}<label style="color:red;">*</label></div>
+		<div class="col-md-12 col-sm-12 col-12"><input class="form-control" formControlName="email" placeholder="" type="email" required></div>
+<br><br>
+		<div class="col-md-12 col-sm-12 col-12 text-left">{{ translate("username") }}<label style="color:red;">*</label></div>
+		<div class="col-md-12 col-sm-12 col-12"><input class="form-control" formControlName="username" placeholder="" type="text" required></div>
+<br><br>
+		<div class="col-md-12 col-sm-12 col-12 text-left">{{ translate("password") }}<label style="color:red;">*</label></div>
+		<div class="col-md-12 col-sm-12 col-12"><input class="form-control" formControlName="password" placeholder="" type="password" required></div>
+<br><br>
+		<div class="col-md-12 col-sm-12 col-12 text-left">{{ translate("role") }}<label style="color:red;">*</label></div>
+		<div class="col-md-12 col-sm-12 col-12" *ngFor="let role of userRoles">
+			<select formControlName="role" class="form-control full-width" required>
+				<option value="" >-- {{ translate("role") }} --</option>
+				<option *ngFor="let ir of fuserRoles" value="{{ir.id}}">{{ir.name}}</option>
+			</select>
+		</div>
+
+		</div>
+	</div>
+
+<!--
+	<button type="submit" [disabled]="!profileForm.valid">Submit</button>
+-->
+
+</form>
+
+
+		</div>
+	</ng-template>
+
+
+
+	<ng-template #modalFooter>
+
+	<div class="container-fluid">
+		<div class="container-fluid">
+      <div class="row">
+      	<div class="col-md-2 col-sm-0 col-0">
+      	</div>
+      	<div class="col-md-4 col-sm-12 col-12">
+      		<button class="btn btn-success btn-block text-center" [disabled]="!profileForm.valid" (click)="onSubmit()" style="margin:3px;">{{ translate("save") }}</button>
+      	</div>
+      	<div class="col-md-4 col-sm-12 col-12">
+      		<button class="btn btn-default btn-block text-center" (click)="closeModal()" style="margin:3px;">{{ translate("cancel") }}</button>
+      	</div>
+      	<div class="col-md-2 col-sm-0 col-0">
+      	</div>
+      </div>
+    </div>
+	</div>
+
+	</ng-template>
+
+
+
+
+
+</app-modal>
