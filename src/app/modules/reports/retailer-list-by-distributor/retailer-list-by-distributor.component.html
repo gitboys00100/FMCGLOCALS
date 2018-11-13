@@ -1,0 +1,175 @@
+<div style="margin-top:25px;" *ngIf="!successSubmitted">
+  <div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
+			<form [formGroup]="chooseDistributorForm" id="chooseDistributorForm">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="form-group">
+              <label for="distributor">Agent: </label>
+              <select class="form-control" (change)="chooseDistributor($event.target.value)" id="company"
+              [ngClass]="{ 'is-invalid': submitted && f.company.errors }" formControlName="company">
+                <option selected disabled>Choose Agent</option>
+                <option value="all">All</option>
+                <option *ngFor="let a of agents" value="{{ a.id }}">{{ a.first_name+' '+a.last_name }}</option>
+              </select>
+              <div *ngIf="submitted && f.company.errors" class="invalid-feedback">
+                  <div *ngIf="f.company.errors.required">Agent is required</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div class="row" id="modalButtons">
+          <div class="col-md-6 col-sm-6 col-12 col-lg-6 text-right" style="padding:5px;">
+            <button class="btn btn-item-create btn-success buttonBlock" (click)="showSalesTable()" type="button">Submit</button>
+          </div>
+          <div class="col-md-6 col-sm-6 col-12 col-lg-6" style="padding:5px;">
+            <div class="dropdown">
+              <button class="btn btn-item-create btn-primary buttonBlock dropdown-toggle" type="button"
+              data-toggle="dropdown">Download</button>
+              <div class="dropdown-menu">
+                <a class="dropdown-item" (click)="exportToFile('excel')">Excel</a>
+                <a class="dropdown-item" (click)="exportToFile('csv')">CSV</a>
+                <a class="dropdown-item" (click)="exportToFile('pdf')">PDF</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </form>
+    </div>
+    <div class="col-md-2"></div>
+  </div>
+</div>
+<div class="container-fluid" *ngIf="successSubmitted">
+  <div class="row">
+    <div class="col-md-6 pull-left" style="margin-bottom:5px;">
+      <button class="btn btn-back" type="button" (click)="hideSalesTable()">
+        <i class="fa fa-arrow-left" aria-hidden="true"></i> Back
+      </button>
+    </div>
+    <!--
+    <div class="col-md-3 pull-right">
+      <input class="form-control full-width" type="date" id="date" value="{{ today | date: 'yyyy-MM-dd' }}" (change)="onChangeDate($event.target.value)">
+    </div> -->
+    <div class="col-md-6 pull-right">
+      <!-- <div class="input-group full-width less-mt" id="manageitsearch">
+          <input (input)="onFilterSearchChange($event)" (keydown)="onKeyDown($event)" [value]="searchQuery" class="form-control" placeholder="Search" type="text">
+          <div class="input-group-append">
+              <button class="btn btn-secondary" type="button" (click)="onSearch()"><i class="fa fa-search"></i></button>
+          </div>
+      </div> -->
+    </div>
+    <div class="col-md-12">
+      <div class="table-scroll" id="table-scroll">
+        <table class="table table-bordered inventory-table" id="pdfContent">
+          <thead>
+            <tr class="tbl-header">
+              <th>Distributor</th>
+              <th [class.active]="order === 'name'"
+                (click)="setRetailerOrder('name', 'name')">Retailer
+                <span [hidden]="name">
+                  <span [hidden]="reverseName">▼</span>
+                  <span [hidden]="!reverseName">▲</span>
+                </span>
+              </th>
+              <th [class.active]="order === 'owner'"
+                (click)="setRetailerOrder('owner', 'owner')">Owner
+                <span [hidden]="owner">
+                  <span [hidden]="reverseOwner">▼</span>
+                  <span [hidden]="!reverseOwner">▲</span>
+                </span>
+              </th>
+              <th [class.active]="order === 'house_number'"
+                (click)="setRetailerOrder('house_number', 'house_number')">Street
+                <span [hidden]="house_number">
+                  <span [hidden]="reverseHouseNumber">▼</span>
+                  <span [hidden]="!reverseHouseNumber">▲</span>
+                </span>
+              </th>
+              <th [class.active]="order === 'township'"
+                (click)="setRetailerOrder('township', 'township')">Township
+                <span [hidden]="township">
+                  <span [hidden]="reverseTownship">▼</span>
+                  <span [hidden]="!reverseTownship">▲</span>
+                </span>
+              </th>
+              <th [class.active]="order === 'country'"
+                (click)="setRetailerOrder('country', 'country')">Country
+                <span [hidden]="country">
+                  <span [hidden]="reverseCountry">▼</span>
+                  <span [hidden]="!reverseCountry">▲</span>
+                </span>
+              </th>
+              <th [class.active]="order === 'created_date'"
+                (click)="setRetailerOrder('timestamp', 'created_date')">Created Date
+                <span [hidden]="created_date">
+                  <span [hidden]="reverseCreatedDate">▼</span>
+                  <span [hidden]="!reverseCreatedDate">▲</span>
+                </span>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td colspan="7" *ngIf="loading">
+                <div class="loader">
+                  <img src="../../../../assets/img/loader.gif" class="img">
+                </div>
+              </td>
+            </tr>
+
+            <tr *ngFor="let r of retailers | orderBy: order: reverse | searchRetailerListByUser: filterSearchQuery | paginate: { itemsPerPage: itemsPerPage, currentPage: p }">
+              <td *ngIf="selectedCompany != 'all'">{{ selectedCompanyName }}</td>
+              <td *ngIf="selectedCompany == 'all'">{{ r.company_id | getCompanyName : companies }}</td>
+              <td>{{ r.name }}</td>
+              <td>{{ r.owner }}</td>
+              <td *ngIf="r.house_number != null">{{ r.house_number +' '+r.street_name }}</td>
+              <td *ngIf="r.house_number == null">{{ r.street_name }}</td>
+              <td>{{ r.township }}</td>
+              <td>{{ r.country }}</td>
+              <td>{{ r.timestamp | date: 'MMMM dd, yyyy' }}</td>
+            </tr>
+            <tr>
+              <td *ngIf="!loading && retailers.length <= 0" style="text-align:center" colspan="7">No Retailers found.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+
+    <div class="col-md-12">
+      <div class="row" *ngIf="retailers.length > 0">
+      	<div class="col-md-6 col-sm-6 col-6 col-lg-6 form-inline">
+      		<label>Show :</label>&nbsp;&nbsp;
+      		<select (change)="onShowCountChange($event)" class="form-control sel-show full-width">
+                  <option selected value="5">5</option>
+                  <option value="10">10</option>
+      			<option value="25">25</option>
+      			<option value="50">50</option>
+              </select>
+          </div>
+      	<div class="col-md-6 col-sm-6 col-6 col-lg-6">
+      		<div class="form-group pg-form-group text-right">
+      			<pagination-controls class="pagination" (pageChange)="p = $event"></pagination-controls>
+      		</div>
+      	</div>
+      </div>
+    </div>
+
+    <div class="col-md-12" style="margin-top:20px;">
+      <div class="dropdown pull-right">
+        <button class="btn btn-item-create btn-primary buttonBlock dropdown-toggle" type="button"
+        data-toggle="dropdown">Download</button>
+        <div class="dropdown-menu">
+          <a class="dropdown-item" (click)="exportToFile('excel')">Excel</a>
+          <a class="dropdown-item" (click)="exportToFile('csv')">CSV</a>
+          <a class="dropdown-item" (click)="exportToFile('pdf')">PDF</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
