@@ -1,0 +1,27 @@
+import { Injectable } from '@angular/core';
+
+@Injectable({
+  providedIn: 'root'
+})
+
+export class ItinerarydetailsService {
+
+  constructor() { }
+
+  private itineraryList = [
+		{
+			it_label: 'Juan Dela Cruz',
+			retailers: 'District 1'
+		},
+		{
+                        it_label: 'Maria Dela Cruz',
+                        retailers: 'District 1' 
+                }
+   ];
+
+
+  getItineraryDetailsList() {
+     return this.itineraryList;
+  }
+
+}

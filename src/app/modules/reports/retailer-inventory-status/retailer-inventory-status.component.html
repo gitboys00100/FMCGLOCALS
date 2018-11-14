@@ -1,0 +1,149 @@
+<div style="margin-top:25px;" *ngIf="!submitted">
+  <div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
+			<form [formGroup]="retailerInventoryForm" id="retailerInventoryForm">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="itinerary_name">Region: </label>
+              <select class="form-control" id="region" (change)="pickRegion($event.target.value)"
+              [ngClass]="{ 'is-invalid': submittedForm && f.region.errors }" formControlName="region">
+                <option selected disabled value="">Choose Region</option>
+                <option *ngFor="let p of places" [value]="p.region">{{ p.region }}</option>
+              </select>
+              <div *ngIf="submittedForm && f.region.errors" class="invalid-feedback">
+                  <div *ngIf="f.region.errors.required">Region is required</div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="itinerary_name">Cluster: </label>
+              <select class="form-control" id="cluster" (change)="pickCluster($event.target.value)" disabled
+              [ngClass]="{ 'is-invalid': submittedForm && f.cluster.errors }" formControlName="cluster">
+                <option selected disabled value="">Choose Cluster</option>
+                <option *ngFor="let c of clusterList" [value]="c.district">{{ c.district }}</option>
+              </select>
+              <div *ngIf="submittedForm && f.cluster.errors" class="invalid-feedback">
+                  <div *ngIf="f.cluster.errors.required">Cluster is required</div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="form-group">
+              <label for="itinerary_name">Township: </label>
+              <select class="form-control" id="township" (change)="pickTownship($event.target.value)" disabled
+              [ngClass]="{ 'is-invalid': submittedForm && f.township.errors }" formControlName="township">
+                <option selected disabled value="">Choose Township</option>
+                <option *ngFor="let t of townshipList" [value]="t.township">{{ t.township }}</option>
+              </select>
+              <div *ngIf="submittedForm && f.township.errors" class="invalid-feedback">
+                  <div *ngIf="f.township.errors.required">Township is required</div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="itinerary_name">Agent: </label>
+              <select class="form-control" id="agent" (change)="pickAgent($event.target.value)"
+              [ngClass]="{ 'is-invalid': submittedForm && f.agent.errors }" formControlName="agent">
+                <option selected disabled value="">Choose Agent</option>
+                <option *ngFor="let a of agents" [value]="a.id">{{ a.first_name+' '+a.last_name }}</option>
+              </select>
+              <div *ngIf="submittedForm && f.agent.errors" class="invalid-feedback">
+                  <div *ngIf="f.agent.errors.required">Agent is required</div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="itinerary_name">Retailer: </label>
+              <select class="form-control" id="retailer"
+              [ngClass]="{ 'is-invalid': submittedForm && f.retailer.errors }" formControlName="retailer">
+                <option selected disabled value="">Choose Retailer</option>
+                <option *ngFor="let r of retailers" [value]="r.id">{{ r.name }}</option>
+              </select>
+              <div *ngIf="submittedForm && f.retailer.errors" class="invalid-feedback">
+                  <div *ngIf="f.retailer.errors.required">Retailer is required</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div class="row" id="modalButtons">
+          <div class="col-md-6 col-sm-6 col-12 col-lg-6 text-right" style="padding:5px;">
+            <button class="btn btn-item-create btn-success buttonBlock" (click)="showSalesTable()" type="button">Submit</button>
+          </div>
+          <div class="col-md-6 col-sm-6 col-12 col-lg-6" style="padding:5px;">
+            <div class="dropdown">
+              <button class="btn btn-item-create btn-primary buttonBlock dropdown-toggle" type="button"
+              data-toggle="dropdown">Download</button>
+              <div class="dropdown-menu">
+                <a class="dropdown-item" (click)="exportToFile('excel')">Excel</a>
+                <a class="dropdown-item" (click)="exportToFile('csv')">CSV</a>
+                <a class="dropdown-item" (click)="exportToFile('pdf')">PDF</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </form>
+    </div>
+    <div class="col-md-2"></div>
+  </div>
+</div>
+
+<div class="container-fluid" *ngIf="submitted">
+  <div class="row">
+    <div class="col-md-12 pull-left" style="margin-bottom:5px;">
+      <button class="btn btn-back" type="button" (click)="hideSalesTable()">
+        <i class="fa fa-arrow-left" aria-hidden="true"></i> Back
+      </button>
+    </div>
+    <div class="col-md-12">
+      <div class="table-responsive">
+        <table class="table table-bordered inventory-table" id="pdfContent">
+          <thead>
+            <tr class="tbl-header">
+              <th *ngFor="let h of headers">{{ h }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngIf="loading">
+              <td colspan="7">
+                <div class="loader">
+                  <img src="../../../../assets/img/loader.gif" class="img">
+                </div>
+              </td>
+            </tr>
+            <tr *ngFor="let r of reports">
+              <td>{{ r.region }}</td>
+              <td>{{ r.cluster }}</td>
+              <td>{{ r.township }}</td>
+              <td>{{ r.agent_name }}</td>
+              <td>{{ r.retailer_name }}</td>
+              <td>{{ r.sku }}</td>
+              <td>{{ r.quantity }}</td>
+            </tr>
+            <tr>
+              <td *ngIf="reports.length <= 0 && !loading" style="text-align:center !important" colspan="7">No Retailer Inventory found.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="col-md-12" style="margin-top:20px;">
+      <div class="dropdown pull-right">
+        <button class="btn btn-item-create btn-primary buttonBlock dropdown-toggle" type="button"
+        data-toggle="dropdown">Download</button>
+        <div class="dropdown-menu">
+          <a class="dropdown-item" (click)="exportToFile('excel')">Excel</a>
+          <a class="dropdown-item" (click)="exportToFile('csv')">CSV</a>
+          <a class="dropdown-item" (click)="exportToFile('pdf')">PDF</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
