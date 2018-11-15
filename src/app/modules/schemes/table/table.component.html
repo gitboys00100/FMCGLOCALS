@@ -1,0 +1,340 @@
+<div class="loader" *ngIf="loading">
+  <img src="../../../../assets/img/loader.gif" class="img">
+</div>
+
+<div *ngFor="let r of arrRetailers2">
+
+    <div class="row" style="padding-bottom:10px;">
+      <div class="col-md-12">
+        <button class="pull-right btn btn-new-itinerary" (click)="onAdd()">
+          <i class="fa fa-plus"></i>&nbsp;&nbsp;Add Discount
+        </button>
+      </div>
+    </div>
+
+    <div style="margin-bottom:10px;">
+        <div class="row row-filter">
+          <div class="col-md-1">
+              <label>Filters: </label>
+          </div>
+          <div class="col-md-8" ></div>
+          <div class="col-md-3">
+              <div class="input-group full-width less-mt" id="manageitsearch">
+                  <input (input)="onFilterSearchChange($event)" (keydown)="onKeyDown($event)" [value]="searchQuery" class="form-control" placeholder="Search" type="text">
+                  <div class="input-group-append">
+                      <button class="btn btn-secondary" type="button" (click)="onSearch()"><i class="fa fa-search"></i></button>
+                  </div>
+              </div>
+          </div>
+
+        </div>
+    </div>
+
+<div id="table-scroll" class="table-scroll">
+  <table id="main-table" class="main-table">
+    <thead>
+      <tr class="tbl-header">
+        <th [class.active]="order === 'name'"
+          (click)="setRetailerOrder('name', 'name')">Discount Name
+          <span [hidden]="name">
+            <span [hidden]="reverse">▼</span>
+            <span [hidden]="!reverse">▲</span>
+          </span>
+        </th>
+        <th [class.active]="order === 'item'"
+          (click)="setRetailerOrder('name', 'name')">Item
+          <span [hidden]="name">
+            <span [hidden]="reverse">▼</span>
+            <span [hidden]="!reverse">▲</span>
+          </span>
+        </th>
+        <th [class.active]="order === 'owner'"
+          (click)="setRetailerOrder('owner', 'owner')">Type
+          <span [hidden]="owner">
+            <span [hidden]="reverse">▼</span>
+            <span [hidden]="!reverse">▲</span>
+          </span>
+        </th>
+        <th [class.active]="order === 'agent'"
+          (click)="setRetailerOrder('agent', 'agent')">Amount/Percentage
+          <span [hidden]="agent">
+            <span [hidden]="reverse">▼</span>
+            <span [hidden]="!reverse">▲</span>
+          </span>
+        </th>
+        <th [class.active]="order === 'street_name'"
+          (click)="setRetailerOrder('street_name', 'street_name')">Description
+          <span [hidden]="street_name">
+            <span [hidden]="reverse">▼</span>
+            <span [hidden]="!reverse">▲</span>
+          </span>
+        </th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of r.data | orderBy: order: reverse | search: filterSearchQuery |  paginate: { itemsPerPage: itemsPerPage, currentPage: p }">
+        <ng-container *ngIf="!item.noresult; else elseTD">
+        <td>{{ item.name }}</td>
+        <td>
+          <ng-container *ngIf="item.item; else elseItemTemplate">
+            {{ item.item.name}}
+          </ng-container>
+          <ng-template #elseItemTemplate>
+            -
+          </ng-template>
+        </td>
+        <td>
+          <ng-container *ngIf="item.percentage; else elseTemplate">
+            Percent
+          </ng-container>
+          <ng-template #elseTemplate>
+            Amount
+          </ng-template>
+        </td>
+        <td><!--{{ item.percentage }}-->
+          <ng-container *ngIf="item.percentage; else elseTemplate2">
+            {{ item.percentage }}%
+          </ng-container>
+          <ng-template #elseTemplate2>
+            {{ item.value }}
+          </ng-template>
+        </td>
+        <td>{{ item.description }}</td>
+        <td style="text-align:center;">
+          <div class="row">
+            <div class="col-md-6 col-sm-12 col-12">
+              <button class="btn btn-info btn-block text-center" type="button" (click)="openEditModal(item)">Edit
+              </button>
+            </div>
+            <div class="col-md-6 col-sm-12 col-12">
+              <button class="btn btn-danger btn-block text-center" type="button" (click)="openDeleteModal(item)">Delete
+              </button>
+            </div>
+          </div>
+        </td>
+      </ng-container>
+      <ng-template #elseTD>
+        <td colspan="7" style="text-align:center;">No records Found</td>
+      </ng-template>
+      </tr>
+
+    </tbody>
+
+  </table>
+</div>
+
+<div class="row" style="margin-left:0px; margin-right:0px; padding-bottom:10px;">
+	<div class="col-md-6 form-inline">
+		<label>Show :</label>&nbsp;&nbsp;
+		<select (change)="onShowCountChange($event)" class="form-control sel-show full-width">
+      <option selected value="5">5</option>
+      <option value="10">10</option>
+			<option value="25">25</option>
+			<option value="50">50</option>
+        </select>
+    </div>
+	<div class="col-md-6">
+		<div class="form-group pg-form-group text-right">
+			<pagination-controls class="pagination" (pageChange)="p = $event"></pagination-controls>
+		</div>
+	</div>
+</div>
+
+
+</div>
+
+
+
+
+
+
+<app-modal #addDialog>
+  <ng-template #modalHeader>Add Discount</ng-template>
+  <ng-template #modalBody>
+
+    <!--<h3 style="text-align:center;">Edit info</h3> -->
+<form [formGroup]="addForm" (ngSubmit)="onSubmitAdd()">
+
+    <div class="container-fluid">
+    <div class="row align-self-center">
+      <div class="container-fluid">
+        <div class="row align-self-center">
+          <div class="col-md-12 col-sm-12 col-12 text-left">
+            <h4 style="margin-bottom:10px;font-weight:normal;">Discount Details</h4></div>
+
+          <div class="col-md-12 col-sm-12 col-12 text-left">Name:</div>
+          <div class="col-md-12 col-sm-12 col-12"><input class="form-control" formControlName="a_name" type="text" required></div>
+          <br><br>
+          <div class="col-md-12 col-sm-12 col-12 text-left">Description:</div>
+          <div class="col-md-12 col-sm-12 col-12"><input class="form-control" formControlName="a_description" type="text" required></div>
+          <br><br>
+          <div class="col-md-12 col-sm-12 col-12 text-left">Type:</div>
+          <div class="col-md-12 col-sm-12 col-12">
+            <input formControlName="a_type" type="radio" name="a_type" value="Percent" (change)="clickType($event.target.value)" required> Percentage
+            <input formControlName="a_type" type="radio" name="a_type" value="Amount" (change)="clickType($event.target.value)" required> Value
+          </div>
+
+          <div class="col-md-12 col-sm-12 col-12 text-left">{{ type }}:</div>
+          <div class="col-md-12 col-sm-12 col-12"><input class="form-control" (change)="convertToNegative()" id="a_discount" formControlName="a_discount" type="text" required></div>
+          <br><br>
+          <div class="col-md-12 col-sm-12 col-12 text-left">Item Name:</div>
+          <div class="col-md-12 col-sm-12 col-12"><!--<input class="form-control" formControlName="a_item" type="text" required>-->
+            <select class="form-control" formControlName="a_item" *ngFor="let d of items">
+              <option selected disabled>Choose Item</option>
+              <option *ngFor="let i of d.data" value="{{ i.id }}">{{ i.name }}</option>
+            </select>
+          </div>
+          <br><br>
+          <div class="col-md-12 col-sm-12 col-12 text-left">From:</div>
+          <div class="col-md-12 col-sm-12 col-12"><input class="form-control" formControlName="a_start" type="date" required></div>
+          <br><br>
+          <div class="col-md-12 col-sm-12 col-12 text-left">To:</div>
+          <div class="col-md-12 col-sm-12 col-12"><input class="form-control" formControlName="a_end" type="date" required></div>
+
+          </div>
+      </div>
+    </div>
+  </div>
+
+  </form>
+
+  </ng-template>
+  <ng-template #modalFooter>
+    <div class="container-fluid">
+      <div class="row">
+      	<div class="col-md-2 col-sm-0 col-0">
+      	</div>
+      	<div class="col-md-4 col-sm-12 col-12">
+      		<button class="btn btn-item-create btn-success btn-block text-center" (click)="onSubmitAdd()" style="margin:3px;">Save</button>
+      	</div>
+      	<div class="col-md-4 col-sm-12 col-12">
+      		<button class="btn btn-item-create btn-default btn-block text-center" (click)="closeAddModal()" style="margin:3px;">Cancel</button>
+      	</div>
+      	<div class="col-md-2 col-sm-0 col-0">
+      	</div>
+      </div>
+    </div>
+  </ng-template>
+
+</app-modal>
+
+
+
+
+
+
+<app-modal #editDialog>
+  <ng-template #modalHeader>Edit Discount</ng-template>
+  <ng-template #modalBody>
+
+    <!--<h3 style="text-align:center;">Edit info</h3> -->
+<form [formGroup]="editForm" (ngSubmit)="onEditSubmit()">
+
+    <div class="container-fluid">
+    <div class="row align-self-center">
+      <div class="container-fluid">
+        <div class="row align-self-center">
+          <div class="col-md-12 col-sm-12 col-12 text-left">
+            <h4 style="margin-bottom:10px;font-weight:normal;">Discount Details</h4></div>
+
+            <div class="col-md-12 col-sm-12 col-12 text-left">Name:</div>
+            <div class="col-md-12 col-sm-12 col-12"><input class="form-control" formControlName="e_name" type="text" required></div>
+            <br><br>
+            <div class="col-md-12 col-sm-12 col-12 text-left">Description:</div>
+            <div class="col-md-12 col-sm-12 col-12"><input class="form-control" formControlName="e_description" type="text" required></div>
+            <br><br>
+
+            <div class="col-md-12 col-sm-12 col-12 text-left">Type:</div>
+            <div class="col-md-12 col-sm-12 col-12">
+              <input formControlName="e_type" type="radio" name="e_type" value="Percent" (change)="clickType($event.target.value)" required> Percentage
+              <input formControlName="e_type" type="radio" name="e_type" value="Amount" (change)="clickType($event.target.value)" required> Value
+            </div>
+
+            <div class="col-md-12 col-sm-12 col-12 text-left">{{ type }}:</div>
+            <div class="col-md-12 col-sm-12 col-12"><input class="form-control" formControlName="e_discount" type="text" required></div>
+            <br><br>
+            <div class="col-md-12 col-sm-12 col-12 text-left">Item Name:</div>
+            <div class="col-md-12 col-sm-12 col-12"><!--<input class="form-control" formControlName="a_item" type="text" required>-->
+              <select class="form-control" formControlName="e_item" name="e_item" *ngFor="let d of items">
+                <option selected disabled>Choose Item</option>
+                <option *ngFor="let i of d.data" value="{{ i.id }}">{{ i.name }}</option>
+              </select>
+            </div>
+            <br><br>
+
+            <div class="col-md-12 col-sm-12 col-12 text-left">From:</div>
+            <div class="col-md-12 col-sm-12 col-12"><input class="form-control" formControlName="e_start" type="date" required></div>
+            <br><br>
+            <div class="col-md-12 col-sm-12 col-12 text-left">To:</div>
+            <div class="col-md-12 col-sm-12 col-12"><input class="form-control" formControlName="e_end" type="date" required></div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  </form>
+
+  </ng-template>
+  <ng-template #modalFooter>
+    <div class="container-fluid">
+      <div class="row">
+      	<div class="col-md-2 col-sm-0 col-0">
+      	</div>
+      	<div class="col-md-4 col-sm-12 col-12">
+      		<button class="btn btn-item-create btn-success btn-block text-center" (click)="onEditSubmit()" style="margin:3px;">Save</button>
+      	</div>
+      	<div class="col-md-4 col-sm-12 col-12">
+      		<button class="btn btn-item-create btn-default btn-block text-center" (click)="closeEditModal()" style="margin:3px;">Cancel</button>
+      	</div>
+      	<div class="col-md-2 col-sm-0 col-0">
+      	</div>
+      </div>
+    </div>
+  </ng-template>
+
+</app-modal>
+
+
+
+
+
+
+
+
+
+
+
+
+<app-modal #deleteDialog>
+  <ng-template #modalHeader>Delete Scheme</ng-template>
+  <ng-template #modalBody>
+    <div class="container">
+    <div class="row alert alert-info">
+      <div class="col-md-10 form-inline">
+        <h5>Are you sure you want to delete {{d_name}}?</h5>
+      </div>
+    </div>
+    </div>
+    <!--<h3 style="text-align:center;">Are you sure?</h3>-->
+  </ng-template>
+
+  <ng-template #modalFooter>
+    <div class="container-fluid">
+      <div class="row">
+      	<div class="col-md-2 col-sm-0 col-0">
+      	</div>
+      	<div class="col-md-4 col-sm-12 col-12">
+      		<button class="btn btn-item-create btn-danger btn-block text-center" (click)="onDeleteSubmitModal()" style="margin:3px;">Delete</button>
+      	</div>
+      	<div class="col-md-4 col-sm-12 col-12">
+      		<button class="btn btn-item-create btn-default btn-block text-center" (click)="closeDeleteModal()" style="margin:3px;">Cancel</button>
+      	</div>
+      	<div class="col-md-2 col-sm-0 col-0">
+      	</div>
+      </div>
+    </div>
+  </ng-template>
+
+</app-modal>

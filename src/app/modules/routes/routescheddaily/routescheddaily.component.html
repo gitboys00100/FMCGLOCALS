@@ -1,0 +1,249 @@
+<div class="loader" *ngIf="loading">
+	<img src="../../../../assets/img/loader.gif" class="img">
+</div>
+<!-- <div class="col-md-3 col-form form-inline">
+	<input  class="form-control full-width filterStyle" #date (input)="onChangeDate(date.value)" type="date">
+</div> -->
+
+<div id='calendar'></div>
+
+<!-- The Modal -->
+<app-modal #onSchedulerDetails>
+	<ng-template #modalHeader>{{calheader}}</ng-template>
+
+	<ng-template #modalBody>
+		<div class="content">
+        <div *ngFor="let item of caldata; let i = index">
+						<div class="table-responsive">
+  							<table class="table borderedtable">
+									<thead>
+										<tr>
+											<th class="totalTD">AGENT</th>
+											<th style="color:#000;">{{agentname}}</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td class="totalTD">RETAILER</td>
+											<td>{{item.name}}</td>
+										</tr>
+
+										<tr>
+											<td class="totalTD">NO. OF ITEMS</td>
+											<td>{{item.accounts_receivable.length}}</td>
+										</tr>
+
+										<tr>
+											<td class="totalTD">BALANCE</td>
+											<td>
+												<ng-container *ngIf="item.accounts_receivable.length > 0 ; else elseTemplate">
+													<table class="table borderedtable">
+														<tr>
+															<td class="totalTD">
+																Name
+															</td>
+															<td class="totalTD">
+																Amount
+															</td>
+														</tr>
+														<tr *ngFor="let r of item.accounts_receivable">
+															<td>
+																{{r.payment_term.name}}
+															</td>
+															<td >
+																{{r.amount | number:'3.1-5'}}
+															</td>
+														</tr>
+													</table>
+												</ng-container>
+												<ng-template #elseTemplate>
+												  N/A
+												</ng-template>
+												<!-- {{000992092 | number:'3.1-5'}}  -->
+											</td>
+										</tr>
+
+										<tr>
+											<td class="totalTD">TOTAL</td>
+											<td >
+												{{totalbalance[i] | number:'3.1-5'}}
+											</td>
+										</tr>
+
+										<tr>
+											<td class="totalTD">DATE</td>
+											<td>{{timestamp | date: 'MMMM d, y'}}</td>
+										</tr>
+									</tbody>
+							</table>
+						</div>
+        </div> <!-- end ng for -->
+		</div>
+	</ng-template>
+
+	<ng-template #modalFooter>
+		<div class="row">
+			<div class="col-md-12 text-right pd-bt">
+				<button class="btn  btn-primary" (click)="openEditRoutesModal()" style="width:150px;margin-left:1em">Edit Routes</button>
+
+				<button class="btn  btn-primary" (click)="openEditModal(itid)" style="width:150px;margin-left:1em">Edit Rank Order</button>
+
+				<button class="btn  btn-danger" (click)="openDeleteConfirmationModal(itid)" style="width:150px;margin-left:1em">Delete Route</button>
+
+				<button class="btn  btn-default" (click)="onSchedulerDetailsClose()" style="width:150px;margin-left:1em">Cancel</button>
+			</div>
+		</div>
+
+	</ng-template>
+</app-modal>
+
+
+<app-modal #deleteConfirmation>
+  <ng-template #modalHeader>Delete Routes</ng-template>
+  <ng-template #modalBody>
+    <div class="content">
+			<div class="row alert alert-info">
+				<div class="col-md-12" style="text-align:center;">
+          <h5>Are you sure you want to delete this route?</h5>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+  <ng-template #modalFooter>
+		<div class="row">
+      <div class="col-md-2 col-sm-0 col-0">
+      </div>
+			<div class="col-md-4 col-sm-12 col-12">
+				<button class="btn btn-item-create btn-danger btn-block text-center" (click)="deleteItinerary()" style="margin:3px;">Delete</button>
+			</div>
+			<div class="col-md-4 col-sm-12 col-12">
+				<button class="btn btn-item-create btn-default-color btn-block text-center" (click)="closeDeleteConfirmationModal()" style="margin:3px;">Cancel</button>
+			</div>
+      <div class="col-md-2 col-sm-0 col-0">
+      </div>
+		</div>
+  </ng-template>
+</app-modal>
+
+<!-- EDIT -->
+
+<app-modal #editModal>
+  <ng-template #modalHeader>Edit Routes</ng-template>
+  <ng-template #modalBody>
+    <div style="max-height:250px;overflow:auto;">
+			<form>
+					<h4 style="margin-bottom:10px;">Set Order</h4>
+					<table class="table borderedtable">
+						<thead>
+							<tr>
+								<th class="totalTD">ORDER</th>
+								<th class="totalTD">RETAILER</th>
+								<th class="totalTD">NO. OF ITEMS</th>
+								<th class="totalTD">BALANCE</th>
+							</tr>
+						</thead>
+						<tbody [sortablejs]="retailers" [sortablejsOptions]="{ animation: 150 }">
+							<tr *ngFor="let item of retailers;let i=index;" style="cursor:grab;">
+								<td>{{ i+1 }}
+								</td>
+								<td>{{ item.name }}</td>
+								<td>{{ item.accounts_receivable.length }}</td>
+								<td>
+									<ng-container *ngIf="item.accounts_receivable.length > 0 ; else elseTemplate">
+										<table class="table borderedtable">
+											<tr>
+												<td class="totalTD">
+													Name
+												</td>
+												<td class="totalTD">
+													Amount
+												</td>
+											</tr>
+											<tr *ngFor="let r of item.accounts_receivable">
+												<td>
+													{{r.payment_term.name}}
+												</td>
+												<td >
+													{{r.amount | number:'3.1-5'}}
+												</td>
+											</tr>
+										</table>
+									</ng-container>
+									<ng-template #elseTemplate>
+										N/A
+									</ng-template>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+			</form>
+    </div>
+  </ng-template>
+  <ng-template #modalFooter>
+		<div class="row">
+      <div class="col-md-2 col-sm-0 col-0">
+      </div>
+			<div class="col-md-4 col-sm-12 col-12">
+				<button class="btn btn-item-create btn-success btn-block text-center" (click)="updateItineraryOrder()" style="margin:3px;">Save</button>
+			</div>
+			<div class="col-md-4 col-sm-12 col-12">
+				<button class="btn btn-item-create btn-default-color btn-block text-center" (click)="closeEditModal()" style="margin:3px;">Cancel</button>
+			</div>
+      <div class="col-md-2 col-sm-0 col-0">
+      </div>
+		</div>
+  </ng-template>
+</app-modal>
+
+<app-modal #editRoutesModal>
+  <ng-template #modalHeader>Edit Routes</ng-template>
+  <ng-template #modalBody>
+		<div class="content">
+			<div class="container-fluid">
+				<h4 style="margin-bottom:10px;">Schedule Details</h4>
+				<div class="row">
+						<div class="form-group col-md-11">
+							<label for="day">Day</label>
+							<select class="form-control" (change)="onDaySelect($event.target.value)">
+								<option selected disabled>Choose a Day</option>
+								<option value="1">Sunday</option>
+								<option value="2">Monday</option>
+								<option value="3">Tuesday</option>
+								<option value="4">Wednesday</option>
+								<option value="5">Thursday</option>
+								<option value="6">Friday</option>
+								<option value="7">Saturday</option>
+							</select>
+						</div>
+						<div class="col-md-1">
+							<button class="btn btn-primary float-right" type="button" (click)="addDay(selectedDay)" id="plusBtn">
+								<i class="fa fa-plus" aria-hidden="true"></i>
+							</button>
+						</div>
+				</div>
+				Schedule
+				<div class="container-fluid" id="scheduleBox2">
+						<div class="container-fluid">
+							<p [hidden]="noDays" class="noDays">No days selected.</p>
+							<ul class="list-group" id="dayList" *ngFor="let d of days">
+								<li class="list-group-item"> {{ d.day }}
+									<i class="fa fa-md fa-minus-square float-right" id="removeBtn" (click)="removeDay(d.id)" aria-hidden="true"></i>
+								</li>
+							</ul>
+						</div>
+				</div>
+			</div>
+
+		</div>
+  </ng-template>
+  <ng-template #modalFooter>
+		<div class="row">
+			<div class="col-md-6 text-right pd-bt">
+				<button class="btn btn-item-create btn-success" (click)="saveSchedulePicker(aid,itaids)">Save</button>
+			</div>
+			<div class="col-md-6 text-left">
+				<button class="btn btn-item-create2 btn-default" (click)="closeSchedulePicker()">Cancel</button>
+			</div>
+		</div>
+  </ng-template>
+</app-modal>

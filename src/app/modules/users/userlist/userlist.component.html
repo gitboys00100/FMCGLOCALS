@@ -1,0 +1,278 @@
+<!--
+<div  style="height:400px;max-height:400px;overflow-y:auto; overflow-x:hidden;">
+  <div style="margin-bottom:10px;">
+-->
+
+<div class="loader" *ngIf="loading">
+  <img src="../../../../assets/img/loader.gif" class="img">
+</div>
+
+
+<div *ngIf="!loading">
+
+
+
+
+
+    <div class="row" style="padding-bottom:10px;">
+      <div class="col-md-12">
+        <button class="pull-right btn btn-new-itinerary" (click)="onAdd()">
+          <i class="fa fa-plus"></i>&nbsp;&nbsp;{{ translate("adduser") }}
+        </button>
+      </div>
+    </div>
+
+    <div *ngIf="retailerList.length == 0; else elseContent" style="text-align:center;">
+      <br> No result <br><br><br>
+    </div>
+
+<div style="" *ngFor="let r of retailerList">
+  
+<div class="row">
+    <div class="col-md-1 col-sm-0 col-0">
+        <label>Filters: </label>
+    </div>
+
+    <div class="col-md-2 col-sm-0 col-0" *ngFor="let role of userRoles">
+        <select (change)="onFilterRole($event)" [value]="filterRole" class="form-control full-width">
+            <option value="" >-- {{ translate("role") }} --</option>
+            <option *ngFor="let ir of fuserRoles" value="{{ir.name}}">{{ir.name}}</option>
+        </select>
+    </div>
+
+    <div class="col-md-6 col-sm-0 col-0"></div>
+
+    <div class="col-md-3 col-sm-0 col-0">
+        <div class="input-group full-width less-mt" id="manageitsearch">
+            <input (input)="onFilterSearchChange($event)" (keydown)="onKeyDown($event)" [value]="searchQuery" class="form-control" placeholder="{{ translate('search') }}" type="text">
+            <div class="input-group-append">
+                <button class="btn btn-secondary" type="button" (click)="onSearch()"><i class="fa fa-search"></i></button>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+  		<div class="loader" *ngIf="loading">
+  			<img src="../../../../assets/img/loader.gif" class="img">
+  		</div>
+  	</div>
+</div>
+
+<app-adduser-modal #onAddComponent></app-adduser-modal>
+<app-deleteuser-modal #onDeleteComponent></app-deleteuser-modal>
+<app-edituser-modal #onEditComponent></app-edituser-modal>
+
+<br>
+
+<div id="table-scroll" class="table-scroll">
+  <table id="main-table" class="main-table">
+    <thead>
+      <tr class="tbl-header">
+        <th [class.active]="order === 'th_name'"
+          (click)="setHeaderOrder('first_name', 'th_name')">{{ translate("name") }}
+          <span [hidden]="th_name">
+            <span [hidden]="reverse">▼</span>
+            <span [hidden]="!reverse">▲</span>
+          </span>
+        </th>
+        <th [class.active]="order === 'th_email'"
+          (click)="setHeaderOrder('email', 'th_email')">{{ translate("email") }}
+          <span [hidden]="th_email">
+            <span [hidden]="reverse">▼</span>
+            <span [hidden]="!reverse">▲</span>
+          </span>
+        </th>
+        <th [class.active]="order === 'th_role'"
+          (click)="setHeaderOrder('profile[0].role[name]', 'th_role')">{{ translate("role") }}
+          <span [hidden]="th_role">
+            <span [hidden]="reverse">▼</span>
+            <span [hidden]="!reverse">▲</span>
+          </span>
+        </th>
+        <th>{{ translate("action") }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of r.data | orderBy: order: reverse | filter: filterRole | search: filterSearchQuery | paginate: { itemsPerPage: itemsPerPage, currentPage: p }">
+        <ng-container *ngIf="!item.noresult; else elseTD">
+          <td>{{ item.first_name +" "+ item.last_name }}</td>
+          <td>{{ item.email}}</td>
+          <td>
+            <ng-container *ngIf="item.profile.role != null; else elseTemplate">
+              {{item.profile.role.name}}
+            </ng-container>
+            <ng-template #elseTemplate>
+              -
+            </ng-template>
+            <td style="text-align:center;">
+              <div class="row" style="margin-right: 0px; margin-left: 0px;">
+                <div class="col-md-6 col-sm-12 col-12">
+                  <button class="btn btn-info btn-block text-center" style="margin:3px;" type="button" (click)="onEdit(item)">{{ translate("edit") }}
+                  </button>
+                </div>
+                <div class="col-md-6 col-sm-12 col-12">
+                  <button class="btn btn-danger btn-block text-center" style="margin:3px;" type="button" (click)="onDelete(item)">{{ translate("delete") }}
+                  </button>
+                </div>
+              </div>
+            </td>
+         </ng-container>
+         <ng-template #elseTD>
+           <td colspan="4" style="text-align:center;">No records Found</td>
+         </ng-template>
+
+
+      </tr>
+
+    </tbody>
+
+  </table>
+</div>
+
+<div class="row">
+  <div class="col-md-6 form-inline">
+    <label>Show :</label>&nbsp;&nbsp;
+    <select (change)="onShowCountChange($event)" class="form-control sel-show full-width">
+      <option selected value="5">5</option>
+      <option value="10">10</option>
+      <option value="25">25</option>
+      <option value="50">50</option>
+        </select>
+    </div>
+  <div class="col-md-6">
+    <div class="form-group pg-form-group text-right">
+      <pagination-controls class="pagination" (pageChange)="p = $event"></pagination-controls>
+    </div>
+  </div>
+</div>
+
+
+
+
+</div>
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+<app-modal #editDialog>
+  <ng-template #modalHeader>Edit User</ng-template>
+  <ng-template #modalBody>
+
+    <!--<h3 style="text-align:center;">Edit info</h3> -->
+<form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+
+    <div class="container-fluid">
+    <div class="row align-self-center">
+      <div class="container-fluid">
+        <div class="row align-self-center">
+          <div class="col-md-12 col-sm-12 col-12 text-left">
+            <h4 style="margin-bottom:10px;font-weight:normal;">User Details</h4></div>
+
+          <div class="col-md-12 col-sm-12 col-12 text-left">{{ translate("firstname") }}:</div>
+          <div class="col-md-12 col-sm-12 col-12"><input class="form-control" formControlName="firstName" placeholder="{{firstName}}" type="text"></div>
+          <br><br>
+          <div class="col-md-12 col-sm-12 col-12 text-left">{{ translate("lastname") }}:</div>
+          <div class="col-md-12 col-sm-12 col-12"><input class="form-control" formControlName="lastName" placeholder="{{lastName}}" value="{{lastName}}" type="text"></div>
+          <br><br>
+          <div class="col-md-12 col-sm-12 col-12 text-left">{{ translate("username") }}:</div>
+          <div class="col-md-12 col-sm-12 col-12"><input class="form-control" formControlName="username" placeholder="{{username}}" value="{{username}}" type="text"></div>
+          <br><br>
+          <div class="col-md-12 col-sm-12 col-12 text-left">{{ translate("email") }}:</div>
+          <div class="col-md-12 col-sm-12 col-12"><input class="form-control" formControlName="email" placeholder="{{email}}" value="{{email}}" type="email"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  </form>
+
+  </ng-template>
+  <ng-template #modalFooter>
+    <div class="container-fluid">
+      <div class="row">
+      	<div class="col-md-2 col-sm-0 col-0">
+      	</div>
+      	<div class="col-md-4 col-sm-12 col-12">
+      		<button class="btn btn-item-create btn-success btn-block text-center" (click)="onSubmit()" style="margin:3px;">{{ translate("save") }}</button>
+      	</div>
+      	<div class="col-md-4 col-sm-12 col-12">
+      		<button class="btn btn-item-create btn-default btn-block text-center" (click)="closeEditModal()" style="margin:3px;">{{ translate("cancel") }}</button>
+      	</div>
+      	<div class="col-md-2 col-sm-0 col-0">
+      	</div>
+      </div>
+    </div>
+  </ng-template>
+
+</app-modal>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<app-modal #deleteDialog>
+  <ng-template #modalHeader>Delete User</ng-template>
+  <ng-template #modalBody>
+    <div class="container">
+    <div class="row alert alert-info">
+      <div class="col-md-10 form-inline">
+        <h5>Are you sure you want to delete "{{fullName}}"?</h5>
+      </div>
+    </div>
+    </div>
+    <!--<h3 style="text-align:center;">Are you sure?</h3>-->
+  </ng-template>
+
+
+
+  <ng-template #modalFooter>
+    <div class="container-fluid">
+      <div class="row">
+      	<div class="col-md-2 col-sm-0 col-0">
+      	</div>
+      	<div class="col-md-4 col-sm-12 col-12">
+      		<button class="btn btn-item-create btn-danger btn-block text-center" (click)="onDeleteSubmitModal()" style="margin:3px;">{{ translate("delete") }}</button>
+      	</div>
+      	<div class="col-md-4 col-sm-12 col-12">
+      		<button class="btn btn-item-create btn-default btn-block text-center" (click)="closeDeleteModal()" style="margin:3px;">{{ translate("cancel") }}</button>
+      	</div>
+      	<div class="col-md-2 col-sm-0 col-0">
+      	</div>
+      </div>
+    </div>
+  </ng-template>
+
+</app-modal>
