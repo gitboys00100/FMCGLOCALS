@@ -1,0 +1,169 @@
+<app-modal #newretailerCreateModal>
+	<ng-template #modalHeader>Add Retailer</ng-template>
+
+	<ng-template #modalBody>
+		<div class="content">
+			<form [formGroup]="newRetailerForm" id="newRetailerForm">
+					<div class="row">
+						<div class="col-md-8">
+							<h4 style="margin-bottom:10px;font-weight:normal;">Retailer Details</h4>
+							<div class="row">
+								<div class="col-md-6">
+									<div class="form-group">
+										<label for="store_name">Store Name <span class="required-text">*</span></label>
+										<input type="text" class="form-control" id="store_name"
+										[ngClass]="{ 'is-invalid': submitted && f.store_name.errors }" formControlName="store_name">
+										<div *ngIf="submitted && f.store_name.errors" class="invalid-feedback">
+                        <div *ngIf="f.store_name.errors.required">Store Name is required</div>
+                    </div>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-group">
+										<label for="store_owner">Store Owner/Person <span class="required-text">*</span></label>
+										<input type="text" class="form-control" id="store_owner"
+										[ngClass]="{ 'is-invalid': submitted && f.store_owner.errors }" formControlName="store_owner">
+										<div *ngIf="submitted && f.store_owner.errors" class="invalid-feedback">
+                        <div *ngIf="f.store_owner.errors.required">Store Owner is required</div>
+                    </div>
+									</div>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col-md-6">
+									<div class="form-group">
+										<label for="credit_limit">Credit Limit <span class="required-text">*</span></label>
+										<input type="text" (change)="convertToNegative()" class="form-control" id="credit_limit" min="0"
+										[ngClass]="{ 'is-invalid': submitted && f.credit_limit.errors }" formControlName="credit_limit">
+										<div *ngIf="submitted && f.credit_limit.errors" class="invalid-feedback">
+                        <div *ngIf="f.credit_limit.errors.required">Credit Limit is required</div>
+                    </div>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-group">
+										<label for="retailer_type">Retailer Type <span class="required-text">*</span></label>
+										<select class="form-control" id="retailer_type"
+										[ngClass]="{ 'is-invalid': submitted && f.retailer_type.errors }" formControlName="retailer_type">
+											<option selected disabled>Choose a Retailer Type</option>
+											<option *ngFor="let d of retailer_type" [value]="d.id">{{ d.name }}</option>
+										</select>
+										<div *ngIf="submitted && f.retailer_type.errors" class="invalid-feedback">
+                        <div *ngIf="f.retailer_type.errors.required">Retailer Type is required</div>
+                    </div>
+									</div>
+								</div>
+								<div class="col-md-12">
+									<div class="form-group">
+										<label for="agent">Agent <span class="required-text">*</span></label>
+										<select class="form-control" id="agents" *ngFor="let a of agents"
+										[ngClass]="{ 'is-invalid': submitted && f.agents.errors }" formControlName="agents">
+											<option selected disabled>Choose an Agent</option>
+											<option *ngFor="let d of a.data" [value]="d.id">{{ d.first_name + ' ' + d.last_name }}</option>
+										</select>
+										<div *ngIf="submitted && f.agents.errors" class="invalid-feedback">
+                        <div *ngIf="f.agents.errors.required">Agent is required</div>
+                    </div>
+									</div>
+								</div>
+
+							</div>
+						</div>
+						<div class="col-md-4 text-center">
+							<div class="container-fluid" id="imageContainer">
+								<img src="{{ defaultImgPath }}" id="profile_image">
+							</div>
+							<label for="file-input-upload" class="custom-file-upload" [ngClass]="{ 'invalid_box': submitted && f.image_name.errors }">
+							    <i class="fa fa-cloud-upload"></i> Upload Agent Image
+							</label>&nbsp;&nbsp;<span class="required-text">*</span>
+							<div *ngIf="submitted && f.image_name.errors" class="invalid_text">
+									<div *ngIf="f.image_name.errors.required">Image is required</div>
+							</div>
+							<input id="file-input-upload" (change)="setImage($event)" accept="image/*" name="image_upload" type="file" #fileInput/>
+						</div>
+
+					</div>
+					Address
+					<input type="hidden" class="form-control" placeholder="image_name" formControlName="image_name" id="image_name">
+					<input type="hidden" class="form-control" id="fname">
+					<input type="hidden" class="form-control" placeholder="coordinates" formControlName="coordinates">
+					<input type="hidden" class="form-control" placeholder="house_number_street" formControlName="house_number_street">
+					<input type="hidden" class="form-control" placeholder="township" formControlName="township">
+					<input type="hidden" class="form-control" placeholder="country" formControlName="country">
+					<div class="row">
+						<div class="col-md-6">
+							<div class="row">
+								<div class="col-md-5">
+									<div class="form-group">
+										<label for="street">House Number</label>
+										<input type="number" (input)="setHouseNumber($event.target.value)" class="form-control" id="house_number" formControlName="house_number">
+									</div>
+								</div>
+								<div class="col-md-7">
+									<div class="form-group">
+										<label for="street">Street <span class="required-text">*</span></label>
+										<input type="text" (change)="setStreet($event.target.value)"  class="form-control" id="street" formControlName="street"
+										[ngClass]="{ 'invalid_box': submitted && f.street.errors }">
+										<div *ngIf="submitted && f.street.errors" class="invalid_text">
+                        <div *ngIf="f.street.errors.required">Street is required</div>
+                    </div>
+									</div>
+								</div>
+
+								<div class="col-md-6">
+									<div class="form-group">
+										<label for="district">Township <span class="required-text">*</span></label>
+										<select class="form-control" (change)="setTownship($event.target.value)" id="township" [(ngModel)]='location.address_level_2' [ngModelOptions]="{standalone: true}"
+										(change)="updateOnMap()" [ngClass]="{ 'invalid_box': submitted && f.township.errors }">
+											<option selected disabled>Choose Township</option>
+												<option>Yangon City</option>
+												<option>Bahan Township</option>
+												<option>Makati City</option>
+												<option>Yangon</option>
+										</select>
+										<div *ngIf="submitted && f.township.errors" class="invalid_text">
+                        <div *ngIf="f.township.errors.required">Township is required</div>
+                    </div>
+									</div>
+								</div>
+
+								<div class="col-md-6">
+									<div class="form-group">
+										<label for="region">Country <span class="required-text">*</span></label>
+										<select class="form-control" (change)="setCountry($event.target.value)" id="country" [(ngModel)]='location.address_country' [ngModelOptions]="{standalone: true}"
+										(change)="updateOnMap()" [ngClass]="{ 'invalid_box': submitted && f.country.errors }">
+											<option selected disabled>Choose Country</option>
+											<option>Philippines</option>
+											<option>Myanmar</option>
+										</select>
+										<div *ngIf="submitted && f.country.errors" class="invalid_text">
+                        <div *ngIf="f.country.errors.required">Country is required</div>
+                    </div>
+									</div>
+								</div>
+
+							</div>
+						</div>
+						<div class="col-md-6">
+							<agm-map [(latitude)]="location.lat" [(longitude)]="location.lng" [(zoom)]="location.zoom" [disableDefaultUI]="true" [zoomControl]="true" [(fitBounds)]='location.viewport' id="mapContainer">
+								<agm-marker [(latitude)]="location.marker.lat" [(longitude)]="location.marker.lng" [markerDraggable]="location.marker.draggable" (dragEnd)='markerDragEnd($event)'></agm-marker>
+							</agm-map>
+						</div>
+					</div>
+
+			</form>
+
+    </div>
+  </ng-template>
+	<ng-template #modalFooter>
+		<div class="row" id="modalButtons">
+			<div class="col-md-6 col-sm-6 col-12 col-lg-6 text-right" style="padding:5px;">
+				<button class="btn btn-item-create btn-success buttonBlock" (click)="submitRetailerForm()">Save</button>
+			</div>
+			<div class="col-md-6 col-sm-6 col-12 col-lg-6" style="padding:5px;">
+				<button class="btn btn-item-create btn-default-color btn-default buttonBlock" (click)="closeModal()">Cancel</button>
+			</div>
+		</div>
+	</ng-template>
+</app-modal>
