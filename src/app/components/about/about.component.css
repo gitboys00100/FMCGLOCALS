@@ -1,0 +1,130 @@
+.container {
+    width: 100% !important;
+    padding: 0 2vw;
+    margin: 0 !important;
+    max-width: none !important;
+}
+
+.card {
+    border-radius: 5px;
+    box-shadow: 0 6px 10px -4px rgba(0,0,0,.15);
+    background-color: #fff;
+    color: #252422;
+    margin-bottom: 20px;
+    position: relative;
+    border: 0;
+    transition: box-shadow .2s ease,-webkit-transform .3s cubic-bezier(.34,2,.6,1);
+    transition: transform .3s cubic-bezier(.34,2,.6,1),box-shadow .2s ease;
+    transition: transform .3s cubic-bezier(.34,2,.6,1),box-shadow .2s ease,-webkit-transform .3s cubic-bezier(.34,2,.6,1);
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+}
+
+.card .card-header:not([data-background-color]) {
+    background-color: initial;
+}
+
+.card .card-header {
+    padding: 15px 15px 0;
+    border: 0;
+    padding: .75rem 1.25rem;
+    margin-bottom: 0;
+    background-color: rgba(0,0,0,.03);
+    display: block;
+    box-shadow: 0 1px 2px rgba(10, 10, 10, 0.1);
+}
+
+.card .card-header .card-title {
+    margin-top: 10px;
+    margin-bottom: 0 !important;
+    font-size: 1.57em;
+    line-height: 1.4em;
+    color: #66615b;
+    font-weight: 400;
+}
+
+.card .card-header .card-category {
+    font-size: 1em;
+    margin: 0 !important;
+}
+
+.card .card-header .card-category .category {
+    text-transform: capitalize;
+    font-weight: 400;
+    color: #9a9a9a;
+    font-size: .7142em;
+}
+
+.card-header:first-child {
+    border-radius: calc(.25rem - 1px) calc(.25rem - 1px) 0 0;
+}
+
+.card-body {
+    display: block;
+}
+
+.card-footer {
+    border-top: 1px solid rgba(10, 10, 10, 0.1);
+    display: block;
+    background: #fff;
+}
+
+.card-footer .stats {
+    color: #9a9a9a;
+    font-size: .7142em;
+}
+
+.table-scroll {
+    position: relative;
+    width:100%;
+    z-index: 1;
+    margin: auto;
+    overflow: auto;
+    height: 325px;
+    margin-bottom: 1vh;
+}
+
+.table-scroll table {
+    width: 100%;
+    min-width: 1280px;
+    margin: auto;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.table-wrap {
+    position: relative;
+}
+
+.table-scroll th,
+.table-scroll td {
+    padding: 5px 10px;
+    border: 1px solid #dee2e6;
+    background: #fff;
+    vertical-align: top;
+}
+
+.table-scroll thead th {
+    width:100px;
+    min-width:50px;
+    background: #6c757d;
+    color: #fff;
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    z-index:4;
+}
+
+/* safari and ios need the tfoot itself to be position:sticky also */
+.table-scroll tfoot,
+.table-scroll tfoot th,
+.table-scroll tfoot td {
+    position: -webkit-sticky;
+    position: sticky;
+    bottom: 0;
+    background: #666;
+    color: #fff;
+    z-index:4;
+}

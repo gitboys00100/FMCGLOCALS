@@ -1,0 +1,73 @@
+:host ::ng-deep .fmcg-modal .fmcg-modal-content {
+  width: 30%;
+  margin: 50px auto;
+  overflow-y: auto;
+}
+
+:host ::ng-deep .fmcg-modal {
+  overflow: auto !important;
+  height: 100%;
+}
+
+:host ::ng-deep .fmcg-modal .fmcg-modal-body{
+  overflow: auto !important;
+  max-height: 350px !important;
+}
+
+:host ::ng-deep .fmcg-modal .fmcg-modal-background {
+  height: 700px;
+  width: 100%;
+}
+@media (max-width: 767px) {
+    .text-right, .text-left {
+      text-align: center !important
+    }
+}
+.btn-default{
+  background-color: #DCDCDC !important;
+}
+
+.pd-bt{
+  padding-bottom: 2px !important;
+}
+
+header {
+	background: #6a6d72;
+	width: 100%;
+}
+.dropdown-item{
+	transition: opacity .2s cubic-bezier(.4,0,.2,1) !important;
+	opacity: 1;
+}
+.dropdown-menu {
+  -webkit-transition: all 0.7s ease;
+  transition: all 0.7s ease;
+  -o-transition: all 0.7s ease;
+}
+
+.link-active {
+	border-bottom: 3px solid white;
+}
+
+.nav-link{
+	padding: 20px 24px !important;
+}
+
+.fixed-top{
+	z-index: 3;
+}
+
+.navbar-brand, #demo-menu-lower-left{
+	color: #fff !important;
+	font-size: 20px;
+  line-height: 1;
+  letter-spacing: .02em;
+  font-weight: 400;
+}
+.bg-dark{
+	background: #6a6d72 !important;
+	padding: 0px 40px 0px 80px;
+}
+.pointer{
+	cursor: pointer;
+}
