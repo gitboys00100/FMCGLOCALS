@@ -1,0 +1,292 @@
+<div class="routestab">
+    <div class="container">
+        <app-dashboard-modal #onViewItemComponent></app-dashboard-modal>
+
+         <div class="row">
+             <div class="col-md-6">
+                 <div class="card">
+                     <div class="card-header">
+                         <h5 class="card-title">Top Customers</h5>
+                     </div>
+                     <div class="card-body">
+                         <div class="row" *ngIf="topCustomers.length && topCustomersChart">
+                             <div class="col-md-12" *ngIf="isTopCustomerTable">
+                                 <div id="table-scroll" class="table-scroll">
+                                     <table id="main-table" class="main-table">
+                                         <thead>
+                                             <tr>
+                                                 <th scope="col">Customer Name</th>
+                                                 <th scope="col">Address</th>
+                                                 <th scope="col">Assigned Agent</th>
+                                                 <th scope="col">Monthly Sales</th>
+                                                 <th scope="col">% Share</th>
+                                             </tr>
+                                         </thead>
+                                         <tbody>
+                                             <tr *ngFor="let data of topCustomers">
+                                                 <td scope="col">{{ data.retailer }}</td>
+                                                 <td scope="col">{{ data.address }}</td>
+                                                 <td scope="col">{{ data.agent }}</td>
+                                                 <td scope="col">{{ data.monthly_sales }}</td>
+                                                 <td scope="col">{{ data.percent_share }}</td>
+                                             </tr>
+                                         </tbody>
+                                     </table>
+                                 </div>
+                             </div>
+                             <div class="col-md-12" *ngIf="!isTopCustomerTable">
+                                 <div style="width: 100%;">
+                                     <canvas baseChart
+                                         [data]="topCustomersChart.data"
+                                         [labels]="topCustomersChart.labels"
+                                         [options]="legendOptions"
+                                         [chartType]="topCustomersChart.chartType">
+                                     </canvas>
+                                 </div>
+                             </div>
+                         </div>
+
+                         <div class="row" *ngIf="!topCustomers.length || !topCustomersChart">
+                             <div class="col-md-12">
+                                 <p>No data available</p>
+                             </div>
+                         </div>
+                     </div>
+                     <div class="card-footer">
+                        <a href="#" *ngIf="topCustomers.length && topCustomersChart" (click)="onViewItem('top_customer', 'Top Customer', topCustomers)">View Table</a>
+                        <!-- <a href="#" *ngIf="isTopCustomerTable" (click)="onViewItem('top_customer', topCustomers)">Switch to graph</a>
+                        <a href="#" *ngIf="!isTopCustomerTable" (click)="onViewItem()">Switch to table</a> -->
+                     </div>
+                 </div>
+             </div>
+
+             <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title">Top Selling Products</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row" *ngIf="topProducts.length && topProductsChart">
+                            <div class="col-md-12" *ngIf="isTopProductsTable">
+                                <div id="table-scroll" class="table-scroll">
+                                    <table id="main-table" class="main-table">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">Product</th>
+                                                <th scope="col">Monthly Sales</th>
+                                                <th scope="col">% Share</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let data of topProducts">
+                                                <td scope="col">{{ data.product }}</td>
+                                                <td scope="col">{{ data.monthly_sales }}</td>
+                                                <td scope="col">{{ data.percent_share }}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="col-md-12" *ngIf="!isTopProductsTable">
+                                <div style="width: 100%;">
+                                    <canvas baseChart
+                                        [data]="topProductsChart.data"
+                                        [labels]="topProductsChart.labels"
+                                        [options]="legendOptions"
+                                        [chartType]="topProductsChart.chartType">
+                                    </canvas>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row" *ngIf="!topProducts.length || !topProductsChart">
+                            <div class="col-md-12">
+                                <p>No data available</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <!-- <a href="#" *ngIf="isTopProductsTable" (click)="onToggleIsProductTable()">Switch to graph</a>
+                        <a href="#" *ngIf="!isTopProductsTable" (click)="onToggleIsProductTable()">Switch to table</a> -->
+                        <a href="#" *ngIf="topProducts.length && topProductsChart" (click)="onViewItem('top_products', 'Top Products', topProducts)">View Table</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title">Customer Issues</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row" *ngIf="topCustomerIssues.length && topCustomerIssuesChart">
+                            <div class="col-md-12" *ngIf="isTopCustomerIssuesTable">
+                                <div id="table-scroll" class="table-scroll">
+                                    <table id="main-table" class="main-table">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">Customer Name</th>
+                                                <th scope="col">No of Issues</th>
+                                                <th scope="col">No of unresolved Issues</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let data of topCustomerIssues">
+                                                <td scope="col">{{ data.retailer }}</td>
+                                                <td scope="col">{{ data.number_of_issues }}</td>
+                                                <td scope="col">{{ data.number_of_unresolved_issues }}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="col-md-12" *ngIf="!isTopCustomerIssuesTable">
+                                <div style="width: 100%;">
+                                    <canvas baseChart
+                                        [data]="topCustomerIssuesChart.data"
+                                        [labels]="topCustomerIssuesChart.labels"
+                                        [options]="legendOptions"
+                                        [chartType]="topCustomerIssuesChart.chartType">
+                                    </canvas>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row" *ngIf="!topCustomerIssues.length || !topCustomerIssuesChart">
+                            <div class="col-md-12">
+                                <p>No data available</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <!-- <a href="#" *ngIf="isTopCustomerIssuesTable" (click)="onToggleIsTopCustomerIssuesTable()">Switch to graph</a>
+                        <a href="#" *ngIf="!isTopCustomerIssuesTable" (click)="onToggleIsTopCustomerIssuesTable()">Switch to table</a> -->
+                        <a href="#" *ngIf="topCustomerIssues.length && topCustomerIssuesChart" (click)="onViewItem('customer_issues', 'Customer Issues', topCustomerIssues)">View Table</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title">Customers with no Sales</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row" *ngIf="topCustNoSales.length && topCustNoSalesChart">
+                            <div class="col-md-12">
+                                <div id="table-scroll" class="table-scroll">
+                                    <table id="main-table" class="main-table">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">Customer Name</th>
+                                                <th scope="col">Address</th>
+                                                <th scope="col">Assigned Agent</th>
+                                                <th scope="col">Last Sale Amount</th>
+                                                <th scope="col">Last Sale Date</th>
+                                                <th scope="col">Last Visit Date</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let d of topCustNoSales">
+                                                <td scope="col">{{ d.retailer }}</td>
+                                                <td scope="col">{{ d.address }}</td>
+                                                <td scope="col">{{ d.agent ? d.agent : "Not assigned" }}</td>
+                                                <td scope="col">{{ d.last_sales_amount }}</td>
+                                                <td scope="col">
+                                                    <span *ngIf="d.last_sales_date">
+                                                        {{ d.last_sales_date | date : 'mediumDate' }}
+                                                    </span>
+                                                    <span *ngIf="!d.last_sales_date">-</span>
+                                                </td>
+                                                <td scope="col">
+                                                    <span *ngIf="d.last_visit_date">
+                                                        {{ d.last_visit_date | date : 'mediumDate' }}
+                                                    </span>
+                                                    <span *ngIf="!d.last_visit_date">-</span>    
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row" *ngIf="!topCustNoSales.length || !topCustNoSalesChart">
+                            <div class="col-md-12">
+                                <p>No data available</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <!-- <a href="#" *ngIf="isTopCustNoSalesTable" (click)="onToggleCustNoSaleTable()">Switch to graph</a>
+                        <a href="#" *ngIf="!isTopCustNoSalesTable" (click)="onToggleCustNoSaleTable()">Switch to table</a> -->
+                        <!-- <a href="#" *ngIf="topCustNoSales.length && topCustNoSalesChart" (click)="onViewItem('cust_no_sales', 'Customer with no Sales', topCustNoSales)">View Table</a> -->
+                        <div class="row">
+                            <div class="col-md-12 text-right">
+                                <button class="btn btn-primary" [disabled]="!topCustNoSales.length" (click)="downloadExcel('Customer with No Sales', topCustNoSales, 'cust_no_sales')">Download Excel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title">Least Visited Customer</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row" *ngIf="topLeastVisitedCustomer.length && topLeastVisitedCustomerChart">
+                            <div class="col-md-12">
+                                <div id="table-scroll" class="table-scroll">
+                                    <table id="main-table" class="main-table">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">Retailer</th>
+                                                <th scope="col">Address</th>
+                                                <th scope="col">Assigned Agent</th>
+                                                <th scope="col">No of Visits</th>
+                                                <th scope="col">Last Visit Date</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let d of topLeastVisitedCustomer">
+                                                <td scope="col">{{ d.retailer }}</td>
+                                                <td scope="col">{{ d.address }}</td>
+                                                <td scope="col">{{ d.agent ? d.agent : "Not assigned" }}</td>
+                                                <td scope="col">{{ d.number_of_visits }}</td>
+                                                <td scope="col">
+                                                    <span *ngIf="d.last_visit_date">
+                                                        {{ d.last_visit_date | date : 'mediumDate' }}
+                                                    </span>
+                                                    <span *ngIf="!d.last_visit_date">-</span>    
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row" *ngIf="!topLeastVisitedCustomer.length || !topLeastVisitedCustomerChart">
+                            <div class="col-md-12">
+                                <p>No data available</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <!-- <a href="#" *ngIf="isTopLeastVisitedCustomerTable" (click)="onToggleLeastVisitedCustomerTable()">Switch to graph</a>
+                        <a href="#" *ngIf="!isTopLeastVisitedCustomerTable" (click)="onToggleLeastVisitedCustomerTable()">Switch to table</a> -->
+                        <!-- <a href="#" *ngIf="topLeastVisitedCustomer.length && topLeastVisitedCustomerChart" (click)="onViewItem('least_visited_customer', 'Least Visited Customer', topLeastVisitedCustomer)">View Table</a> -->
+                        <div class="row">
+                            <div class="col-md-12 text-right">
+                                <button class="btn btn-primary" [disabled]="!topLeastVisitedCustomer.length" (click)="downloadExcel('Least Visited Customer', topLeastVisitedCustomer, 'least_visited_customer')">Download Excel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+         </div>
+    </div>
+ </div>
+ 

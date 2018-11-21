@@ -1,0 +1,24 @@
+1. Create Feature Module
+
+    ng create module modules/<module name> --routing
+
+2. Create components
+    ng create component modules/<component name>
+
+3. Configure Feature Module
+   a. Open ""<module name>-routing.module.ts" :
+      i. Insert all components both parent and children;
+      ii. Configure array routes, and define the path annnd component;
+  b. Open "<module name>.module.ts"
+      i. Check if the Routing module is imported, if not import it.
+      ii. Check if the components are imported, if not import it.
+      iii. Check @NgModule
+            iii.a if Routing Module is added in the imports array;
+            iii.b check if items i & ii are added in the declarations array;
+
+3. Configure and Link New Modules with Main Application
+    a. Open app.module.ts, import module;
+    b. Check @NgModule:
+        i. in the 'imports' array, add  module;
+    c. Open app.routes.ts, import module;
+    d. Configure routes and load children;
