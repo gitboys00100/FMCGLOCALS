@@ -1,0 +1,171 @@
+<app-modal #itineraryCreateModal>
+	<ng-template #modalHeader>New Itinerary</ng-template>
+
+	<ng-template #modalBody>
+		<div class="content">
+			<form [formGroup]="newItineraryForm" id="newItineraryForm">
+				<div class="container-fluid">
+				<h4 style="margin-bottom:10px;">Itinerary Details</h4>
+					<div class="row">
+						<div class="col-md-12">
+							<div class="row">
+								<div class="col-md-12">
+									<div class="form-group">
+										<label for="retailer">Agent <span class="required-text">*</span></label>
+										<select class="form-control" (change)="getRetailerByAgent($event.target.value)" *ngFor="let a of agents" [ngClass]="{ 'is-invalid': submitted && f.agent.errors }" formControlName="agent">
+											<option selected disabled>Choose Agent</option>
+											<option *ngFor="let d of a.data" [value]="d.id">{{ d.first_name + ' ' + d.last_name }}</option>
+										</select>
+										<div *ngIf="submitted && f.agent.errors" class="invalid-feedback">
+												<div *ngIf="f.agent.errors.required">Agent is required</div>
+										</div>
+									</div>
+
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-12">
+									<div class="form-group">
+										<label for="itinerary_name">Itinerary Label <span class="required-text">*</span></label>
+										<input type="text" class="form-control" id="itinerary_name" [ngClass]="{ 'is-invalid': submitted && f.itinerary_name.errors }" formControlName="itinerary_name">
+										<div *ngIf="submitted && f.itinerary_name.errors" class="invalid-feedback">
+                        <div *ngIf="f.itinerary_name.errors.required">Itinerary Name is required</div>
+                    </div>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="form-group col-md-11">
+									<label for="retailer">Add Retailer</label>
+									<select (change)="onRetailerSelect($event.target.value)" class="form-control">
+										<option selected disabled>Choose Retailer</option>
+										<option *ngFor="let ret of retailersByAgent " [value]="ret.id">{{ ret.name }}</option>
+									</select>
+								</div>
+								<div class="col-md-1">
+									<button class="btn btn-primary float-right" (click)="addRetailer(selectedRet)" type="button" id="plusBtn">
+										<i class="fa fa-plus" aria-hidden="true"></i>
+									</button>
+								</div>
+							</div>
+							Retailers <span class="required-text">*</span>
+							<input type="hidden" class="form-control" formControlName="retailers" >
+							<div *ngIf="submitted && f.retailers.errors" class="invalid-feedback">
+									<div *ngIf="f.retailers.errors.required">Retailers are required</div>
+							</div>
+							<div class="container-fluid" id="retailerBox" [ngClass]="{ 'invalid_box': submitted && f.retailers.errors }">
+									<div class="container-fluid eachRetailer">
+										<p [hidden]="noRetailer" class="noRetailer" [ngClass]="{ 'invalid_text': submitted && f.retailers.errors }">No retailer selected.</p>
+									</div>
+									<div class="container-fluid eachRetailer" [sortablejs]="selectedRetailers" [sortablejsOptions]="{ animation: 150 }">
+										<ul class="list-group" *ngFor="let selected of selectedRetailers; let count = index;">
+											<li class="list-group-item">
+													<b>{{ count + 1}}</b>
+													&nbsp;<i class="fa fa-bars" aria-hidden="true"></i>&nbsp;
+													{{ selected.name }}
+													<button class="btn btn-sm btn-primary float-right" (click)="onRetaileRemove(selected.id)" type="button" id="minusBtn">
+														<i class="fa fa-minus" aria-hidden="true"></i>
+													</button>
+											</li>
+										</ul>
+									</div>
+							</div>
+
+
+							Schedule <span class="required-text">*</span>
+							<input type="hidden" class="form-control" formControlName="schedule" >
+							<div class="container-fluid" id="scheduleBox" [ngClass]="{ 'invalid_box': submitted && f.schedule.errors }">
+								<div class="form-check">
+									<label class="form-check-label">
+										<input type="radio" class="form-check-input" (change)="onOtherSelect()" name="sched" checked>Daily
+									</label>
+								</div>
+								<div class="form-check">
+									<label class="form-check-label">
+										<input type="radio" class="form-check-input" (change)="onCustomCheck()" name="sched">Custom
+										<button [hidden]="calendarBtnHide" type="button" class="btn btn-primary btn-sm" id="calendarBtn"
+										(click)="openSchedulePicker()">
+											<i class="fa fa-calendar fa-xs" aria-hidden="true"></i>
+										</button>
+										<div [hidden]="calendarBtnHide" id="customDays">
+											<span *ngFor="let d of days; let x=index;">
+												{{ d.day }}<span *ngIf="(x+1)<days.length">,</span>
+											</span>
+										</div>
+									</label>
+								</div>
+							</div>
+
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</ng-template>
+
+	<ng-template #modalFooter>
+		<div class="row" id="modalButtons">
+			<div class="col-md-6 col-sm-6 col-12 col-lg-6 text-right" style="padding:5px;">
+				<button class="btn btn-item-create btn-success buttonBlock" (click)="submitItineraryForm()">Save</button>
+			</div>
+			<div class="col-md-6 col-sm-6 col-12 col-lg-6" style="padding:5px;">
+				<button class="btn btn-item-create btn-default-color btn-default buttonBlock" (click)="closeModal()">Cancel</button>
+			</div>
+		</div>
+	</ng-template>
+</app-modal>
+
+
+<app-modal #schedulepicker>
+	<ng-template #modalHeader>Custom Schedule</ng-template>
+	<ng-template #modalBody>
+		<div class="content">
+			<form id="customScheduleForm">
+				<div class="container-fluid">
+					<h4 style="margin-bottom:10px;">Schedule Details</h4>
+					<div class="row">
+							<div class="form-group col-md-11">
+								<label for="day">Day</label>
+								<select class="form-control" (change)="onDaySelect($event.target.value)">
+									<option selected disabled>Choose a Day</option>
+									<option value="1">Mon</option>
+									<option value="2">Tue</option>
+									<option value="3">Wed</option>
+									<option value="4">Thur</option>
+									<option value="5">Fri</option>
+									<option value="6">Sat</option>
+									<option value="7">Sun</option>
+								</select>
+							</div>
+							<div class="col-md-1">
+								<button class="btn btn-primary float-right" type="button" (click)="addDay(selectedDay)" id="plusBtn">
+									<i class="fa fa-plus" aria-hidden="true"></i>
+								</button>
+							</div>
+					</div>
+					Schedule
+					<div class="container-fluid" id="scheduleBox2">
+							<div class="container-fluid">
+								<p [hidden]="noDays" class="noDays">No days selected.</p>
+								<ul class="list-group" id="dayList" *ngFor="let d of days">
+									<li class="list-group-item"> {{ d.day }}
+										<i class="fa fa-md fa-minus-square float-right" id="removeBtn" (click)="removeDay(d.id)" aria-hidden="true"></i>
+									</li>
+								</ul>
+							</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</ng-template>
+	<ng-template #modalFooter>
+		<div class="row" id="modalButtons">
+			<div class="col-md-6 col-sm-6 col-12 col-lg-6 text-right" style="padding:5px;">
+				<button class="btn btn-item-create btn-success buttonBlock" (click)="saveSchedulePicker()">Save</button>
+			</div>
+			<div class="col-md-6 col-sm-6 col-12 col-lg-6" style="padding:5px;">
+				<button class="btn btn-default-color btn-item-create btn-default buttonBlock" (click)="closeSchedulePicker()">Cancel</button>
+			</div>
+		</div>
+	</ng-template>
+</app-modal>

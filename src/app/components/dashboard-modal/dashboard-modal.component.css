@@ -1,0 +1,71 @@
+:host ::ng-deep .fmcg-modal .fmcg-modal-content {
+    width: 94%;
+    margin-top: 18vh;
+    display: block;
+    height: 53vh;
+}
+
+:host ::ng-deep .fmcg-modal {
+  /* overflow: auto !important; */
+  width: 100%;
+  height: 100%;
+}
+
+:host ::ng-deep .fmcg-modal .fmcg-modal-background {
+  height: 100%;
+  width: 100%;
+}
+
+
+.table-scroll {
+    position: relative;
+    width:100%;
+    z-index: 1;
+    margin: auto;
+    overflow: auto;
+    height: 325px;
+    margin-bottom: 1vh;
+}
+
+.table-scroll table {
+    width: 100%;
+    min-width: 1280px;
+    margin: auto;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.table-wrap {
+    position: relative;
+}
+
+.table-scroll th,
+.table-scroll td {
+    padding: 5px 10px;
+    border: 1px solid #dee2e6;
+    background: #fff;
+    vertical-align: top;
+}
+
+.table-scroll thead th {
+    width:100px;
+    min-width:50px;
+    background: #6c757d;
+    color: #fff;
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    z-index:4;
+}
+
+/* safari and ios need the tfoot itself to be position:sticky also */
+.table-scroll tfoot,
+.table-scroll tfoot th,
+.table-scroll tfoot td {
+    position: -webkit-sticky;
+    position: sticky;
+    bottom: 0;
+    background: #666;
+    color: #fff;
+    z-index:4;
+}

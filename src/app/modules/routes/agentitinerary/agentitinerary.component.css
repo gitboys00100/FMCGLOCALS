@@ -1,0 +1,75 @@
+:host ::ng-deep .fmcg-modal .fmcg-modal-content {
+    width: 60%;
+}
+:host ::ng-deep .fmcg-modal {
+  overflow: auto !important;
+  max-height: 200%;
+}
+
+:host ::ng-deep .fmcg-modal .fmcg-modal-background {
+  height: 700px;
+  min-height: 100%;
+  width: 100%;
+}
+
+.row-body {
+       display: none;
+ padding: 0 10px;
+    }
+.row-body.open {
+        display: block;
+   }
+
+   .btn-gray {
+   		background-color: #6c757d;
+color: white;
+   }
+
+.list-group-item {
+	padding: .10rem 1.25rem;
+}
+
+.list-caret {
+	margin-top: 10px;
+
+}
+
+.scrollable_container {
+  max-height:160px;
+  overflow-y:auto;
+  overflow-x:hidden;
+}
+:host ::ng-deep .fmcg-modal .fmcg-modal-content {
+    width: 50%;
+		margin-top:100px;
+}
+
+.content {
+    padding: 0 40px;
+}
+
+.fa-barcode {
+    font-size: 4em;
+    margin: 0 auto;
+}
+
+.row-form {
+    margin-top: 1vh;
+}
+
+.rpad-left {
+    padding-left: 0;
+}
+
+.rpad-right {
+    padding-right: 0;
+}
+
+.no-margin {
+    margin: 0;
+}
+
+.btn-default-color {
+  background-color: #DCDCDC !important;
+  font-weight: 400 !important;
+}
