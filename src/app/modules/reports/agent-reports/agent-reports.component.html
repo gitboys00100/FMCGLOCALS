@@ -1,0 +1,311 @@
+<!--<div [ngClass]="{scrollable_container: itemsPerPage > 5}">-->
+<div>
+  <div style="margin-bottom:10px;">
+    <!-- {{ selectedDate | date: 'yyyy-MM-dd' }} -->
+      <div class="row row-filter">
+        <div class="col-md-1 col-form form-inline">
+            <label>Filters :</label>
+        </div>
+        <div class="col-md-3 col-form form-inline" >
+          <input class="form-control full-width" type="date" id="date" value="{{ today | date: 'yyyy-MM-dd' }}" (change)="onChangeDate($event.target.value)">
+        </div>
+        <div class="col-md-3 col-form form-inline">
+            <select (change)="setAgent($event.target.value)" class="form-control full-width">
+                <option selected value="All">All Agents</option>
+                <option *ngFor="let r of stock_issues | daySorter : selectedDate: pipeStatus: 'reports' | getuniqueonly" value="{{ r.user_id }}">{{ r.user.first_name+' '+r.user.last_name }}</option>
+            </select>
+        </div>
+        <div class="col-md-5 col-form form-inline">
+            <div class="input-group full-width less-mt" id="manageitsearch">
+                <input (input)="onFilterSearchChange($event)" (keydown)="onKeyDown($event)" [value]="searchQuery" class="form-control" placeholder="Search" type="text">
+                <div class="input-group-append">
+                    <button class="btn btn-secondary" type="button" (click)="onSearch()"><i class="fa fa-search"></i></button>
+                </div>
+            </div>
+        </div>
+      </div>
+  </div>
+  <div id="table-scroll" class="table-scroll" style="margin-bottom:5px;">
+    <table class="table table-bordered inventory-table" id="pdfContent">
+     <thead [ngClass]="{ 'adjust-width': (itemsPerPage > 5) }">
+       <tr class="tbl-header">
+         <th [class.active]="order === 'agent'"
+           (click)="setReportsOrder('agent', 'agent')">Agent
+           <span [hidden]="agent">
+             <span [hidden]="reverseAgent">▼</span>
+             <span [hidden]="!reverseAgent">▲</span>
+           </span>
+         </th>
+         <th [class.active]="order === 'transferordernumber'"
+           (click)="setReportsOrder('id', 'transferordernumber')">Order Number
+           <span [hidden]="transferordernumber">
+             <span [hidden]="reverseTransferOrderNumber">▼</span>
+             <span [hidden]="!reverseTransferOrderNumber">▲</span>
+           </span>
+         </th>
+         <th [class.active]="order === 'date'"
+           (click)="setReportsOrder('timestamp', 'date')">Date
+           <span [hidden]="date">
+             <span [hidden]="reverseDate">▼</span>
+             <span [hidden]="!reverseDate">▲</span>
+           </span>
+         </th>
+         <th>Product</th>
+         <th>UOM</th>
+         <th>Requested Quantity</th>
+         <th>Load In Quantity</th>
+         <th>Load Out Quantity</th>
+         <th>Estimated Sales</th>
+       </tr>
+     </thead>
+     <tbody class="scrollable-tbody" id="reportbody">
+       <tr *ngIf="loading">
+         <td colspan="9">
+           <div class="loader">
+             <img src="../../../../assets/img/loader.gif" class="img">
+           </div>
+         </td>
+       </tr>
+       <!--<tr *ngFor="let r of reports | daySorter : selectedDate: pipeStatus: 'reports' | search: filterSearchQuery | orderBy: order: reverse | selectSpecific : agents |  paginate: { itemsPerPage: itemsPerPage, currentPage: p }; let i=index;">-->
+       <tr *ngFor="let r of stock_issues | daySorter : selectedDate: pipeStatus: 'reports' | search: filterSearchQuery | orderByAgentReport: order: reverse | selectSpecificAgentReports : agents | paginate: { itemsPerPage: itemsPerPage, currentPage: p }; let i=index;">
+         <td>{{ r.user.first_name+' '+r.user.last_name }}
+         </td>
+         <td (click)="viewDetails(r.id)" class="link-text">{{ r.id }}</td>
+         <td>{{ r.timestamp | date: 'MMM d, y' }}</td>
+         <td class="products_col">
+           <div *ngIf="r.items.length <= 0">-</div>
+           <div *ngFor="let p of r.items;let i=index;">
+             <span *ngIf="i <= 1;else other">
+               <span *ngIf="i == 0">
+                 -{{ p.item.name }}
+               </span>
+               <span *ngIf="r.items.length > 2; else nomore">
+                 <span *ngIf="i == 1">
+                   -{{ p.item.name+'...' }}
+                   <a class="link-text" (click)="showMore(r.id)" id="{{ 'more_'+r.id }}">more</a>
+                 </span>
+               </span>
+               <ng-template #nomore>
+                 <span *ngIf="i == 1">
+                   -{{ p.item.name }}
+                 </span>
+               </ng-template>
+             </span>
+             <ng-template #other>
+               <span style="display:none" id="{{ 'collapse_productname_'+r.id }}">
+                 {{ p.item.name }}
+               </span>
+             </ng-template>
+           </div>
+         </td>
+         <td>
+           <div *ngIf="r.items.length <= 0">-</div>
+           <div *ngFor="let p of r.items;let i=index;">
+             <span *ngIf="i <= 1;else other">
+               {{ p.item.uom }}
+             </span>
+             <ng-template #other>
+               <span style="display:none" id="{{ 'collapse_uom_'+r.id }}">
+                 {{ p.item.uom }}
+               </span>
+             </ng-template>
+           </div>
+         </td>
+         <td>
+           <div *ngIf="r.items.length <= 0">-</div>
+           <div *ngFor="let p of r.items;let i=index;">
+             <span *ngIf="i <= 1;else other">
+               {{ p.quantity_requested }}
+             </span>
+             <ng-template #other>
+               <span style="display:none" id="{{ 'collapse_requestedquantity_'+r.id }}">
+                 {{ p.quantity_requested }}
+               </span>
+             </ng-template>
+           </div>
+         </td>
+         <td>
+           <div *ngIf="r.items.length <= 0">-</div>
+           <div *ngFor="let p of r.items;let i=index;">
+             <span *ngIf="i <= 1;else other">
+               {{ p.quantity_received }}
+             </span>
+             <ng-template #other>
+               <span style="display:none" id="{{ 'collapse_loadinquantity_'+r.id }}">
+                 {{ p.quantity_received }}
+               </span>
+             </ng-template>
+           </div>
+         </td>
+         <td>
+           <div *ngIf="r.items.length <= 0">-</div>
+           <div *ngFor="let p of r.items;let i=index;">
+             <span *ngIf="i <= 1;else other">
+               {{ p.quantity_returned }}
+             </span>
+             <ng-template #other>
+               <span style="display:none" id="{{ 'collapse_loadoutquantity_'+r.id }}">
+                 {{ p.quantity_returned }}
+               </span>
+             </ng-template>
+           </div>
+         </td>
+         <td>
+           <div *ngIf="r.items.length <= 0">-</div>
+           <div *ngFor="let p of r.items;let i=index;">
+             <span *ngIf="i <= 1;else other">
+               {{ p.projected_sales }}
+             </span>
+             <ng-template #other>
+               <span style="display:none" id="{{ 'collapse_estimatedsales_'+r.id }}">
+                 {{ p.projected_sales }}
+               </span>
+             </ng-template>
+           </div>
+         </td>
+       </tr>
+       <tr>
+         <td *ngIf="datacount <= 0 && !loading" colspan="9" style="text-align:center;">No reports found.</td>
+       </tr>
+     </tbody>
+    </table>
+  </div>
+
+</div>
+
+<app-modal #viewReportsDetail>
+	<ng-template #modalHeader>Product Details</ng-template>
+	<ng-template #modalBody>
+		<div class="container-fluid" style="margin-bottom:20px;" *ngFor="let r of stock_issues">
+      <div id="modalPdfContent" *ngIf="r.id == selectedIndex">
+
+        <div class="table-responsive" *ngIf="r.id == selectedIndex">
+          <table class="table table-bordered">
+            <thead class="tbl-header">
+              <tr>
+                <th>Product</th>
+                <th>UOM</th>
+                <th>Requested Quantity</th>
+                <th>Load In Quantity</th>
+                <th>Load Out Quantity</th>
+                <th>Estimated Sales</th>
+              </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let p of r.items">
+                  <td>{{ p.item.name }}</td>
+                  <td>{{ p.item.uom }}</td>
+                  <td>{{ p.quantity_requested }}</td>
+                  <td>{{ p.quantity_received }}</td>
+                  <td>{{ p.quantity_returned }}</td>
+                  <td>{{ p.projected_sales }}</td>
+                </tr>
+                <tr>
+                  <td *ngIf="!r.items" colspan="6" style="text-align:center;">No item found.</td>
+                </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="container-fluid" id="signaturebox" *ngIf="r.items">
+         <div class="row" *ngFor="let s of signatures">
+           <div class="col-md-6 col-sm-12 col-xs-12">
+             <h4 class="signature_label">LOAD IN</h4>
+             <div class="row">
+               <div class="col-md-6 col-sm-6 col-xs-6">
+                 <p class="signature_name">
+                   <span>Issued By: </span>
+                    {{ r.loadin_warehouse_staff_name }}</p>
+                    <div class="container-fluid" style="text-align:center;">
+                     <!--<img src="{{ loadin.blob }}" class="signature_img">-->
+                     <img src="{{ r.loadin_warehouse_signature }}" class="signature_img" alt="signature">
+                   </div>
+               </div>
+
+               <div class="col-md-6 col-sm-6 col-xs-6">
+                 <p class="signature_name">
+                   <span>Received By: </span>
+                    {{ r.user.first_name+' '+r.user.last_name }}</p>
+                    <div class="container-fluid" style="text-align:center;">
+                     <!--<img src="{{ loadin.blob }}" class="signature_img">-->
+                     <img src="{{ r.loadout_agent_signature }}" class="signature_img" alt="signature">
+                   </div>
+               </div>
+
+             </div>
+           </div>
+           <div class="col-md-6 col-sm-12 col-xs-12">
+             <h4 class="signature_label">LOAD OUT</h4>
+             <div class="row">
+               <div class="col-md-6 col-sm-6 col-xs-6">
+                 <p class="signature_name">
+                   <span>Issued By: </span>
+                    {{ r.user.first_name+' '+r.user.last_name }}</p>
+                 <div class="container-fluid" style="text-align:center;">
+                   <!--<img src="{{ loadout.blob }}" class="img-responsive signature_img">-->
+                   <img src="{{ r.loadout_agent_signature }}" class="signature_img" alt="signature">
+                 </div>
+               </div>
+               <div class="col-md-6 col-sm-6 col-xs-6">
+                 <p class="signature_name">
+                   <span>Received By: </span>
+                    {{ r.loadout_warehouse_staff_name }}</p>
+                 <div class="container-fluid" style="text-align:center;">
+                   <!--<img src="{{ loadout.blob }}" class="img-responsive signature_img">-->
+                   <img src="{{ r.loadout_warehouse_signature }}" class="signature_img" alt="signature">
+                 </div>
+               </div>
+
+             </div>
+           </div>
+         </div>
+        </div>
+
+      </div>
+
+    </div>
+  </ng-template>
+  <ng-template #modalFooter>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="dropdown pull-right">
+          <button class="btn btn-primary btn-item-create buttonBlock dropdown-toggle" id="exportBTN" type="button"
+          data-toggle="dropdown" style="text-align:center;">Download</button>
+          <div class="dropdown-menu">
+            <a class="dropdown-item" (click)="exportToFile('excel', 'modalPdfContent')">Excel</a>
+            <a class="dropdown-item" (click)="exportToFile('csv', 'modalPdfContent')">CSV</a>
+            <a class="dropdown-item" (click)="exportToFile('pdf', 'modalPdfContent')">PDF</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </ng-template>
+</app-modal>
+<div class="row" *ngIf="datacount > 0">
+  <div class="col-md-12" style="padding-bottom:10px;">
+    <div class="dropdown pull-right" style="margin-bottom:10px;">
+      <button class="btn btn-primary btn-item-create buttonBlock dropdown-toggle" type="button"
+      data-toggle="dropdown" style="text-align:center;">Download</button>
+      <div class="dropdown-menu">
+        <a class="dropdown-item" (click)="exportToFile('excel', 'pdfContent')">Excel</a>
+        <a class="dropdown-item" (click)="exportToFile('csv', 'pdfContent')">CSV</a>
+        <a class="dropdown-item" (click)="exportToFile('pdf','pdfContent')">PDF</a>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6 col-sm-6 col-xs-6 col-lg-6 form-inline">
+    <label>Show :</label>&nbsp;&nbsp;
+    <select (change)="onShowCountChange($event)" class="form-control sel-show">
+            <option selected value="5">5</option>
+            <option value="10">10</option>
+      <option value="25">25</option>
+      <option value="50">50</option>
+    </select>
+  </div>
+  <div class="col-md-6 col-sm-6 col-xs-6 col-lg-6">
+    <div class="form-group pg-form-group text-right">
+      <pagination-controls class="pagination" (pageChange)="p = $event"></pagination-controls>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,99 @@
+<table class="table table-bordered inventory-table">
+	<thead>
+		<tr class="tbl-header">
+			<th scope="col">Store Name</th>
+			<th scope="col">Store Person/Owner</th>
+			<th scope="col">Agent</th>
+			<th scope="col">Street</th>
+			<th scope="col">District</th>
+			<th scope="col">Township</th>
+			<th scope="col">Actions</th>
+		</tr>
+	</thead>
+
+<!--
+	<tbody>
+		<tr *ngFor="let retailer of retailerData | filter: filterCategory:filterSubCategory:filterDate | search: filterSearchQuery |  paginate: { itemsPerPage: itemsPerPage, currentPage: p }">
+			<td>{{ product.code }}</td>
+			<td>{{ product.name }}</td>
+			<td>{{ product.sku }}</td>
+			<td>{{ product.category }}</td>
+			<td>{{ product.sub_category }}</td>
+			<td class="text-right">&#x20b1; {{ product.price | number: '1.2-2' }}</td>
+			<td>{{ product.uom }}</td>
+			<td class="text-right">{{ product.qty }}</td>
+		</tr>
+	</tbody>
+-->
+<tbody>
+	
+</table>
+
+
+<!-- <div class="fmcg-table">
+	<div class="row header fmcg-table-row">
+		<div class="fmcg-table-cell col-md-1 col-xs-1">
+			SKU
+		</div>
+		<div class="fmcg-table-cell col-md-1 col-xs-1">
+			Quantity
+		</div>
+		<div class="fmcg-table-cell col-md-2 col-xs-2">
+			Category
+		</div>
+		<div class="fmcg-table-cell col-md-2 col-xs-2">
+			Sub Category
+		</div>
+		<div class="fmcg-table-cell col-md-2 col-xs-2">
+			Date Added
+		</div>
+		<div class="fmcg-table-cell col-md-2 col-xs-2">
+			Price
+		</div>
+		<div class="fmcg-table-cell col-md-2 col-xs-2">
+			Actions
+		</div>
+	</div>
+
+	<div class="row fmcg-table-row" *ngFor="let inventory of inventoryList | paginate: { itemsPerPage: 5, currentPage: p }">
+		<div class="fmcg-table-cell col-md-1 col-xs-1">
+			{{ inventory.sku }}
+		</div>
+		<div class="fmcg-table-cell col-md-1 col-xs-1">
+			{{ inventory.qty }}
+		</div>
+		<div class="fmcg-table-cell col-md-2 col-xs-2">
+			{{ inventory.category }}
+		</div>
+		<div class="fmcg-table-cell col-md-2 col-xs-2">
+			{{ inventory.sub_category }}
+		</div>
+		<div class="fmcg-table-cell col-md-2 col-xs-2">
+			{{ inventory.date_added }}
+		</div>
+		<div class="fmcg-table-cell col-md-2 col-xs-2">
+			&#x20b1; {{ inventory.price | number: '1.2-2' }}
+		</div>
+		<div class="fmcg-table-cell col-md-2 col-xs-2">
+			<button class="btn btn-primary">Edit</button>&nbsp;
+			<button class="btn btn-danger">Delete</button>
+		</div>
+	</div>
+</div> -->
+
+<div class="row">
+	<div class="col-md-6 form-inline">
+		<label>Show :</label>&nbsp;&nbsp;
+		<select (change)="onShowCountChange($event)" class="form-control sel-show full-width">
+            <option selected value="5">5</option>
+            <option value="10">10</option>
+			<option value="25">25</option>
+			<option value="50">50</option>
+        </select>
+    </div>
+	<div class="col-md-6">
+		<div class="form-group pg-form-group text-right">
+			<pagination-controls class="pagination" (pageChange)="p = $event"></pagination-controls>
+		</div>
+	</div>
+</div>

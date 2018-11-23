@@ -1,0 +1,161 @@
+<app-modal #onViewItemComponent>
+	<ng-template #modalHeader>{{ title }}</ng-template>
+	
+	<ng-template #modalBody>
+		<div class="row" *ngIf="data.length">
+			<div class="col-md-12" *ngIf="type === 'top_customer'">
+				<div id="table-scroll" class="table-scroll">
+					<table id="main-table" class="main-table">
+						<thead>
+							<tr>
+								<th scope="col">Customer Name</th>
+								<th scope="col">Address</th>
+								<th scope="col">Assigned Agent</th>
+								<th scope="col">Monthly Sales</th>
+								<th scope="col">% Share</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr *ngFor="let d of data">
+								<td scope="col">{{ d.retailer }}</td>
+								<td scope="col">{{ d.address }}</td>
+								<td scope="col">{{ d.agent ? d.agent : "Not assigned" }}</td>
+								<td scope="col">{{ d.monthly_sales }}</td>
+								<td scope="col">{{ d.percent_share }}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+
+			<div class="col-md-12" *ngIf="type === 'top_products'">
+				<div id="table-scroll" class="table-scroll">
+					<table id="main-table" class="main-table">
+						<thead>
+							<tr>
+								<th scope="col">Product</th>
+								<th scope="col">Monthly Sales</th>
+								<th scope="col">% Share</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr *ngFor="let d of data">
+								<td scope="col">{{ d.product }}</td>
+								<td scope="col">{{ d.monthly_sales }}</td>
+								<td scope="col">{{ d.percent_share }}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+
+			<div class="col-md-12" *ngIf="type === 'cust_no_sales'">
+				<div id="table-scroll" class="table-scroll">
+					<table id="main-table" class="main-table">
+						<thead>
+							<tr>
+								<th scope="col">Customer Name</th>
+								<th scope="col">Address</th>
+								<th scope="col">Assigned Agent</th>
+								<th scope="col">Last Sale Amount</th>
+								<th scope="col">Last Sale Date</th>
+								<th scope="col">Last Visit Date</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr *ngFor="let d of data">
+								<td scope="col">{{ d.retailer }}</td>
+								<td scope="col">{{ d.address }}</td>
+								<td scope="col">{{ d.agent ? d.agent : "Not assigned" }}</td>
+								<td scope="col">{{ d.last_sales_amount }}</td>
+								<td scope="col">
+									<span *ngIf="d.last_sales_date">
+										{{ d.last_sales_date | date : 'mediumDate' }}
+									</span>
+									<span *ngIf="!d.last_sales_date">-</span>
+								</td>
+								<td scope="col">
+									<span *ngIf="d.last_visit_date">
+										{{ d.last_visit_date | date : 'mediumDate' }}
+									</span>
+									<span *ngIf="!d.last_visit_date">-</span>    
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+
+			<div class="col-md-12" *ngIf="type === 'customer_issues'">
+				<div id="table-scroll" class="table-scroll">
+					<table id="main-table" class="main-table">
+						<thead>
+							<tr>
+								<th scope="col">Customer Name</th>
+								<th scope="col">Address</th>
+								<th scope="col">Assigned Agent</th>
+								<th scope="col">No of Issues</th>
+								<th scope="col">No of unresolved Issues</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr *ngFor="let d of data">
+								<td scope="col">{{ d.retailer }}</td>
+								<td scope="col">{{ d.address }}</td>
+								<td scope="col">{{ d.agent ? d.agent : "Not assigned" }}</td>
+								<td scope="col">{{ d.number_of_issues }}</td>
+								<td scope="col">{{ d.number_of_unresolved_issues }}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+
+			<div class="col-md-12" *ngIf="type === 'least_visited_customer'">
+				<div id="table-scroll" class="table-scroll">
+					<table id="main-table" class="main-table">
+						<thead>
+							<tr>
+								<th scope="col">Retailer</th>
+								<th scope="col">Address</th>
+								<th scope="col">Assigned Agent</th>
+								<th scope="col">No of Visits</th>
+								<th scope="col">Last Visit Date</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr *ngFor="let d of data">
+								<td scope="col">{{ d.retailer }}</td>
+								<td scope="col">{{ d.address }}</td>
+								<td scope="col">{{ d.agent ? d.agent : "Not assigned" }}</td>
+								<td scope="col">{{ d.number_of_visits }}</td>
+								<td scope="col">
+									<span *ngIf="d.last_visit_date">
+										{{ d.last_visit_date | date : 'mediumDate' }}
+									</span>
+									<span *ngIf="!d.last_visit_date">-</span>    
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+
+		<div class="row" *ngIf="!data.length">
+			<div class="col-md-12">
+				<p>No data available</p>
+			</div>
+		</div>
+	</ng-template>
+	
+	<ng-template #modalFooter>
+		<div class="row">
+			<div class="col-md-12 text-right">
+				<button class="btn btn-primary" [disabled]="!data.length" (click)="downloadExcel()">Download Excel</button>
+				&nbsp;&nbsp;
+				<button class="btn btn-default" (click)="closeModal()">Close</button>
+			</div>
+		</div>
+	</ng-template>
+</app-modal>
