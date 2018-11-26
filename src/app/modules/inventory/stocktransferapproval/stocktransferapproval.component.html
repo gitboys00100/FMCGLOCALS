@@ -1,0 +1,58 @@
+<app-modal #itemStockApprovalModal>
+	<ng-template #modalHeader>Stock Approval</ng-template>
+
+	<ng-template #modalBody>
+			<div class="content">
+				<div class="table-responsive">
+					<table class="table borderedtable">
+							<thead>
+								<tr class="tbl-header">
+									<th scope="col" [class.active]="order === 'transfer_order'"
+						        (click)="setOrder('request_product')">Requested Product</th>
+									<th scope="col" [class.active]="order === 'transfer_order'"
+						        (click)="setOrder('uom')">UOM</th>
+									<th scope="col" [class.active]="order === 'transfer_order'"
+						        (click)="setOrder('requested_quantity')">Requested Quantity</th>
+									<th scope="col" [class.active]="order === 'transfer_order'"
+						        (click)="setOrder('approved_quantity')">Approved Quantity</th>
+									<th scope="col" [class.active]="order === 'transfer_order'"
+						        (click)="setOrder('estimated_sales')">Estimated Sales (QTY)</th>
+									<th scope="col" [class.active]="order === 'transfer_order'"
+						        (click)="setOrder('update_request')">Update Request</th>
+								</tr>
+						</thead>
+
+						<tbody>
+							<tr *ngFor="let datas of data_content.items">
+								<td>{{ datas.item.name}}</td>
+								<td>{{ datas.item.uom }}</td>
+								<td>{{ datas.quantity_requested }}</td>
+								<td>{{ datas.quantity_approved }}</td>
+								<td>{{ datas.projected_sales }}</td>
+								<td>
+									<ng-container *ngIf="datas.quantity_requested > datas.quantity_received; else elseTemplate">
+									<a class="links btn btn-success" (click)="onConfirmApproval(datas)">Confirm</a>
+									</ng-container>
+									<ng-template #elseTemplate>
+									-
+									</ng-template>
+
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+
+			</div>
+	</ng-template>
+
+	<ng-template #modalFooter>
+		<div class="row">
+			<div class="col-md-12 text-right mv-btn">
+				<button class="btn btn-item-create btn-default" (click)="closeModal()">Cancel</button>
+			</div>
+		</div>
+	</ng-template>
+</app-modal>
+
+<app-confirmapproval #onConfirmApprovalComponent></app-confirmapproval>

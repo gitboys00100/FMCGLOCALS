@@ -1,0 +1,29 @@
+<div class="routestab">
+    <div class="container">
+        <h3>Reports</h3>
+        <!-- Nav Tabs -->
+        <ul class="nav nav-tabs" role="tablist">
+            <li class="nav-item" *ngFor="let r of reports">
+                <a class="nav-link" *ngIf="r.name == selectedReport" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" routerLink="{{ r.link }}">Reports</a>
+            </li>
+        </ul>
+        <!-- Tab panes -->
+        <div class="tab-content" style="margin-bottom:35px;">
+            <div class="row">
+              <div class="col-md-2">
+              </div>
+              <div class="col-md-8">
+                  <label for="reports">Select Report</label>
+                  <select (change)="setSelectedReport($event.target.value)" class="form-control full-width">
+                      <option selected disabled>Choose Reports..</option>
+                      <option *ngFor="let r of reports" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" routerLink="{{ r.link }}" value="{{ r.name }}">{{ r.name }}</option>
+                  </select>
+              </div>
+              <div class="col-md-2">
+              </div>
+            </div>
+    				<h4 style="margin:25px;text-align:center;">{{ selectedReport }}</h4>
+            <router-outlet></router-outlet>
+        </div>
+    </div>
+</div>
