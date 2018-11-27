@@ -1,0 +1,224 @@
+:host ::ng-deep .fmcg-modal .fmcg-modal-content {
+    width: 45%;
+		margin-top:100px;
+}
+
+.divider{
+    width:5px;
+    height:auto;
+    display:inline-block;
+}
+
+
+
+.content {
+    padding: 0 40px;
+}
+
+
+
+.btn-new-itinerary {
+	width: 155px;
+	background-color: #6c757d;
+	color: white;
+}
+
+.inventory-table {
+    margin-top: 2vh;
+}
+
+.tbl-header {
+    background: #6c757d;
+}
+
+.tbl-header th {
+    color: white;
+}
+
+.sel-show {
+    width: 100px;
+}
+
+.pg-form-group, pagination-controls {
+    width: 100%;
+}
+
+.pg-form-group {
+    padding-top: 1.2vh;
+}
+
+pagination-controls {
+    display: block;
+}
+
+/*
+tbody {
+    display:block;
+    max-height:350px;
+    min-height:50px;
+    overflow:auto;
+}
+thead, tbody tr {
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    display:table;
+    width:100%;
+    table-layout:fixed;
+}
+*/
+
+.btn-default {
+	background-color: #ddd6f3;
+}
+
+.btn-info {
+color: #ffffff;
+background-color: #3498db;
+border-color: #3498db;
+}
+.btn-info:focus, .btn-info.focus {
+color: #ffffff;
+background-color: #217dbb;
+border-color: #16527a;
+}
+.btn-info:hover {
+color: #ffffff;
+background-color: #217dbb;
+border-color: #2077b2;
+}
+.btn-info:active, .btn-info.active, .open > .dropdown-
+toggle.btn-info {
+color: #ffffff;
+background-color: #217dbb;
+border-color: #2077b2;
+}
+
+.btn-danger {
+color: #ffffff;
+background-color: #e74c3c;
+border-color: #e74c3c;
+}
+.btn-danger:focus, .btn-danger.focus {
+color: #ffffff;
+background-color: #d62c1a;
+border-color: #921e12;
+}
+.btn-danger:hover {
+color: #ffffff;
+background-color: #d62c1a;
+border-color: #cd2a19;
+}
+.btn-danger:active, .btn-danger.active, .open
+> .dropdown-toggle.btn-danger {
+color: #ffffff;
+background-color: #d62c1a;
+border-color: #cd2a19;
+}
+
+
+
+html {
+  box-sizing: border-box;
+}
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+.intro {
+  max-width: 1280px;
+  margin: 1em auto;
+}
+.table-scroll {
+  position: relative;
+  width:100%;
+  z-index: 1;
+  margin: auto;
+  overflow: auto;
+  height: 310px;
+}
+.table-scroll table {
+  width: 100%;
+  min-width: 1280px;
+  margin: auto;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+.table-wrap {
+  position: relative;
+}
+.table-scroll th,
+.table-scroll td {
+  padding: 5px 10px;
+  border: 1px solid #dee2e6;
+  background: #fff;
+  vertical-align: top;
+}
+.table-scroll thead th {
+  width:100px;
+  min-width:50px;
+  background: #6c757d;
+  color: #fff;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  z-index:4;
+}
+/* safari and ios need the tfoot itself to be position:sticky also */
+.table-scroll tfoot,
+.table-scroll tfoot th,
+.table-scroll tfoot td {
+  position: -webkit-sticky;
+  position: sticky;
+  bottom: 0;
+  background: #666;
+  color: #fff;
+  z-index:4;
+}
+
+a:focus {
+  background: red;
+} /* testing links*/
+
+/*
+th:first-child {
+  position: -webkit-sticky;
+  position: sticky;
+  left: 0;
+  z-index: 2;
+  background: #ccc;
+}
+*/
+thead th:first-child,
+tfoot th:first-child {
+  z-index: 5;
+}
+
+.loader img {
+  padding:10px;
+  width:85px !important;
+  height:85px !important;
+  margin:25px;
+}
+.loader {
+  text-align: center;
+}
+
+:host ::ng-deep .fmcg-modal {
+  overflow: auto !important;
+  #height: 100%;
+}
+
+:host ::ng-deep .fmcg-modal .fmcg-modal-background {
+  /*border: 10px solid green;*/
+  height: 100%;
+  width: 100%;
+}
+
+@media (max-width:1900px){
+  :host ::ng-deep .fmcg-modal .fmcg-modal-background {
+    /*border: 10px solid blue;*/
+    height: 900px;
+    width: 100%;
+  }
+}
