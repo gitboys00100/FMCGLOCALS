@@ -1,0 +1,14 @@
+.container {
+    width: 100% !important;
+    padding: 0 5vw !important;
+    padding-top: 20px !important;
+    padding-bottom: 20px !important;
+    margin: 0 !important;
+    max-width: none !important;
+    overflow-y: scroll;
+    height: 100vh;
+}
+
+.container > *:last-child  {
+	margin-bottom: 12vh !important;
+}
