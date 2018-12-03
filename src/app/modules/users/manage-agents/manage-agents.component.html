@@ -1,0 +1,52 @@
+<div class="row" *ngIf="loading">
+	<div class="loader">
+		<img src="../../../../assets/img/loader.gif" class="img">
+	</div>
+</div>
+
+<div class="content" *ngIf="!loading">
+	<div class="row">
+		<div class="col-md-1 col-sm-3 col-form form-inline">
+			<label>Agent :</label>
+		</div>
+		<div class="col-md-3 col-sm-9 col-form form-inline">
+			<ngx-select-dropdown 
+				[multiple]="false" 
+				[(value)]="ngxSelectedAgent" 
+				[config]="config" 
+				[options]="agents" 
+				(change)="onSelectAgentChange($event)">
+			</ngx-select-dropdown>
+		</div>
+	
+		<div class="col-md-1 col-sm-3 col-form form-inline">
+			<label *ngIf="selectedAgent">Type :</label><label *ngIf="!selectedAgent">&nbsp;</label>
+		</div>
+		<div class="col-md-3 col-sm-9 col-form form-inline">
+			<select *ngIf="selectedAgent" class="form-control full-width" [(ngModel)]="componentType" (change)="onTypeChange($event)">
+				<option value="agent_activities" class="fake-anchor">Agent Activities</option>
+				<option value="agent_tracking" class="fake-anchor">Agent Tracking</option>	
+				<option value="assigned_retailers" class="fake-anchor">Assigned Retailers</option>	
+				<option value="unassigned_retailers" class="fake-anchor">Unassigned Retailers</option>	
+				<option value="set_targets" class="fake-anchor">Set Targets</option>	
+			</select>
+			<span *ngIf="!selectedAgent">&nbsp;</span>
+		</div>
+	
+		<div class="col-md-4 col-sm-3 col-form form-inline">&nbsp;</div>
+	</div>	
+
+	<div class="row no-agent" *ngIf="!selectedAgent">
+		<div class="col-md-12">
+			<h4>No agent selected..</h4>
+		</div>
+	</div>
+
+	<div class="row component-holder" *ngIf="selectedAgent">
+		<app-agent-activities [selectedAgent]="selectedAgent" *ngIf="componentType === 'agent_activities'" #agentActivitiesComponent></app-agent-activities>
+		<app-agent-tracking [selectedAgent]="selectedAgent" *ngIf="componentType === 'agent_tracking'"></app-agent-tracking>
+		<app-assigned-retailers [agents]="agents" [selectedAgent]="selectedAgent" *ngIf="componentType === 'assigned_retailers'"></app-assigned-retailers>
+		<app-unassigned-retailers [selectedAgent]="selectedAgent" *ngIf="componentType === 'unassigned_retailers'"></app-unassigned-retailers>
+		<app-set-targets [selectedAgent]="selectedAgent" *ngIf="componentType === 'set_targets'"></app-set-targets>
+	</div>
+</div>

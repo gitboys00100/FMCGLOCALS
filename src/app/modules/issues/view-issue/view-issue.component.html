@@ -1,0 +1,52 @@
+<app-modal #onViewItemComponent>
+	<ng-template #modalHeader>Issue Details</ng-template>
+	
+	<ng-template #modalBody>
+		<div class="row" *ngIf="issue">
+			<div class="col-md-4">
+				<div class="img-container">
+					<img *ngIf="issue.image" [src]="issue.image" alt="">
+					<p *ngIf="!issue.image" class="no-img">No image available..</p>
+				</div>
+			</div>
+			<div class="col-md-8">
+				<div class="row title-row">
+					<div class="col-md-12 no-pad-left">
+						<h3>{{ issue.title }}</h3>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-12 no-pad-left">
+						<p>{{ issue.description }}</p>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-6 no-pad-left"><strong>Retailer:</strong>&nbsp;{{ issue.retailer_name }}</div>
+					<div class="col-md-6"><strong>Status: </strong>&nbsp;{{ issue.status ? 'Resolved' : 'Open' }}</div>
+				</div>
+				<div class="row">
+					<div class="col-md-6 no-pad-left"><strong>Reported at:</strong>&nbsp;{{ issue.timestamp | date : 'longDate' }}</div>
+					<div class="col-md-6"><strong>Date Resolved: </strong>&nbsp;{{ issue.date_resolved | date : 'longDate' }}</div>
+				</div>
+				<div class="row">
+					<div class="col-md-12 no-pad-left"><strong>Comments: </strong></div>
+					<div class="col-md-12 no-pad-left">
+						<ul class="list-group">
+							<li class="list-group-item" *ngFor="let comment of issue.comments">
+								{{ comment.comment }}
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</ng-template>
+	
+	<ng-template #modalFooter>
+		<div class="row">
+			<div class="col-md-12 text-right">
+				<button class="btn btn-default" (click)="closeModal()">Close</button>
+			</div>
+		</div>
+	</ng-template>
+</app-modal>

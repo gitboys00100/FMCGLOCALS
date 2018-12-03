@@ -1,0 +1,32 @@
+<app-modal #onConfirmReassignRetailerComponent>
+	<ng-template #modalHeader>
+		Reassign Retailer(s)
+	</ng-template>
+	
+	<ng-template #modalBody>
+		<div class="row">
+			<div class="col-md-3 col-sm-3 col-form form-inline">
+				<label>New agent :</label>
+			</div>
+			<div class="col-md-6 col-sm-9 col-form form-inline">
+				<ngx-select-dropdown 
+					[multiple]="false" 
+					[(value)]="ngxSelectedAgent" 
+					[config]="config" 
+					[options]="agents" 
+					(change)="onSelectAgentChange($event)">
+				</ngx-select-dropdown>
+			</div>
+			<div class="col-md-3">&nbsp;</div>
+		</div>
+	</ng-template>
+	
+	<ng-template #modalFooter>
+		<div class="row">
+			<div class="col-md-12 text-right">
+				<button class="btn btn-success" (click)="onReassignRetailers()">Save</button>&nbsp;&nbsp;
+				<button class="btn btn-default" (click)="closeModal()">Cancel</button>
+			</div>
+		</div>
+	</ng-template>
+</app-modal>

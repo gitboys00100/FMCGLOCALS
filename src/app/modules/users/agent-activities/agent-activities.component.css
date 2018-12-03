@@ -1,0 +1,22 @@
+.content {
+    padding-top: 20px;
+    width: 100%;
+}
+
+.row {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+}
+
+.no-pad-left {
+    padding-left: 0 !important;
+}
+
+.loader {
+    margin: 35px auto;
+}
+
+.loader img {
+    width: 65px;
+    height: 65px;
+}

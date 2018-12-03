@@ -1,0 +1,20 @@
+<app-modal #onConfirmAssignRetailersComponent>
+	<ng-template #modalHeader>
+		Assign Retailer(s)
+	</ng-template>
+	
+	<ng-template #modalBody>
+		<p class="icon-container"><i class="fa fa-question-circle"></i></p>
+		<h3 class="q-text" *ngIf="agent">Are you sure you want to assign these retailers to {{ agent.first_name + ' ' + agent.last_name | titlecase }}?</h3>
+		<h3 class="q-text" *ngIf="!agent">Are you sure you want to assign these retailers?</h3>
+	</ng-template>
+	
+	<ng-template #modalFooter>
+		<div class="row">
+			<div class="col-md-12 text-right">
+				<button class="btn btn-success" (click)="onAssignRetailers()">Yes</button>&nbsp;&nbsp;
+				<button class="btn btn-default" (click)="closeModal()">No</button>
+			</div>
+		</div>
+	</ng-template>
+</app-modal>

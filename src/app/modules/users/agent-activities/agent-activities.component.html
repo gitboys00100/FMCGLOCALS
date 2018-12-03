@@ -1,0 +1,13 @@
+<div class="content" *ngIf="isLoading">
+	<div class="row">
+		<div class="loader">
+			<img src="../../../../assets/img/loader.gif" class="img">
+		</div>
+	</div>
+</div>
+
+<div class="content" *ngIf="!isLoading">
+	<div class="row" *ngIf="!itineraryAgents.length">
+		<div class="col-md-12"><h4>This agent has no itineraries..</h4></div>
+	</div>
+</div>

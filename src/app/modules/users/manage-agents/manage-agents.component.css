@@ -1,0 +1,38 @@
+.content, app-agent-activities, app-agent-tracking, app-assigned-retailers, app-unassigned-retailers , app-set-targets {
+    width: 100%;
+}
+
+ngx-select-dropdown {
+    width: 100%;
+    text-align: left !important;
+}
+
+:host ::ng-deep .ngx-dropdown-list-container .search-container label {
+    margin-top: -2px;
+}
+
+:host ::ng-deep .ngx-dropdown-list-container{
+    height: 300px !important;
+}
+
+select {
+    width: 100% !important;
+}
+
+.loader {
+    margin: 35px auto;
+}
+
+.loader img {
+    width: 65px;
+    height: 65px;
+}
+
+.no-agent {
+    padding-top: 2vh;
+    height: 10vh;
+}
+
+.col-form {
+    padding-top: 5px;
+}
