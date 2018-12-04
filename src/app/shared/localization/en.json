@@ -1,0 +1,22 @@
+{
+  "localization": {
+    "users": "Users",
+    "adduser": "Add User",
+    "search": "Search",
+    "name": "Name",
+    "email": "E-mail",
+    "role": "Role",
+    "action": "Action",
+    "edit": "Edit",
+    "delete": "Delete",
+    "firstname": "First Name",
+    "lastname": "Last Name",
+    "username": "Username",
+    "password": "Password",
+    "password2": "Confirm Password",
+    "save": "Save",
+    "cancel": "Cancel",
+    "announcements": "Announcements",
+    "announcement": "Announcement"
+  }
+}

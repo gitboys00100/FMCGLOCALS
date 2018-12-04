@@ -1,0 +1,43 @@
+<div class="row">
+	<div class="col-md-12 col-sm-12 col-xs-12">
+		<h3 class="tab-title">Agent's Daily Sales and Call Report</h3>
+	</div>
+</div>
+
+<table class="table table-bordered inventory-table">
+	<thead>
+		<tr class="tbl-header">
+			<th scope="col">Retailer</th>
+			<th scope="col">Product/SKU Sold</th>
+			<th scope="col">Price</th>
+			<th scope="col">Quantity</th>
+			<th scope="col">Cash Sales</th>
+			<th scope="col">Credit Sales</th>
+			<th scope="col">Total Sales Amount</th>
+			<th scope="col">Payment Amount</th>
+		</tr>
+	</thead>
+
+
+	<tbody>
+		<tr *ngFor="let item of dscrReport | paginate: { itemsPerPage: itemsPerPage, currentPage: p }">
+			<td>{{ item.retailer | titlecase }}</td>
+			<td>{{ item.product_sku_sold | titlecase }}</td>
+			<td class="text-right">&#x20b1; {{ item.price | number: '1.2-2' }}</td>
+			<td class="text-right">{{ item.qty }}</td>
+			<td class="text-right">&#x20b1; {{ item.cash_sales | number: '1.2-2' }}</td>
+			<td class="text-right">&#x20b1; {{ item.credit_sales | number: '1.2-2' }}</td>
+			<td class="text-right">&#x20b1; {{ item.total_sales_amount | number: '1.2-2' }}</td>
+			<td class="text-right">&#x20b1; {{ item.payment_amount | number: '1.2-2' }}</td>			
+		</tr>
+	</tbody>
+</table>
+
+<div class="row">
+	<div class="col-md-12">
+		<div class="form-group pg-form-group text-center">
+			<pagination-controls class="pagination" (pageChange)="p = $event"></pagination-controls>		
+		</div>
+	</div>
+</div>
+

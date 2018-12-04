@@ -1,0 +1,18 @@
+<div class="fmcg-modal" [ngClass]="isOpen ? 'is-open' : ''">
+	<div class="fmcg-modal-background"></div>
+	<div class="fmcg-modal-content">
+		<div class="fmcg-modal-header">
+			<div class="fmcg-modal-title">
+				<ng-container *ngTemplateOutlet="header"></ng-container>
+			</div>
+			<button *ngIf="closeBtnInside" class="fmcg-modal-delete" (click)="onModalClose()"></button>
+		</div>
+		<div class="fmcg-modal-body">
+			<ng-container *ngTemplateOutlet="body"></ng-container>
+		</div>
+		<div class="fmcg-modal-footer">
+			<ng-container *ngTemplateOutlet="footer"></ng-container>
+		</div>
+	</div>
+	<button *ngIf="!closeBtnInside" class="fmcg-modal-close" (click)="onModalClose()"></button>
+</div>

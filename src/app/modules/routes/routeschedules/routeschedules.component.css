@@ -1,0 +1,95 @@
+.routestab{
+        width: 100%;
+        //background-color: #cccccc;
+}
+
+.dropdown {
+	height: 50px;
+}
+
+.dropdown-menu{
+        width: 100%;
+}
+
+.dropdown.show .btn-schedule {
+        background-color: #d7dde5;
+        border: 1px solid #6c757d;
+        box-shadow: 0 0 0 0.2rem rgba(149, 151, 152, 0.5);
+        color: #566573;
+}
+
+.dropdown li{
+        width: 100%;
+        padding: .375rem .75rem;
+}
+
+
+.btn-schedule {
+        background-color: #6c757d;
+        border: 1px solid #6c757d;
+        width: 100%;
+        text-align: left;
+        color: white;
+}
+
+.fake-anchor {
+        cursor: pointer;
+        display: block;
+}
+
+.dropdown-toggle::after {
+        float: right;
+        margin-top: 8px;
+}
+
+.btn {
+	height: 35px;
+}
+
+.less-mt {
+	margin-top: -12px;
+}
+
+.btn-assign-itenerary {
+	/*margin-top: 4px;*/
+	background-color: #6c757d;
+	color: white;
+}
+
+.row-filter {
+    margin-top: 2vh;
+}
+
+.full-width {
+    width: 100%;
+}
+.tbl-header {
+    background: #6c757d;
+}
+
+.tbl-header th {
+    color: white;
+}
+
+.sel-show {
+    width: 100px;
+}
+
+.pg-form-group, pagination-controls {
+    width: 100%;
+}
+
+.pg-form-group {
+    padding-top: 1.2vh;
+}
+
+
+@media all and (max-width:780px) {
+  .filterStyle {
+    margin-bottom: 5px;
+  }
+  #assignBtn {
+    width: 100%;
+    margin-bottom: 5px;
+  }
+}

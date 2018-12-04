@@ -1,0 +1,133 @@
+<div class="content" *ngIf="isLoading">
+	<div class="row">
+		<div class="loader">
+			<img src="../../../../assets/img/loader.gif" class="img">
+		</div>
+	</div>
+</div>
+
+<div class="content" *ngIf="!isLoading">
+	<div class="row" *ngIf="!itineraryAgents.length">
+		<div class="col-md-12"><h4>This agent has no itineraries..</h4></div>
+	</div>
+
+	<div class="row" *ngIf="itineraryAgents.length">
+		<div class="col-md-12"><h4>Agent Activities</h4></div>
+	</div>
+
+	<div class="row" *ngIf="itineraryAgents.length">
+		<app-view-retailer-modal #onViewRetailerComponent></app-view-retailer-modal>
+
+		<div class="col-md-12">
+			<div id="table-scroll" class="table-scroll">
+				<table id="main-table" class="main-table">
+					<thead>
+						<tr>
+							<th class="text-center">Monday</th>
+							<th class="text-center">Tuesday</th>
+							<th class="text-center">Wednesday</th>
+							<th class="text-center">Thursday</th>
+							<th class="text-center">Friday</th>
+							<th class="text-center">Saturday</th>
+							<th class="text-center">Sunday</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td *ngFor="let itineraryAgent of itineraryAgents">
+								<button 
+									*ngFor="let ia of itineraryAgent" 
+									class="btn btn-primary btn-retailer"
+									(click)="onViewRetailer(ia)">
+									{{ ia.name }}
+								</button>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>		
+		</div>
+	</div>
+
+	<div class="row row-pad-bottom" *ngIf="itineraryAgents.length">
+		<div class="col-md-1 col-sm-3 col-form form-inline">
+			<label>Week :</label>
+		</div>
+		<div class="col-md-3 col-sm-9 col-form form-inline">
+			<select class="form-control full-width" (change)="onSelectedWeek($event)" >
+				<option *ngFor="let w of weeks; let i = index" [value]="i">
+					{{ w.start_date + " - " + w.end_date }}
+				</option>
+			</select>
+		</div>
+	</div>
+
+	<div class="row" *ngIf="itineraryAgents.length">
+		<app-view-retailer-modal #onViewRetailerComponent></app-view-retailer-modal>
+
+		<div class="col-md-12">
+			<div id="table-scroll" class="table-scroll">
+				<table id="main-table" class="main-table">
+					<thead>
+						<tr>
+							<th class="text-center">&nbsp;</th>
+							<th class="text-center" *ngFor="let w of selectedWeek.dates">{{ w | date : 'shortDate' }}</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>Planned Calls</td>
+							<td>0</td>
+							<td>0</td>
+							<td>0</td>
+							<td>0</td>
+							<td>0</td>
+							<td>0</td>
+							<td>0</td>
+						</tr>
+						<tr>
+							<td>Actual Calls</td>
+							<td>0</td>
+							<td>0</td>
+							<td>0</td>
+							<td>0</td>
+							<td>0</td>
+							<td>0</td>
+							<td>0</td>
+						</tr>
+						<tr>
+							<td>Productive Calls</td>
+							<td>0</td>
+							<td>0</td>
+							<td>0</td>
+							<td>0</td>
+							<td>0</td>
+							<td>0</td>
+							<td>0</td>
+						</tr>
+						<tr>
+							<td>Call Rate</td>
+							<td>0</td>
+							<td>0</td>
+							<td>0</td>
+							<td>0</td>
+							<td>0</td>
+							<td>0</td>
+							<td>0</td>
+						</tr>
+						<tr>
+							<td>Hit Rate</td>
+							<td>0</td>
+							<td>0</td>
+							<td>0</td>
+							<td>0</td>
+							<td>0</td>
+							<td>0</td>
+							<td>0</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>		
+		</div>
+	</div>
+</div>
