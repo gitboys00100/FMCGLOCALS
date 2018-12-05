@@ -1,0 +1,114 @@
+<div class="content" *ngIf="isLoading">
+	<div class="row">
+		<div class="loader">
+			<img src="../../../../assets/img/loader.gif" class="img">
+		</div>
+	</div>
+</div>
+
+<div class="content" *ngIf="!isLoading">
+	<div class="row" *ngIf="!itineraryAgents.length">
+		<div class="col-md-12"><h4>This agent has no itineraries..</h4></div>
+	</div>
+
+	<div class="row" *ngIf="itineraryAgents.length">
+		<div class="col-md-12"><h4>Agent Activities</h4></div>
+	</div>
+
+	<div class="row" *ngIf="itineraryAgents.length">
+		<app-view-retailer-modal #onViewRetailerComponent></app-view-retailer-modal>
+
+		<div class="col-md-12">
+			<div id="table-scroll" class="table-scroll">
+				<table id="main-table" class="main-table">
+					<thead>
+						<tr>
+							<th class="text-center">Monday</th>
+							<th class="text-center">Tuesday</th>
+							<th class="text-center">Wednesday</th>
+							<th class="text-center">Thursday</th>
+							<th class="text-center">Friday</th>
+							<th class="text-center">Saturday</th>
+							<th class="text-center">Sunday</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td *ngFor="let itineraryAgent of itineraryAgents">
+								<button 
+									*ngFor="let ia of itineraryAgent" 
+									class="btn btn-primary btn-retailer"
+									(click)="onViewRetailer(ia)">
+									{{ ia.name }} <span *ngIf="i === 3 || i === 4">%</span>
+								</button>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>		
+		</div>
+	</div>
+
+	<div class="row row-pad-bottom" *ngIf="itineraryAgents.length">
+		<div class="col-md-1 col-sm-3 col-form form-inline">
+			<label>Week :</label>
+		</div>
+		<div class="col-md-3 col-sm-9 col-form form-inline">
+			<select class="form-control full-width" (change)="onSelectedWeek($event)" >
+				<option *ngFor="let w of weeks; let i = index" [value]="i">
+					{{ w.start_date + " - " + w.end_date }}
+				</option>
+			</select>
+		</div>
+	</div>
+
+	<div class="row" *ngIf="itineraryAgents.length">
+		<app-view-retailer-modal #onViewRetailerComponent></app-view-retailer-modal>
+
+		<div class="col-md-12">
+			<div id="table-scroll" class="table-scroll">
+				<table id="main-table" class="main-table">
+					<thead>
+						<tr>
+							<th class="text-center">&nbsp;</th>
+							<th class="text-center" *ngFor="let w of selectedWeek.dates">{{ w | date : 'shortDate' }}</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr *ngFor="let ap of agentPerformance; let i = index">
+							<td>{{ ap.title }}</td>
+							<td>
+								<span *ngIf="i !== 3 && i !== 4">{{ ap.monday }}</span>
+								<span *ngIf="i === 3 || i === 4">{{ ap.monday | number : '1.2-2' }}%</span>
+							</td>
+							<td>
+								<span *ngIf="i !== 3 && i !== 4">{{ ap.tuesday }}</span>
+								<span *ngIf="i === 3 || i === 4">{{ ap.tuesday | number : '1.2-2' }}%</span>
+							</td>
+							<td>
+								<span *ngIf="i !== 3 && i !== 4">{{ ap.wednesday }}</span>
+								<span *ngIf="i === 3 || i === 4">{{ ap.wednesday | number : '1.2-2' }}%</span>
+							</td>
+							<td>
+								<span *ngIf="i !== 3 && i !== 4">{{ ap.thursday }}</span>
+								<span *ngIf="i === 3 || i === 4">{{ ap.thursday | number : '1.2-2' }}%</span>
+							</td>
+							<td>
+								<span *ngIf="i !== 3 && i !== 4">{{ ap.friday }}</span>
+								<span *ngIf="i === 3 || i === 4">{{ ap.friday | number : '1.2-2' }}%</span>
+							</td>
+							<td>
+								<span *ngIf="i !== 3 && i !== 4">{{ ap.saturday }}</span>
+								<span *ngIf="i === 3 || i === 4">{{ ap.saturday | number : '1.2-2' }}%</span>
+							</td>
+							<td>
+								<span *ngIf="i !== 3 && i !== 4">{{ ap.sunday }}</span>
+								<span *ngIf="i === 3 || i === 4">{{ ap.sunday | number : '1.2-2' }}%</span>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>		
+		</div>
+	</div>
+</div>

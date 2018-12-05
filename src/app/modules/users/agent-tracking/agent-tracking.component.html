@@ -1,0 +1,92 @@
+<div class="content">
+	<div class="row">
+		<div class="col-md-12"><h4>Agent Tracking</h4></div>
+	</div>
+
+	<div class="row row-pad-bottom">
+		<div class="col-md-1 col-sm-3 col-form form-inline">
+			<label>Week :</label>
+		</div>
+		<div class="col-md-3 col-sm-9 col-form form-inline">
+			<select class="form-control full-width" (change)="onSelectedWeek($event)" >
+				<option *ngFor="let w of weeks; let i = index" [value]="i">
+					{{ w.start_date + " - " + w.end_date }}
+				</option>
+			</select>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-9 map-container">
+			<agm-map 
+			[latitude]="14.6186517" 
+			[longitude]="121.0527874" 
+			[zoom]="16">
+				<agm-polyline [strokeColor]="'red'">
+					<agm-polyline-point [latitude]="14.6186517" [longitude]="121.0527874"></agm-polyline-point>
+					<agm-polyline-point [latitude]="14.6176200" [longitude]="121.0527774"></agm-polyline-point>
+					<!-- <agm-polyline-point [latitude]="14.6156317" [longitude]="121.0526974"></agm-polyline-point> -->
+				</agm-polyline>
+
+				<agm-marker
+				[latitude]="14.6186517"
+				[longitude]="121.0527874"
+				[markerClickable]="true"
+				[iconUrl]="'https://raw.githubusercontent.com/Concept211/Google-Maps-Markers/master/images/marker_red2.png'"
+				[openInfoWindow]="true"
+				>
+					<agm-info-window 
+					[latitude]="14.6186517" 
+					[longitude]="121.0527874">Test Store</agm-info-window>
+				</agm-marker>
+				<agm-marker
+				[latitude]="14.6176200"
+				[longitude]="121.0527774"
+				[markerClickable]="true"
+				[iconUrl]="'https://raw.githubusercontent.com/Concept211/Google-Maps-Markers/master/images/marker_red1.png'"
+				[openInfoWindow]="true"
+				>
+					<agm-info-window 
+					[latitude]="14.6186517" 
+					[longitude]="121.0527874">Test Store</agm-info-window>
+				</agm-marker>
+				<!-- <agm-marker
+				[latitude]="14.6156317"
+				[longitude]="121.0526974"
+				[markerClickable]="true"
+				[iconUrl]="'https://maps.google.com/mapfiles/ms/micons/blue-dot.png'"
+				[openInfoWindow]="true"
+				>
+					<agm-info-window 
+					[latitude]="14.6186517" 
+					[longitude]="121.0527874">Test Store</agm-info-window>
+				</agm-marker> -->
+			</agm-map>
+		</div>
+		<div class="col-md-3">
+			<div class="row">
+				<div class="col-md-12 box-container">
+					<div class="box box-monday">&nbsp;</div>&nbsp;&nbsp;Monday
+				</div>
+				<div class="col-md-12 box-container">
+					<div class="box box-tuesday">&nbsp;</div>&nbsp;&nbsp;Tuesday
+				</div>
+				<div class="col-md-12 box-container">
+					<div class="box box-wednesday">&nbsp;</div>&nbsp;&nbsp;Wednesday
+				</div>
+				<div class="col-md-12 box-container">
+					<div class="box box-thursday">&nbsp;</div>&nbsp;&nbsp;Thursday
+				</div>
+				<div class="col-md-12 box-container">
+					<div class="box box-friday">&nbsp;</div>&nbsp;&nbsp;Friday
+				</div>
+				<div class="col-md-12 box-container">
+					<div class="box box-saturday">&nbsp;</div>&nbsp;&nbsp;Saturday
+				</div>
+				<div class="col-md-12 box-container">
+					<div class="box box-sunday">&nbsp;</div>&nbsp;&nbsp;Sunday
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

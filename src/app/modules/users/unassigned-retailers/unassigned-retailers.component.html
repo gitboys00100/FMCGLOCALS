@@ -1,0 +1,113 @@
+<div class="content" *ngIf="isLoading">
+	<div class="row">
+		<div class="loader">
+			<img src="../../../../assets/img/loader.gif" class="img">
+		</div>
+	</div>
+</div>
+
+<div class="content" *ngIf="!isLoading">
+	<app-view-retailer-modal *ngIf="unassignedRetailers.length" #onViewRetailerComponent></app-view-retailer-modal>
+	<app-confirm-assign-retailers-modal (onAssignRetailerOutput)="onAssignRetailerOutput($event)" *ngIf="unassignedRetailers.length" #onConfirmAssignRetailersComponent></app-confirm-assign-retailers-modal>
+
+	<div class="row" *ngIf="!unassignedRetailers.length">
+		<div class="col-md-12"><h4>No Unassigned Retailers</h4></div>
+	</div>
+
+	<div class="row" *ngIf="unassignedRetailers.length">
+		<div class="col-md-12"><h4>Unassigned Retailers</h4></div>
+	</div>
+
+	<div class="row" *ngIf="unassignedRetailers.length">
+		<div class="col-md-4">
+			<div class="input-group full-width less-mt" id="manageitsearch">
+				<input (input)="onFilterSearchChange($event)" (keydown)="onKeyDown($event)" [value]="searchQuery" class="form-control" placeholder="Search" type="text">
+				<div class="input-group-append">
+					<button class="btn btn-secondary" type="button" (click)="onSearch()"><i class="fa fa-search"></i></button>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-4">&nbsp;</div>
+		<div class="col-md-4 text-right">
+			<button class="btn btn-success" [disabled]="!checkedRetailers.length" (click)="onAssignRetailers()">
+					<i class="fa fa-user-plus"></i>&nbsp;Assign Retailers
+			</button>
+		</div>
+	</div>
+
+	<br>
+
+	<div class="row" *ngIf="unassignedRetailers.length">
+		<div class="col-md-12">
+			<div id="table-scroll" class="table-scroll">
+				<table id="main-table" class="main-table">
+					<thead>
+						<tr>
+							<th scope="col" class="checkbox-inline text-center">
+								<input 
+									class="form-checkbox" 
+									type="checkbox" 
+									id="chkCheckAll" 
+									(change)="onCheckAllChange($event)"
+									[disabled]="(unassignedRetailers  | users_search: filterSearchQuery |  paginate: { itemsPerPage: itemsPerPage, currentPage: p }).length === 0"
+									>
+							</th>
+							<th scope="col">Store Name</th>
+							<th scope="col">Store Person/Owner</th>
+							<th scope="col">Address</th>
+							<th scope="col">Actions</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr *ngFor="let uRetailer of unassignedRetailers  | users_search: filterSearchQuery |  paginate: { itemsPerPage: itemsPerPage, currentPage: p }">
+							<td class="checkbox-inline text-center">
+								<input *ngIf="uRetailer.isChecked" class="form-checkbox r-checkboxes" type="checkbox" (change)="onRetailerCheckChange($event, uRetailer)" checked="checked">
+								<input *ngIf="!uRetailer.isChecked" class="form-checkbox r-checkboxes" type="checkbox" (change)="onRetailerCheckChange($event, uRetailer)">
+							</td>
+							<td>{{ uRetailer.name }}</td>
+							<td>{{ uRetailer.owner }}</td>
+							<td>
+								{{ uRetailer.house_number ? uRetailer.house_number + "," : "" }}&nbsp;
+								{{ uRetailer.street_name ? uRetailer.street_name + "," : "" }}&nbsp;
+								{{ uRetailer.township ? uRetailer.township + "," : "" }}&nbsp;
+								{{ uRetailer.cluster ? uRetailer.cluster + "," : "" }}&nbsp;
+								{{ uRetailer.region ? uRetailer.region + "," : "" }}&nbsp;
+								{{ uRetailer.country ? uRetailer.country : "" }}
+							</td>
+							<td>
+								<button class="btn btn-info" (click)="onViewRetailer(uRetailer)"><i class="fa fa-info-circle"></i>&nbsp;View</button>
+							</td>
+						</tr>
+
+						<tr *ngIf="(unassignedRetailers  | users_search: filterSearchQuery |  paginate: { itemsPerPage: itemsPerPage, currentPage: p }).length === 0">
+							<td colspan="5">
+								<div class="row">
+									<div class="col-md-12 text-center">
+										<p>No retailer found</p>
+									</div>
+								</div>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>		
+		</div>
+	</div>
+
+	<div class="row" *ngIf="unassignedRetailers.length">
+		<div class="col-md-6 form-inline">
+			<label>Show :</label>&nbsp;&nbsp;
+			<select (change)="onShowCountChange($event)" class="form-control sel-show full-width">
+				<option selected value="5">5</option>
+				<option value="10">10</option>
+				<option value="25">25</option>
+				<option value="50">50</option>
+			</select>
+		</div>
+		<div class="col-md-6">
+			<div class="form-group pg-form-group text-right">
+				<pagination-controls class="pagination" (pageChange)="p = $event"></pagination-controls>
+			</div>
+		</div>
+	</div>
+</div>

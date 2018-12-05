@@ -1,0 +1,87 @@
+.table-scroll {
+    position: relative;
+    width:100%;
+    z-index: 1;
+    margin: auto;
+    overflow: auto;
+    height: 325px;
+    margin-bottom: 1vh;
+}
+
+.table-scroll table {
+    width: 100%;
+    min-width: 1280px;
+    margin: auto;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.table-wrap {
+    position: relative;
+}
+
+.table-scroll th,
+.table-scroll td {
+    padding: 5px 10px;
+    border: 1px solid #dee2e6;
+    background: #fff;
+    vertical-align: top;
+}
+
+.table-scroll thead th {
+    width:100px;
+    min-width:50px;
+    background: #6c757d;
+    color: #fff;
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    z-index:4;
+}
+
+/* safari and ios need the tfoot itself to be position:sticky also */
+.table-scroll tfoot,
+.table-scroll tfoot th,
+.table-scroll tfoot td {
+    position: -webkit-sticky;
+    position: sticky;
+    bottom: 0;
+    background: #666;
+    color: #fff;
+    z-index:4;
+}
+
+.row-filter {
+    margin-top: 2vh;
+}
+
+.full-width {
+    width: 100%;
+}
+
+
+.sel-show {
+    width: 100px;
+}
+
+.pg-form-group, pagination-controls {
+    width: 100%;
+}
+
+.pg-form-group {
+    padding-top: 1.2vh;
+}
+
+pagination-controls {
+    display: block;
+}
+
+.loader img {
+    padding:10px;
+    width:85px !important;
+    height:85px !important;
+    margin:25px auto;
+}
+.loader {
+    text-align: center;
+}

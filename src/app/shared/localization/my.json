@@ -1,0 +1,22 @@
+{
+  "localization": {
+    "users": "အသံုးျပဳသူမ်ား",
+    "adduser": "သံုးစြဲသူ ထပ္ထည့္သည္။",
+    "search": "ရွာေဖြသည္။",
+    "name": "အမည္",
+    "email": "E-mail",
+    "role": "ရာထူး က႑",
+    "action": "လုပ္ေဆာင္ခ်က္",
+    "edit": "ၿပဳၿပင္သည္။",
+    "delete": "Delete",
+    "firstname": "အမည္၏ ပထမစာလံု",
+    "lastname": "အမည္၏ ေနာက္ဆံုးစာလံု",
+    "username": "သံုးစြဲသူ အမည္။",
+    "password": "စကားဝွက္။",
+    "password2": "Confirm Password",
+    "save": "သိမ္းဆည္းပါ။",
+    "cancel": "ပယ္ဖ်က္သည္။",
+    "announcements": "ေၾကျငာခ်က္မ်ား",
+    "announcement": "ေၾကျငာခ်က္"
+  }
+}

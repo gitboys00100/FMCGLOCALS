@@ -1,0 +1,116 @@
+<div class="content" *ngIf="isLoading">
+	<div class="row">
+		<div class="loader">
+			<img src="../../../../assets/img/loader.gif" class="img">
+		</div>
+	</div>
+</div>
+
+<div class="content" *ngIf="!isLoading">
+	<app-view-retailer-modal *ngIf="assignedRetailers.length" #onViewRetailerComponent></app-view-retailer-modal>
+	<app-confirm-remove-retailers-modal (onRemoveRetailerOutput)="onRemoveRetailerOutput($event)" *ngIf="assignedRetailers.length" #onRemoveAssignRetailersComponent></app-confirm-remove-retailers-modal>
+	<app-confirm-reassign-retailers-modal (onReassignRetailerOutput)="onReassignRetailerOutput($event)" *ngIf="assignedRetailers.length" #onReassignRetailersComponent></app-confirm-reassign-retailers-modal>
+	
+	<div class="row" *ngIf="!assignedRetailers.length">
+		<div class="col-md-12"><h4>No Assigned Retailers</h4></div>
+	</div>
+	
+	<div class="row" *ngIf="assignedRetailers.length">
+		<div class="col-md-12"><h4>Assigned Retailers</h4></div>
+	</div>
+	
+	<div class="row" *ngIf="assignedRetailers.length">
+		<div class="col-md-4">
+			<div class="input-group full-width less-mt" id="manageitsearch">
+				<input (input)="onFilterSearchChange($event)" (keydown)="onKeyDown($event)" [value]="searchQuery" class="form-control" placeholder="Search" type="text">
+				<div class="input-group-append">
+					<button class="btn btn-secondary" type="button" (click)="onSearch()"><i class="fa fa-search"></i></button>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-2">&nbsp;</div>
+		<div class="col-md-6 text-right">
+			<button class="btn btn-success" [disabled]="!checkedRetailers.length" (click)="onReassignRetailers()">
+				<i class="fa fa-users"></i>&nbsp;Reassign Retailers
+			</button>&nbsp;&nbsp;
+			<button class="btn btn-danger" [disabled]="!checkedRetailers.length" (click)="onRemoveRetailers()">
+				<i class="fa fa-user-times"></i>&nbsp;Unassign Retailers
+			</button>
+		</div>
+	</div>
+	
+	<br>
+	
+	<div class="row" *ngIf="assignedRetailers.length">
+		<div class="col-md-12">
+			<div id="table-scroll" class="table-scroll">
+				<table id="main-table" class="main-table">
+					<thead>
+						<tr>
+							<th scope="col" class="checkbox-inline text-center">
+								<input 
+									class="form-checkbox" 
+									type="checkbox" 
+									id="chkCheckAll" 
+									(change)="onCheckAllChange($event)"
+									[disabled]="(assignedRetailers  | users_search: filterSearchQuery |  paginate: { itemsPerPage: itemsPerPage, currentPage: p }).length === 0">
+							</th>
+							<th scope="col">Store Name</th>
+							<th scope="col">Store Person/Owner</th>
+							<th scope="col">Address</th>
+							<th scope="col">Actions</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr *ngFor="let aRetailer of assignedRetailers  | users_search: filterSearchQuery |  paginate: { itemsPerPage: itemsPerPage, currentPage: p }">
+							<td class="checkbox-inline text-center">
+								<input *ngIf="aRetailer.isChecked" class="form-checkbox r-checkboxes" type="checkbox" (change)="onRetailerCheckChange($event, aRetailer)" checked="checked">
+								<input *ngIf="!aRetailer.isChecked" class="form-checkbox r-checkboxes" type="checkbox" (change)="onRetailerCheckChange($event, aRetailer)">
+							</td>
+							<td>{{ aRetailer.name }}</td>
+							<td>{{ aRetailer.owner }}</td>
+							<td>
+								{{ aRetailer.house_number ? aRetailer.house_number + "," : "" }}&nbsp;
+								{{ aRetailer.street_name ? aRetailer.street_name + "," : "" }}&nbsp;
+								{{ aRetailer.township ? aRetailer.township + "," : "" }}&nbsp;
+								{{ aRetailer.cluster ? aRetailer.cluster + "," : "" }}&nbsp;
+								{{ aRetailer.region ? aRetailer.region + "," : "" }}&nbsp;
+								{{ aRetailer.country ? aRetailer.country : "" }}
+							</td>
+							<td>
+								<button class="btn btn-info" (click)="onViewRetailer(aRetailer)"><i class="fa fa-info-circle"></i>&nbsp;View</button>
+							</td>
+						</tr>
+						
+						<tr *ngIf="(assignedRetailers  | users_search: filterSearchQuery |  paginate: { itemsPerPage: itemsPerPage, currentPage: p }).length === 0">
+							<td colspan="5">
+								<div class="row">
+									<div class="col-md-12 text-center">
+										<p>No retailer found</p>
+									</div>
+								</div>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>		
+		</div>
+	</div>
+	
+	<div class="row" *ngIf="assignedRetailers.length">
+		<div class="col-md-6 form-inline">
+			<label>Show :</label>&nbsp;&nbsp;
+			<select (change)="onShowCountChange($event)" class="form-control sel-show full-width">
+				<option selected value="5">5</option>
+				<option value="10">10</option>
+				<option value="25">25</option>
+				<option value="50">50</option>
+			</select>
+		</div>
+		<div class="col-md-6">
+			<div class="form-group pg-form-group text-right">
+				<pagination-controls class="pagination" (pageChange)="p = $event"></pagination-controls>
+			</div>
+		</div>
+	</div>
+</div>

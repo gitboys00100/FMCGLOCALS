@@ -1,0 +1,61 @@
+
+<div class="loader" *ngIf="loading">
+  <img src="../../../../assets/img/loader.gif" class="img">
+</div>
+
+
+<div *ngIf="!loading" class="row">
+	<!--<div class="col-md-8 col-sm-8 col-xs-6">
+		<h3 class="tab-title">	</h3>
+	</div>-->
+	<div class="col-md-12 col-sm-12 col-xs-12 text-right">
+		<button class="btn btn-gray" (click)="onNewItem()">
+			<i class="fa fa-plus"></i>
+			<span class="btn-text">&nbsp;New Item</span>
+		</button>
+	</div>
+</div>
+
+<app-inventory-item-create #onNewItemComponent [inventoryList]="inventoryList"></app-inventory-item-create>
+
+<div *ngIf="!loading" class="row row-filter">
+    <div class="col-md-1 col-form form-inline">
+        <label>Filters :</label>
+    </div>
+    <div class="col-md-2 col-form form-inline">
+        <select (change)="onFilterCategoryChange($event)" [value]="filterCategory" class="form-control full-width">
+            <option value="" selected>-- Category --</option>
+						<option value="Category 1" selected>Category 1</option>
+						<option value="Beverages" selected>Beverages</option>
+            <option *ngFor="let product of inventoryList | filterUnique" value="{{product.category_name}}">{{product.category_name}}</option>
+        </select>
+    </div>
+    <div class="col-md-2 col-form form-inline">
+        <select (change)="onFilterSubCategoryChange($event)" [value]="filterSubCategory" class="form-control full-width">
+            <option value="" selected>-- Sub Category --</option>
+            <option value="Category 1">Category 1</option>
+            <option value="Beverages">Beverages</option>
+        </select>
+    </div>
+    <div class="col-md-2 col-form form-inline">
+        <input type="date" (input)="onFilterDateChange($event)" [value]="filterDate" class="form-control full-width">
+    </div>
+    <div class="col-md-5 col-form form-inline">
+        <div class="input-group full-width less-mt" id="manageitsearch">
+            <input (input)="onFilterSearchChange($event)" (keydown)="onKeyDown($event)" [value]="searchQuery" class="form-control" placeholder="Search" type="text">
+            <div class="input-group-append">
+                <button class="btn btn-secondary" type="button" (click)="onSearch()"><i class="fa fa-search"></i></button>
+            </div>
+        </div>
+    </div>
+</div><br />
+
+
+
+<app-inventory-table *ngIf="!loading"
+    [inventoryList]="inventoryList"
+    [filterCategory]="filterCategory"
+    [filterSubCategory]="filterSubCategory"
+    [filterSearchQuery]="filterSearchQuery"
+    [filterDate]="filterDate">
+</app-inventory-table>
