@@ -1,0 +1,130 @@
+<div style="margin-top:25px;" *ngIf="!submitted">
+  <div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
+			<form [formGroup]="accountsReceivableForm" id="accountsReceivableForm">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="itinerary_name">Agent: </label>
+              <div class="loaderSmall ml-auto" *ngIf="loadingAgents" style="text-align:center !important;">
+                <img src="../../../../assets/img/loader.gif" class="img">
+              </div>
+              <select *ngIf="!loadingAgents" class="form-control" name="agent" formControlName="agent">
+                <option selected disabled value="">Choose Agent</option>
+                <option *ngFor="let a of agents" [value]="a.id">{{ a.first_name+' '+a.last_name }}</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="itinerary_name">Customer: </label>
+              <div class="loaderSmall ml-auto" *ngIf="loadingRetailers" style="text-align:center !important;">
+                <img src="../../../../assets/img/loader.gif" class="img">
+              </div>
+              <select *ngIf="!loadingRetailers" class="form-control" name="customer" formControlName="customer">
+                <option selected disabled value="">Choose Customer</option>
+                <option *ngFor="let r of retailers" [value]="r.id">{{ r.name }}</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="form-group">
+              <label for="sales_invoice_number">Sales Invoice Number</label>
+              <input type="text" class="form-control" placeholder="Ex. 230913131" name="sales_invoice_number" formControlName="sales_invoice_number">
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="due_date">Due Date</label>
+              <input type="date" class="form-control" name="due_date" formControlName="due_date">
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="payment_terms">Payment Terms</label>
+              <div class="loaderSmall ml-auto" *ngIf="loadingPaymentTerms" style="text-align:center !important;">
+                <img src="../../../../assets/img/loader.gif" class="img">
+              </div>
+              <select *ngIf="!loadingPaymentTerms" class="form-control" name="payment_terms" formControlName="payment_terms">
+                <option selected disabled value="">Choose Payment Terms</option>
+                <option *ngFor="let p of payment_terms" [value]="p.id">{{ p.name }}</option>
+              </select>
+            </div>
+          </div>
+
+        </div>
+        <div class="row" id="modalButtons">
+          <div class="col-md-2 col-sm-2 col-2 col-lg-2">
+          </div>
+          <div class="col-md-8 col-sm-8 col-8 col-lg-8" style="padding:5px;">
+            <button class="btn btn-item-create btn-success buttonBlock btn-block text-center" (click)="showAccountsTable()" type="button">Submit</button>
+          </div>
+          <div class="col-md-2 col-sm-2 col-2 col-lg-2">
+          </div>
+        </div>
+
+      </form>
+    </div>
+    <div class="col-md-2"></div>
+  </div>
+</div>
+
+<div class="container-fluid" *ngIf="submitted">
+  <div class="row">
+    <div class="col-md-12 pull-left" style="margin-bottom:5px;">
+      <button class="btn btn-back" type="button" (click)="hideAccountsTable()">
+        <i class="fa fa-arrow-left" aria-hidden="true"></i> Back
+      </button>
+    </div>
+    <div class="col-md-12">
+      <!-- <div class="table-responsive"> -->
+      <div id="table-scroll" class="table-scroll">
+        <table class="table table-bordered inventory-table" id="pdfContent">
+          <thead>
+            <tr class="tbl-header">
+              <th *ngFor="let h of headers">{{ h }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngIf="loadingPayment">
+              <td colspan="7">
+                <div class="loader">
+                  <img src="../../../../assets/img/loader.gif" class="img">
+                </div>
+              </td>
+            </tr>
+            <tr *ngFor="let r of reports">
+              <td>
+                <span *ngFor="let a of r.retailer.assigned_agents">
+                  {{ a.first_name+' '+a.last_name }}
+                </span>
+              </td>
+              <td>{{ r.sales_date | date: 'MMMM dd, yyyy' }}</td>
+              <td>{{ r.purchase_order_id }}</td>
+              <td>{{ r.deadline_date | date: 'MMMM dd, yyyy' }}</td>
+              <td>{{ r.retailer.name }}</td>
+              <td>{{ r.amount }}</td>
+              <td>{{ r.payment_term.name }}</td>
+            </tr>
+            <tr>
+              <td *ngIf="reports.length <= 0 && !loadingPayment" style="text-align:center !important" colspan="7">No Retailer Inventory found.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="col-md-12" style="margin-top:20px;">
+      <div class="dropdown pull-right">
+        <button class="btn btn-item-create btn-primary buttonBlock dropdown-toggle" type="button"
+        data-toggle="dropdown" [disabled]="reports.length <= 0">Download</button>
+        <div class="dropdown-menu">
+          <a class="dropdown-item" (click)="exportToFile('excel')">Excel</a>
+          <a class="dropdown-item" (click)="exportToFile('csv')">CSV</a>
+          <a class="dropdown-item" (click)="exportToFile('pdf')">PDF</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

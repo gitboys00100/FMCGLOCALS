@@ -1,0 +1,113 @@
+.content {
+    padding-top: 20px;
+    width: 100%;
+}
+
+.row {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+}
+
+.no-pad-left {
+    padding-left: 0 !important;
+}
+
+.loader {
+    margin: 35px auto;
+}
+
+.loader img {
+    width: 65px;
+    height: 65px;
+}
+
+.row-pad-bottom {
+    margin-bottom: 12px;
+}
+
+agm-map {
+    width: 100%;
+    height: 100%;
+}
+
+.map-container {
+    position: relative;
+    height: 40vh;
+}
+
+.map-loader {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.7);
+    z-index: 99999;
+}
+
+.map-loader .loader {
+    width: 100%;
+    height: 100%;
+    margin: 0 !important;
+}
+
+.map-loader .loader img{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateY(-50%);
+}
+
+.box-container {
+    padding-bottom: 8px;
+}
+
+.box-container.disabled .day-name {
+    text-decoration: line-through;
+}
+
+.box {
+    margin-top: 2px;
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    cursor: pointer;
+    margin-right: 6px;
+}
+
+.box.unclickable {
+    cursor: default !important;
+}
+
+.box img {
+    width: 100%;
+    height: 100%;
+}
+
+.box-monday {
+    background: #f44336;
+}
+
+.box-tuesday {
+    background: #2196f3;
+}
+
+.box-wednesday {
+    background:#76ff03;
+}
+
+.box-thursday {
+    background: #AAB7B8;
+}
+
+.box-friday {
+    background: #F5B041;
+}
+
+.box-saturday {
+    background: #9c27b0;;
+}
+
+.box-sunday {
+    background: #ffee33;
+}

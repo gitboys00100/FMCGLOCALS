@@ -1,0 +1,266 @@
+<div class="content">
+	<div class="row">
+		<div class="col-md-12"><h4>Agent Tracking</h4></div>
+	</div>
+
+	<div class="row row-pad-bottom">
+		<div class="col-md-1 col-sm-3 col-form form-inline">
+			<label>Week :</label>
+		</div>
+		<div class="col-md-3 col-sm-9 col-form form-inline">
+			<select class="form-control full-width" (change)="onSelectedWeek($event)" >
+				<option *ngFor="let w of weeks; let i = index" [value]="i">
+					{{ w.start_date + " - " + w.end_date }}
+				</option>
+			</select>
+		</div>
+	</div>
+
+	<div class="row" *ngIf="assignedRetailers.length">
+		<div class="col-md-9 map-container">
+			<div class="row map-loader" *ngIf="isMapLoading">
+				<div class="loader">
+					<img src="../../../../assets/img/loader.gif" class="img">
+				</div>
+			</div>
+
+			<agm-map 
+				[latitude]="assignedRetailers[0].latitude" 
+				[longitude]="assignedRetailers[0].longitude" 
+				[zoom]="13"
+			>
+				<!-- EXACT RETAILER LOCATION -->
+				<agm-marker
+					*ngFor="let retailer of assignedRetailers"
+					[latitude]="retailer.latitude"
+					[longitude]="retailer.longitude"
+					[markerClickable]="true"
+					[iconUrl]="'https://maps.google.com/mapfiles/ms/micons/convienancestore.png'"
+					[openInfoWindow]="true"
+					>
+					<agm-info-window 
+						[latitude]="retailer.latitude" 
+						[longitude]="retailer.longitude">
+						{{ retailer.name }}
+					</agm-info-window>
+				</agm-marker>
+
+				<!-- MONDAY ROUTE -->
+				<div *ngIf="daysToggle.monday">
+					<agm-polyline [strokeColor]="'red'">
+						<agm-polyline-point
+							*ngFor="let log of itineraryLogs[0];"
+							[latitude]="log.latitude" 
+							[longitude]="log.longitude">
+						</agm-polyline-point>
+					</agm-polyline>
+	
+					<agm-marker *ngFor="let log of itineraryLogs[0]; let i = index;"
+					[latitude]="log.latitude"
+					[longitude]="log.longitude"
+					[markerClickable]="true"
+					[iconUrl]="iconUrl + 'red' + (i + 1) + '.png'"
+					[openInfoWindow]="true"
+					>
+						<agm-info-window 
+							[latitude]="log.latitude"
+							[longitude]="log.longitude">
+							{{ log.retailer.name }}
+						</agm-info-window>
+					</agm-marker>
+				</div>
+				
+
+				<!-- TUESDAY ROUTE -->
+				<div *ngIf="daysToggle.tuesday">
+					<agm-polyline [strokeColor]="'blue'">
+						<agm-polyline-point
+							*ngFor="let log of itineraryLogs[1];"
+							[latitude]="log.latitude" 
+							[longitude]="log.longitude">
+						</agm-polyline-point>
+					</agm-polyline>
+
+					<agm-marker *ngFor="let log of itineraryLogs[1]; let i = index;"
+					[latitude]="log.latitude"
+					[longitude]="log.longitude"
+					[markerClickable]="true"
+					[iconUrl]="iconUrl + 'blue' + (i + 1) + '.png'"
+					[openInfoWindow]="true"
+					>
+						<agm-info-window 
+							[latitude]="log.latitude"
+							[longitude]="log.longitude">
+							{{ log.retailer.name }}
+						</agm-info-window>
+					</agm-marker>
+				</div>
+
+
+				<!-- WEDNESDAY ROUTE -->
+				<div *ngIf="daysToggle.wednesday">
+					<agm-polyline [strokeColor]="'green'">
+						<agm-polyline-point
+							*ngFor="let log of itineraryLogs[2];"
+							[latitude]="log.latitude" 
+							[longitude]="log.longitude">
+						</agm-polyline-point>
+					</agm-polyline>
+
+					<agm-marker *ngFor="let log of itineraryLogs[2]; let i = index;"
+					[latitude]="log.latitude"
+					[longitude]="log.longitude"
+					[markerClickable]="true"
+					[iconUrl]="iconUrl + 'green' + (i + 1) + '.png'"
+					[openInfoWindow]="true"
+					>
+						<agm-info-window 
+							[latitude]="log.latitude"
+							[longitude]="log.longitude">
+							{{ log.retailer.name }}
+						</agm-info-window>
+					</agm-marker>
+				</div>
+
+
+				<!-- THURSDAY ROUTE -->
+				<div *ngIf="daysToggle.thursday">
+					<agm-polyline [strokeColor]="'grey'">
+						<agm-polyline-point
+							*ngFor="let log of itineraryLogs[3];"
+							[latitude]="log.latitude" 
+							[longitude]="log.longitude">
+						</agm-polyline-point>
+					</agm-polyline>
+	
+					<agm-marker *ngFor="let log of itineraryLogs[3]; let i = index;"
+					[latitude]="log.latitude"
+					[longitude]="log.longitude"
+					[markerClickable]="true"
+					[iconUrl]="iconUrl + 'grey' + (i + 1) + '.png'"
+					[openInfoWindow]="true"
+					>
+						<agm-info-window 
+							[latitude]="log.latitude"
+							[longitude]="log.longitude">
+							{{ log.retailer.name }}
+						</agm-info-window>
+					</agm-marker>
+				</div>
+
+
+				<!-- FRIDAY ROUTE -->
+				<div *ngIf="daysToggle.friday">
+					<agm-polyline [strokeColor]="'orange'">
+						<agm-polyline-point
+							*ngFor="let log of itineraryLogs[4];"
+							[latitude]="log.latitude" 
+							[longitude]="log.longitude">
+						</agm-polyline-point>
+					</agm-polyline>
+	
+					<agm-marker *ngFor="let log of itineraryLogs[4]; let i = index;"
+					[latitude]="log.latitude"
+					[longitude]="log.longitude"
+					[markerClickable]="true"
+					[iconUrl]="iconUrl + 'orange' + (i + 1) + '.png'"
+					[openInfoWindow]="true"
+					>
+						<agm-info-window 
+							[latitude]="log.latitude"
+							[longitude]="log.longitude">
+							{{ log.retailer.name }}
+						</agm-info-window>
+					</agm-marker>
+				</div>
+
+
+				<!-- SATURDAY ROUTE -->
+				<div *ngIf="daysToggle.saturday">
+					<agm-polyline [strokeColor]="'purple'">
+						<agm-polyline-point
+							*ngFor="let log of itineraryLogs[5];"
+							[latitude]="log.latitude" 
+							[longitude]="log.longitude">
+						</agm-polyline-point>
+					</agm-polyline>
+	
+					<agm-marker *ngFor="let log of itineraryLogs[5]; let i = index;"
+					[latitude]="log.latitude"
+					[longitude]="log.longitude"
+					[markerClickable]="true"
+					[iconUrl]="iconUrl + 'purple' + (i + 1) + '.png'"
+					[openInfoWindow]="true"
+					>
+						<agm-info-window 
+							[latitude]="log.latitude"
+							[longitude]="log.longitude">
+							{{ log.retailer.name }}
+						</agm-info-window>
+					</agm-marker>
+				</div>
+
+
+				<!-- SUNDAY ROUTE -->
+				<div *ngIf="daysToggle.sunday">
+					<agm-polyline [strokeColor]="'yellow'">
+						<agm-polyline-point
+							*ngFor="let log of itineraryLogs[6];"
+							[latitude]="log.latitude" 
+							[longitude]="log.longitude">
+						</agm-polyline-point>
+					</agm-polyline>
+	
+					<agm-marker *ngFor="let log of itineraryLogs[6]; let i = index;"
+					[latitude]="log.latitude"
+					[longitude]="log.longitude"
+					[markerClickable]="true"
+					[iconUrl]="iconUrl + 'purple' + (i + 1) + '.png'"
+					[openInfoWindow]="true"
+					>
+						<agm-info-window 
+							[latitude]="log.latitude"
+							[longitude]="log.longitude">
+							{{ log.retailer.name }}
+						</agm-info-window>
+					</agm-marker>
+				</div>
+			</agm-map>
+		</div>
+		<div class="col-md-3">
+			<div class="row">
+				<div class="col-md-12 box-container">
+					<h4>Legends:</h4>
+				</div>
+				<div class="col-md-12 box-container">
+					<div class="box unclickable"><img src="https://maps.google.com/mapfiles/ms/micons/convienancestore.png" alt=""></div><span>Retailer Location</span>
+				</div>
+				<div class="col-md-12 box-container" id="box-monday">
+					<div class="box box-monday" (click)="onTogglePins('monday')">&nbsp;</div><span class="day-name">Monday Route</span>
+				</div>
+				<div class="col-md-12 box-container" id="box-tuesday">
+					<div class="box box-tuesday" (click)="onTogglePins('tuesday')">&nbsp;</div><span class="day-name">Tuesday Route</span>
+				</div>
+				<div class="col-md-12 box-container" id="box-wednesday">
+					<div class="box box-wednesday" (click)="onTogglePins('wednesday')">&nbsp;</div><span class="day-name">Wednesday Route</span>
+				</div>
+				<div class="col-md-12 box-container" id="box-thursday">
+					<div class="box box-thursday" (click)="onTogglePins('thursday')">&nbsp;</div><span class="day-name">Thursday Route</span>
+				</div>
+				<div class="col-md-12 box-container" id="box-friday">
+					<div class="box box-friday" (click)="onTogglePins('friday')">&nbsp;</div><span class="day-name">Friday Route</span>
+				</div>
+				<div class="col-md-12 box-container" id="box-saturday">
+					<div class="box box-saturday" (click)="onTogglePins('saturday')">&nbsp;</div><span class="day-name">Saturday Route</span>
+				</div>
+				<div class="col-md-12 box-container" id="box-sunday">
+					<div class="box box-sunday" (click)="onTogglePins('sunday')">&nbsp;</div><span class="day-name">Sunday Route</span>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="row" *ngIf="!assignedRetailers.length">
+		<div class="col-md-12"><h4>No assigned retailers</h4></div>
+	</div>
+</div>

@@ -1,0 +1,51 @@
+<app-modal #onViewRetailerComponent>
+	<ng-template #modalHeader>
+		Retailer Info
+	</ng-template>
+	
+	<ng-template #modalBody>
+		<div class="row" *ngIf="retailer">
+			<div class="col-md-4">
+				<div class="img-container">
+					<img *ngIf="retailer.image" [src]="retailer.image" alt="">
+					<p *ngIf="!retailer.image" class="no-img">No image available..</p>
+				</div>
+			</div>
+			<div class="col-md-8">
+				<div class="row title-row">
+					<div class="col-md-12 no-pad-left">
+						<h3>{{ retailer.name }}</h3>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-6 no-pad-left"><strong>Owner:</strong>&nbsp;{{ retailer.owner }}</div>
+					<div class="col-md-6">&nbsp;</div>
+				</div>
+				<div class="row">
+					<div class="col-md-6 no-pad-left">
+						<strong>Address:</strong>&nbsp;
+						{{ retailer.house_number ? retailer.house_number + "," : "" }}&nbsp;
+						{{ retailer.street_name ? retailer.street_name + "," : "" }}&nbsp;
+						{{ retailer.township ? retailer.township + "," : "" }}&nbsp;
+						{{ retailer.cluster ? retailer.cluster + "," : "" }}&nbsp;
+						{{ retailer.region ? retailer.region + "," : "" }}&nbsp;
+						{{ retailer.country ? retailer.country : "" }}
+					</div>
+					<div class="col-md-6">&nbsp;</div>
+				</div>
+				<div class="row">
+					<div class="col-md-6 no-pad-left"><strong>Credit Limit: </strong>&nbsp;{{ retailer.credit_limit }}</div>
+					<div class="col-md-6">&nbsp;</div>
+				</div>
+			</div>
+		</div>
+	</ng-template>
+	
+	<ng-template #modalFooter>
+		<div class="row">
+			<div class="col-md-12 text-right">
+				<button class="btn btn-default" (click)="closeModal()">Close</button>
+			</div>
+		</div>
+	</ng-template>
+</app-modal>

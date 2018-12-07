@@ -1,0 +1,19 @@
+<div class="routestab">
+    <div class="container">
+        <h3>Remittance</h3>
+        <!-- Nav Tabs -->
+        <ul class="nav nav-tabs" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" routerLink="./receivables">Receivables</a>
+            </li>
+            <!--<li class="nav-item">
+                <a class="nav-link" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" routerLink="./purchaseorder">Purchase Orders</a>
+            </li>-->
+        </ul>
+
+        <!-- Tab panes -->
+        <div class="tab-content" style="margin-bottom:35px;">
+            <router-outlet></router-outlet>
+        </div>
+    </div>
+</div>

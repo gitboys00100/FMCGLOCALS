@@ -1,0 +1,83 @@
+<div class="content" *ngIf="isLoading">
+	<div class="row">
+		<div class="loader">
+			<img src="../../../../assets/img/loader.gif" class="img">
+		</div>
+	</div>
+</div>
+
+<div class="content" *ngIf="!isLoading">
+	<div class="row">
+		<div class="col-md-12"><h4>Set Targets</h4></div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-12 target-col" *ngIf="salesTargetForm">
+			<form [formGroup]="salesTargetForm" (ngSubmit)="onSubmit()">
+				<div class="row form-group">
+					<div class="col-md-3 col-sm-3 form-inline no-pad-left">Current Month :</div>
+					<div class="col-md-9 col-sm-9 form-inline">{{ currentDate | date : 'MMMM'}}</div>
+				</div>
+
+				<div class="row form-group">
+					<div class="col-md-3 col-sm-3 form-inline no-pad-left">Target :</div>
+					<div class="col-md-5 col-sm-9 form-inline">
+						<input 
+							type="number" 
+							class="form-control full-input" 
+							placeholder="0"
+							(input)="onTargetInputChange($event)"
+							(keydown)="onKeyDown($event)"
+							formControlName="target">
+					</div>
+					<div class="col-md-4">&nbsp;</div>
+				</div>
+
+				<div class="row form-group">
+					<div class="col-md-3 col-sm-3 form-inline no-pad-left">&nbsp;</div>
+					<div class="col-md-5 col-sm-9 text-right">
+						<button [disabled]="!salesTargetForm.valid" class="btn btn-success">Save</button>
+					</div>
+					<div class="col-md-4">&nbsp;</div>
+				</div>
+			</form>
+		</div>
+	</div>
+
+	<div class="row" *ngIf="projectedSalesPerYear.length">
+		<div class="col-md-12"><h4>View Targets</h4></div>
+	</div>
+
+	<div class="row" *ngIf="projectedSalesPerYear.length">
+		<div class="col-md-12 target-col">
+			<div class="row form-group">
+				<div class="col-md-3 col-sm-3 form-inline no-pad-left">Year :</div>
+				<div class="col-md-5 col-sm-9 form-inline">
+					<select class="form-control full-width full-input" [(ngModel)]="selectedPSYear">
+						<option [value]="psYear.year" class="fake-anchor" *ngFor="let psYear of projectedSalesPerYear">{{ psYear.year }}</option>	
+					</select>
+				</div>
+				<div class="col-md-4">&nbsp;</div>
+			</div>
+
+			<div class="row">
+				<div id="table-scroll" class="table-scroll">
+					<table id="main-table" class="main-table">
+						<thead>
+							<tr>
+								<th scope="col">Monthy</th>
+								<th scope="col">Sales Target</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr *ngFor="let target of getProjectedSalesByYear(selectedPSYear).targets">
+								<td scope="col">{{ target.month | date : 'MMMM' }}</td>
+								<td scope="col">{{ target.target }}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

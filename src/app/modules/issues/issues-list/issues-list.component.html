@@ -1,0 +1,98 @@
+<div class="row">
+	<app-view-issue #onViewItemComponent></app-view-issue>
+
+	<div class="col-md-12">
+		<div class="card" *ngIf="loading">
+			<div class="card-header">
+				<h3 class="card-title">Issues</h3>
+			</div>
+
+			<div class="card-body">
+				<div class="loader row">
+					<img src="../../../../assets/img/loader.gif" class="img">
+				</div>
+			</div>
+
+			<div class="card-footer">&nbsp;</div>
+		</div>
+
+		<div class="card" *ngIf="!loading">
+			<div class="card-header">
+				<h3 class="card-title">Issues</h3>
+			</div>
+
+			<div class="card-body">
+				<div class="row">
+					<div class="col-md-8">&nbsp;</div>
+					<div class="col-md-4">
+						<div class="input-group full-width less-mt" id="manageitsearch">
+							<input (input)="onFilterSearchChange($event)" (keydown)="onKeyDown($event)" [value]="searchQuery" class="form-control" placeholder="Search" type="text">
+							<div class="input-group-append">
+								<button class="btn btn-secondary" type="button" (click)="onSearch()"><i class="fa fa-search"></i></button>
+							</div>
+						</div>
+					</div>
+				</div>
+				<br>
+				<div id="table-scroll" class="table-scroll">
+					<table id="main-table" class="main-table">
+						<thead>
+							<tr>
+								<th scope="col">Title</th>
+								<th scope="col">Description</th>
+								<th scope="col">Retailer</th>
+								<th scope="col">Reported At</th>
+								<th scope="col">Actions</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr *ngFor="let issue of issues  | search: filterSearchQuery |  paginate: { itemsPerPage: itemsPerPage, currentPage: p }">
+								<td>{{ issue.title }}</td>
+								<td>{{ issue.description | slice:0:50  }}{{ (issue.description.length > 50) ? '...' : '' }}</td>
+								<td>{{ issue.retailer_name }}</td>
+								<td>{{ issue.timestamp | date : 'longDate' }}</td>
+								<td>
+									<button class="btn btn-info" (click)="onViewItem(issue)"><i class="fa fa-info-circle"></i>&nbsp;View</button>
+								</td>
+							</tr>
+
+							<tr *ngIf="(issues  | search: filterSearchQuery |  paginate: { itemsPerPage: itemsPerPage, currentPage: p }).length === 0">
+								<td colspan="5">
+									<div class="row">
+										<div class="col-md-12 text-center">
+											<p>No issues found</p>
+										</div>
+									</div>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+
+				<div class="row" *ngIf="!issues.length">
+					<div class="col-md-12">
+						<p>No issues found</p>
+					</div>
+				</div>
+			</div>
+			<div class="card-footer">
+				<div class="row">
+					<div class="col-md-6 form-inline">
+						<label>Show :</label>&nbsp;&nbsp;
+						<select (change)="onShowCountChange($event)" class="form-control sel-show full-width">
+							<option selected value="5">5</option>
+							<option value="10">10</option>
+							<option value="25">25</option>
+							<option value="50">50</option>
+						</select>
+					</div>
+					<div class="col-md-6">
+						<div class="form-group pg-form-group text-right">
+							<pagination-controls class="pagination" (pageChange)="p = $event"></pagination-controls>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

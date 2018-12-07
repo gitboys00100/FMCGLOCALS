@@ -1,0 +1,23 @@
+<div class="routestab">
+    <div class="container">
+        <!-- <h3 class="page-title">Inventory</h3> -->
+        <!-- Nav Tabs -->
+        <ul class="nav nav-tabs" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" routerLink="./product-inventory">Manage Products</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" routerLink="./stock-transfer-orders">Stock Transfer Orders</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" routerLink="./inventory-returns">Inventory Returns</a>
+            </li>
+        </ul>
+        <!-- Tab panes -->
+        <div class="tab-content">
+            <div class="tab-pane active"><br>
+                <router-outlet></router-outlet>
+            </div>
+        </div>
+    </div>
+</div>
